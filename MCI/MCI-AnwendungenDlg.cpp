@@ -127,8 +127,8 @@ void CMCIAnwendungenDlg::OnBnClickedButton2()
 
 void CMCIAnwendungenDlg::OnBnClickedButton3()
 {
-	// Open WAV
-	LPCWSTR filename = L"XYLOPHON.wav";
+	// Open MP3
+	LPCWSTR filename = L"youtube.mp3";
 	mci.OpenFile(filename);
 	SetDlgItemText(IDC_Name, filename);
 }
