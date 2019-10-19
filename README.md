@@ -18,7 +18,7 @@ Implementieren Sie mit C# eine WPF Anwendung unter Nutzung der in der Vorlesung 
 Eine weitere Schaltfläche dient zum Umschalten in den Vollbildmodus, der dann zum Beispiel mit der linken Maustaste wieder verlassen werden kann [1P]. 
 ![alt text][photo02]
 
-[photo02]: https://www.informatik.htw-dresden.de/~bruns/prakt_mm_prog_bild_wpf.jpgg "photo02"
+[photo02]: https://www.informatik.htw-dresden.de/~bruns/prakt_mm_prog_bild_wpf.jpg "photo02"
 
 Die aktuelle Abspielposition ist als Zeitangabe und prozentual auszugeben [1P].
 Ein mitlaufender Slider dient zum Navigieren innerhalb des Videos. Zwei weitere Slider dienen der Einstellung von Lautstärke und Balance [1P]. 
