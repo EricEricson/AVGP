@@ -57,7 +57,7 @@ BEGIN
     "#include ""res\\MCIAnwendungen.rc2""  // Nicht mit Microsoft Visual C++ bearbeitete Ressourcen\r\n"
     "#include ""l.DEU\\afxres.rc""      // Standardkomponenten\r\n"
     "#if !defined(_AFXDLL)\r\n"
-    "#include ""l.DEU\\afxribbon.rc""   // Ressourcen für MFC-Menüband und -Steuerleiste\r\n"
+    "#include ""l.DEU\\afxribbon.rc""   // Ressourcen fÃ¼r MFC-MenÃ¼band und -Steuerleiste\r\n"
     "#endif\r\n"
     "#endif\r\n"
     "\0"
@@ -87,7 +87,7 @@ EXSTYLE WS_EX_APPWINDOW
 CAPTION " MCI Media Player"
 FONT 8, "MS Shell Dlg", 0, 0, 0x1
 BEGIN
-    PUSHBUTTON      "Beenden",IDC_BUTTON1,320,7,50,14
+    PUSHBUTTON      "Exit",IDC_BUTTON1,320,7,50,14
     PUSHBUTTON      "Open Video",IDC_BUTTON2,7,7,50,14
     PUSHBUTTON      "Open Sound",IDC_BUTTON3,61,7,50,14
     PUSHBUTTON      "Open CD",IDC_BUTTON4,115,7,50,14
@@ -96,7 +96,7 @@ BEGIN
     LISTBOX         IDC_LIST1,274,59,79,149,LBS_NOINTEGRALHEIGHT | WS_VSCROLL | WS_TABSTOP
     PUSHBUTTON      "Play",IDC_BUTTON6,219,59,50,14
     PUSHBUTTON      "Stop",IDC_BUTTON7,219,80,50,14
-    PUSHBUTTON      "Close",IDC_BUTTON8,218,102,50,14
+    PUSHBUTTON      "Beenden",IDC_BUTTON8,218,102,50,14
     PUSHBUTTON      "Eject",IDC_BUTTON9,218,124,50,14
     GROUPBOX        "",IDC_DESTIN,15,45,186,103
     LTEXT           "Keine Datei geladen",IDC_Name,15,32,90,11
@@ -193,7 +193,7 @@ LANGUAGE 7, 1
 #include "res\MCIAnwendungen.rc2"  // Nicht mit Microsoft Visual C++ bearbeitete Ressourcen
 #include "l.DEU\afxres.rc"      // Standardkomponenten
 #if !defined(_AFXDLL)
-#include "l.DEU\afxribbon.rc"   // Ressourcen für MFC-Menüband und -Steuerleiste
+#include "l.DEU\afxribbon.rc"   // Ressourcen fÃ¼r MFC-MenÃ¼band und -Steuerleiste
 #endif
 #endif
 

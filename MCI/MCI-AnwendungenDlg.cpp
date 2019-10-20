@@ -103,19 +103,12 @@ HCURSOR CMCIAnwendungenDlg::OnQueryDragIcon()
 
 void CMCIAnwendungenDlg::OnBnClickedButton1()
 {
-	//CButton* btn = (CButton*) GetDlgItem(IDC_BUTTON2);
-	//btn->SetWindowText(_T("Lahore"));
 	exit(0);
 }
 
 
 void CMCIAnwendungenDlg::OnBnClickedButton2()
 {
-	/*
-	mci.OpenFile(L"Bombe.avi");
-	mci.SetAviPosition(GetSafeHwnd(), CRect(30, 60, 210, 140));
-	*/
-
 	CRect r;
 	GetDlgItem(IDC_DESTIN)->GetWindowRect(r);
 	ScreenToClient(r);
@@ -145,7 +138,6 @@ void CMCIAnwendungenDlg::OnBnClickedButton4()
 			mci.GetTrackLength(i, min, sek, frame);
 			text.Format(L"Track %02d [%02d:%02d]", i, min, sek);
 			box->AddString(text);
-			// z.B. Eintrag in eine ListBox :-)
 		}
 		box->SelectString(1, L"");
 	}
@@ -154,8 +146,7 @@ void CMCIAnwendungenDlg::OnBnClickedButton4()
 
 void CMCIAnwendungenDlg::OnBnClickedButton5()
 {
-	// TODO: Open MIDI
-	LPCWSTR filename = L"SAINTSGO.MID"; // TODO: MIDI-File einfügen
+	LPCWSTR filename = L"SAINTSGO.MID";
 	mci.OpenFile(filename);
 	SetDlgItemText(IDC_Name, filename);
 }
@@ -164,6 +155,7 @@ void CMCIAnwendungenDlg::OnBnClickedButton5()
 void CMCIAnwendungenDlg::OnLbnSelchangeList1()
 {
 	t_akt = box->GetCurSel() + 1;
+	mci.Play();
 }
 
 
@@ -196,7 +188,6 @@ void CMCIAnwendungenDlg::OnBnClickedButton7()
 void CMCIAnwendungenDlg::OnBnClickedButton8()
 {
 	mci.Close();
-	// TODO: Alles reseten
 }
 
 
@@ -243,7 +234,7 @@ void CMCIAnwendungenDlg::OnTimer(UINT_PTR nIDEvent)
 }
 
 
-void CMCIAnwendungenDlg::OnNMCustomdrawScrollbar(NMHDR *pNMHDR, LRESULT *pResult)
+void CMCIAnwendungenDlg::OnNMCustomdrawScrollbar(NMHDR* pNMHDR, LRESULT* pResult)
 {
 	LPNMCUSTOMDRAW pNMCD = reinterpret_cast<LPNMCUSTOMDRAW>(pNMHDR);
 
