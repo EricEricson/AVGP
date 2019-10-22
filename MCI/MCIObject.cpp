@@ -22,8 +22,7 @@ bool CMCIObject::OpenFile(LPCWSTR pszFileName)
 	if (m_op.wDeviceID != 0) Close();
 	m_op.lpstrDeviceType = 0;
 	m_op.lpstrElementName = pszFileName;
-	if ((m_Result = mciSendCommand(0,
-		MCI_OPEN, MCI_OPEN_ELEMENT, (DWORD_PTR)&m_op)) != 0) {
+	if ((m_Result = mciSendCommand(0, MCI_OPEN, MCI_OPEN_ELEMENT, (DWORD_PTR)&m_op)) != 0) {
 		MCIError();
 		return false;
 	}

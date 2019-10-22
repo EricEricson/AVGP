@@ -57,7 +57,7 @@ BEGIN
     "#include ""res\\MCIAnwendungen.rc2""  // Nicht mit Microsoft Visual C++ bearbeitete Ressourcen\r\n"
     "#include ""l.DEU\\afxres.rc""      // Standardkomponenten\r\n"
     "#if !defined(_AFXDLL)\r\n"
-    "#include ""l.DEU\\afxribbon.rc""   // Ressourcen fÃ¼r MFC-MenÃ¼band und -Steuerleiste\r\n"
+    "#include ""l.DEU\\afxribbon.rc""   // Ressourcen fÃƒÂ¼r MFC-MenÃƒÂ¼band und -Steuerleiste\r\n"
     "#endif\r\n"
     "#endif\r\n"
     "\0"
@@ -193,7 +193,7 @@ LANGUAGE 7, 1
 #include "res\MCIAnwendungen.rc2"  // Nicht mit Microsoft Visual C++ bearbeitete Ressourcen
 #include "l.DEU\afxres.rc"      // Standardkomponenten
 #if !defined(_AFXDLL)
-#include "l.DEU\afxribbon.rc"   // Ressourcen fÃ¼r MFC-MenÃ¼band und -Steuerleiste
+#include "l.DEU\afxribbon.rc"   // Ressourcen fÃƒÂ¼r MFC-MenÃƒÂ¼band und -Steuerleiste
 #endif
 #endif
 
