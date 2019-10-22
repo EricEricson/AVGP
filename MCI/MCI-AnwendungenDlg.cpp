@@ -103,18 +103,20 @@ HCURSOR CMCIAnwendungenDlg::OnQueryDragIcon()
 
 void CMCIAnwendungenDlg::OnBnClickedButton1()
 {
+	// EXIT
 	exit(0);
 }
 
 
 void CMCIAnwendungenDlg::OnBnClickedButton2()
 {
+	// OPEN VIDEO
 	CRect r;
 	GetDlgItem(IDC_DESTIN)->GetWindowRect(r);
 	ScreenToClient(r);
-	mci.OpenFile(L"Bombe.avi");
+	mci.OpenFile(L"ConfusedAlien.avi");
 	mci.SetAviPosition(GetSafeHwnd(), CRect(r.left, r.top, r.Width(), r.Height()));
-	GetDlgItem(IDC_Name)->SetWindowText(L"Bombe.avi");
+	GetDlgItem(IDC_Name)->SetWindowText(L"ConfusedAlien.avi");
 }
 
 
@@ -128,6 +130,14 @@ void CMCIAnwendungenDlg::OnBnClickedButton3()
 
 void CMCIAnwendungenDlg::OnBnClickedButton4()
 {
+	// OPEN CD
+	/*
+	mci.OpenAudioCD(0, t); // sucht und öffnet eine AudioCD
+	// ein spezielles Laufwerk: mci.OpenAudioCD(L"e:",t);
+	mci.TMSFSeek(2, 0, 0, 0); // zweiter Titel auf der Audio-CD
+	mci.Play();
+	*/
+
 	box->ResetContent();
 	if (mci.OpenAudioCD(0, t)) {
 		mci.TMSFSeek(1, 0, 0, 0); // erster Titel auf der Audio-CD
@@ -161,6 +171,7 @@ void CMCIAnwendungenDlg::OnLbnSelchangeList1()
 
 void CMCIAnwendungenDlg::OnBnClickedButton6()
 {
+	// Play
 	if (mci.getPlayed()) {
 		mci.Pause();
 		mci.GetTMSFPosition(t_akt, m_akt, s_akt, f_akt);
@@ -178,6 +189,7 @@ void CMCIAnwendungenDlg::OnBnClickedButton6()
 
 void CMCIAnwendungenDlg::OnBnClickedButton7()
 {
+	// Stop
 	mci.Stop();
 	m_akt = s_akt = f_akt = 0;
 	mci.TMSFSeek(0, 0, 0, 0);
@@ -187,13 +199,15 @@ void CMCIAnwendungenDlg::OnBnClickedButton7()
 
 void CMCIAnwendungenDlg::OnBnClickedButton8()
 {
+	// Beenden
 	mci.Close();
 }
 
 
 void CMCIAnwendungenDlg::OnBnClickedButton9()
 {
-	// TODO: Eject
+	// Eject
+	mciSendString(L"set cdaudio door open", 0, 0, 0);
 }
 
 
