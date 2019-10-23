@@ -59,7 +59,7 @@ BOOL CMCIAnwendungenDlg::OnInitDialog()
 	slider = ((CSliderCtrl*)GetDlgItem(IDC_SCROLLBAR));
 	box = ((CListBox*)GetDlgItem(IDC_LIST1));
 
-	SetTimer(1, 200, NULL);
+	SetTimer(1, 100, NULL);
 
 	return TRUE;  // TRUE zurückgeben, wenn der Fokus nicht auf ein Steuerelement gesetzt wird
 }
@@ -117,6 +117,21 @@ void CMCIAnwendungenDlg::OnBnClickedButton2()
 	mci.OpenFile(L"ConfusedAlien.avi");
 	mci.SetAviPosition(GetSafeHwnd(), CRect(r.left, r.top, r.Width(), r.Height()));
 	GetDlgItem(IDC_Name)->SetWindowText(L"ConfusedAlien.avi");
+
+	// Video direkt abspielen
+	if (mci.getPlayed()) {
+		mci.Pause();
+		mci.GetTMSFPosition(t_akt, m_akt, s_akt, f_akt);
+		slider->EnableWindow(1);
+		SetDlgItemText(IDC_BUTTON6, L"Play");
+	}
+	else {
+		mci.TMSFSeek(t_akt, m_akt, s_akt, f_akt);
+		mci.Play();
+		slider->EnableWindow(0);
+		SetDlgItemText(IDC_BUTTON6, L"Pause");
+	}
+
 }
 
 
@@ -126,6 +141,21 @@ void CMCIAnwendungenDlg::OnBnClickedButton3()
 	LPCWSTR filename = L"youtube.mp3";
 	mci.OpenFile(filename);
 	SetDlgItemText(IDC_Name, filename);
+
+	// Sound direkt abspielen
+	if (mci.getPlayed()) {
+		mci.Pause();
+		mci.GetTMSFPosition(t_akt, m_akt, s_akt, f_akt);
+		slider->EnableWindow(1);
+		SetDlgItemText(IDC_BUTTON6, L"Play");
+	}
+	else {
+		mci.TMSFSeek(t_akt, m_akt, s_akt, f_akt);
+		mci.Play();
+		slider->EnableWindow(0);
+		SetDlgItemText(IDC_BUTTON6, L"Pause");
+	}
+
 }
 
 void CMCIAnwendungenDlg::OnBnClickedButton4()
@@ -137,7 +167,6 @@ void CMCIAnwendungenDlg::OnBnClickedButton4()
 	mci.TMSFSeek(2, 0, 0, 0); // zweiter Titel auf der Audio-CD
 	mci.Play();
 	*/
-
 	box->ResetContent();
 	if (mci.OpenAudioCD(0, t)) {
 		mci.TMSFSeek(1, 0, 0, 0); // erster Titel auf der Audio-CD
@@ -159,6 +188,21 @@ void CMCIAnwendungenDlg::OnBnClickedButton5()
 	LPCWSTR filename = L"SAINTSGO.MID";
 	mci.OpenFile(filename);
 	SetDlgItemText(IDC_Name, filename);
+
+	// Sond direkt abspielen
+	if (mci.getPlayed()) {
+		mci.Pause();
+		mci.GetTMSFPosition(t_akt, m_akt, s_akt, f_akt);
+		slider->EnableWindow(1);
+		SetDlgItemText(IDC_BUTTON6, L"Play");
+	}
+	else {
+		mci.TMSFSeek(t_akt, m_akt, s_akt, f_akt);
+		mci.Play();
+		slider->EnableWindow(0);
+		SetDlgItemText(IDC_BUTTON6, L"Pause");
+	}
+
 }
 
 
@@ -233,12 +277,10 @@ void CMCIAnwendungenDlg::OnTimer(UINT_PTR nIDEvent)
 		progress = 0;
 	}
 
-
 	// Ausgabe der Abspielzeit
 	str.Format(L"%02d:%02d/%02d:%02d - %d%%", m, s, min, sek, progress);
 	SetDlgItemText(IDC_AKTUELL, str);
 
-	// TODO: Scrollbar fixen
 	slider->SetRangeMin(0);
 	slider->SetRangeMax(ges);
 	slider->SetPos(akt);
