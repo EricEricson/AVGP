@@ -131,3 +131,33 @@ bool CDirectSound::Stop(LPDIRECTSOUNDBUFFER buf)
 	}
 	return true;
 }
+
+bool CDirectSound::GenerateSound(LPDIRECTSOUNDBUFFER buf, DWORD offset, DWORD length, int f)
+{
+	WAVEFORMATEX pcmwf;
+
+	if (!buf) return false;
+
+	if (!GetWaveFormat(buf, &pcmwf))
+		return false;
+
+	void* lpvPtr1, * lpvPtr2; DWORD dwBytes1, dwBytes2;
+
+	if (!this->LockBuffer(buf, offset, length,
+		&lpvPtr1, &dwBytes1, // get pointer 1
+		&lpvPtr2, &dwBytes2)) // get pointer 2 (the buffer is circular)
+		return false;
+	// write a sinus sound now
+	DWORD i; short int* t; // points to 16 Bit
+	for (i = 0, t = (short int*)lpvPtr1; i < (dwBytes1 + dwBytes2); i += 4, t += 2) {
+		if (i == dwBytes1)
+			t = (short int*)lpvPtr2;
+		*t = *(t + 1) = (short int)(sin(i / (pcmwf.nAvgBytesPerSec / (6.283185 * f))) * 30000);
+	}
+	// unlock memory
+	if (!this->UnlockBuffer(buf,
+		lpvPtr1, dwBytes1, // pointer 1
+		lpvPtr2, dwBytes2)) // pointer 2
+		return false;
+	return true;
+}

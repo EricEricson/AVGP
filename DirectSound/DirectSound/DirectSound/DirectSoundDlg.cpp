@@ -32,6 +32,9 @@ BEGIN_MESSAGE_MAP(CDirectSoundDlg, CDialogEx)
 	ON_WM_PAINT()
 	ON_WM_QUERYDRAGICON()
 	ON_BN_CLICKED(IDC_BUTTON_264Hz, &CDirectSoundDlg::OnBnClickedButton264hz)
+	ON_BN_CLICKED(IDC_BUTTON_Exit, &CDirectSoundDlg::OnBnClickedButtonExit)
+	ON_BN_CLICKED(IDC_BUTTON_CDur_Dreiklang, &CDirectSoundDlg::OnBnClickedButtonCdurDreiklang)
+	ON_BN_CLICKED(IDC_BUTTON_Stop, &CDirectSoundDlg::OnBnClickedButtonStop)
 END_MESSAGE_MAP()
 
 
@@ -48,8 +51,8 @@ BOOL CDirectSoundDlg::OnInitDialog()
 
 	// TODO: Hier zusätzliche Initialisierung einfügen
 
-	//if (!m_ds.Create(this))
-	//	OnCancel();
+	if (!m_ds.Create(this))
+		OnCancel();
 
 	// create a 4 second sound buffer
 	if ((lpDSBSecondary = m_ds.CreateSoundBuffer(2, 16, 22050, 4)) == 0)
@@ -98,34 +101,30 @@ HCURSOR CDirectSoundDlg::OnQueryDragIcon()
 
 void CDirectSoundDlg::OnBnClickedButton264hz()
 {
-	// 264Hz Sound abspielen
-	void* lpvPtr1, * lpvPtr2; DWORD dwBytes1, dwBytes2;
-	if (!m_ds.LockBuffer(lpDSBSecondary, 0, 2, // we use the first 2 seconds
-		&lpvPtr1, // get pointer 1
-		&dwBytes1, // get bytes available there
-		&lpvPtr2, // get pointer 2 (the buffer is circular)
-		&dwBytes2)) // get bytes available there
-		return;
-	// write a sinus sound now (88040/63 = 1397 Hz)
-	DWORD i; short int* t; // points to 16 Bit
-	for (i = 0, t = (short int*)lpvPtr1; i < (dwBytes1 + dwBytes2); i += 4, t += 2) {
-		if (i == dwBytes1) t = (short int*)lpvPtr2;
-		// 2 channels with 16 Bit each
-		*t = *(t + 1) = (short int)(sin(i / 10.0) * 30000);
-	}
-
-	// Sound, den wir gerade generiert haben, schreiben wir in eine Datei
-	//FILE* fp = fopen("test.pcm", "wb");
-	//fwrite(lpvPtr1, 4, 2 * 22050, fp);
-	//fclose(fp);
-
-	if (!m_ds.UnlockBuffer(lpDSBSecondary,
-		lpvPtr1, // pointer 1
-		dwBytes1, // bytes written there
-		lpvPtr2, // pointer 2
-		dwBytes2)) // bytes written there
-		return;
+	m_ds.GenerateSound(lpDSBSecondary, 0, 1, 264);
 
 	if (!m_ds.Play(lpDSBSecondary, true))
+		OnCancel();
+}
+
+void CDirectSoundDlg::OnBnClickedButtonCdurDreiklang()
+{
+	m_ds.GenerateSound(lpDSBSecondary, 0, 1, 262);
+	m_ds.GenerateSound(lpDSBSecondary, 1, 1, 330);
+	m_ds.GenerateSound(lpDSBSecondary, 2, 1, 392);
+
+	if (!m_ds.Play(lpDSBSecondary, true))
+		OnCancel();
+}
+
+void CDirectSoundDlg::OnBnClickedButtonExit()
+{
+	exit(0);
+}
+
+
+void CDirectSoundDlg::OnBnClickedButtonStop()
+{
+	if (!m_ds.Stop(lpDSBSecondary))
 		OnCancel();
 }

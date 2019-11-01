@@ -1,6 +1,7 @@
 
 // DirectSoundDlg.h: Headerdatei
 //
+#include "CDirectSound.h"
 
 #pragma once
 
@@ -26,7 +27,7 @@ public:
 protected:
 	HICON m_hIcon;
 
-	//CDirectSound m_ds;
+	CDirectSound m_ds;
 	LPDIRECTSOUNDBUFFER lpDSBSecondary;
 
 
@@ -38,4 +39,7 @@ protected:
 public:
 	afx_msg void OnBnClickedButton1();
 	afx_msg void OnBnClickedButton264hz();
+	afx_msg void OnBnClickedButtonExit();
+	afx_msg void OnBnClickedButtonCdurDreiklang();
+	afx_msg void OnBnClickedButtonStop();
 };
