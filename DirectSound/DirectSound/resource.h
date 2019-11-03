@@ -22,6 +22,7 @@
 #define IDC_BUTTON_Klavier_H            1014
 #define IDC_BUTTON_Klavier_C2           1015
 #define IDC_CHECK1                      1016
+#define IDC_BUTTON_Mittel_Balance       1017
 
 // Next default values for new objects
 // 
@@ -29,7 +30,7 @@
 #ifndef APSTUDIO_READONLY_SYMBOLS
 #define _APS_NEXT_RESOURCE_VALUE        130
 #define _APS_NEXT_COMMAND_VALUE         32771
-#define _APS_NEXT_CONTROL_VALUE         1017
+#define _APS_NEXT_CONTROL_VALUE         1018
 #define _APS_NEXT_SYMED_VALUE           101
 #endif
 #endif

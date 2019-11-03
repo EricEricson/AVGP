@@ -66,4 +66,5 @@ public:
 	afx_msg void OnBnClickedButtonKlavierH();
 	afx_msg void OnBnClickedButtonKlavierC2();
 	afx_msg void OnBnClickedCheck1();
+	afx_msg void OnBnClickedButtonMittelBalance();
 };

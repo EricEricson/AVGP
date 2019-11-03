@@ -49,6 +49,7 @@ BEGIN_MESSAGE_MAP(CDirectSoundDlg, CDialogEx)
 	ON_BN_CLICKED(IDC_BUTTON_Klavier_H, &CDirectSoundDlg::OnBnClickedButtonKlavierH)
 	ON_BN_CLICKED(IDC_BUTTON_Klavier_C2, &CDirectSoundDlg::OnBnClickedButtonKlavierC2)
 	ON_BN_CLICKED(IDC_CHECK1, &CDirectSoundDlg::OnBnClickedCheck1)
+	ON_BN_CLICKED(IDC_BUTTON_Mittel_Balance, &CDirectSoundDlg::OnBnClickedButtonMittelBalance)
 END_MESSAGE_MAP()
 
 
@@ -411,4 +412,10 @@ void CDirectSoundDlg::OnBnClickedCheck1()
 			m_ds.GenerateSound(lpDSBPiano[i], 0, 1, ton[i]);
 		}
 	}
+}
+
+
+void CDirectSoundDlg::OnBnClickedButtonMittelBalance()
+{
+	((CSliderCtrl*)GetDlgItem(IDC_SLIDER_Balance))->SetPos(0);
 }
