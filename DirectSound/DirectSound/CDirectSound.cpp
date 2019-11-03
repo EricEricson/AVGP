@@ -161,3 +161,60 @@ bool CDirectSound::GenerateSound(LPDIRECTSOUNDBUFFER buf, DWORD offset, DWORD le
 		return false;
 	return true;
 }
+
+bool CDirectSound::LoadPCMSound(LPDIRECTSOUNDBUFFER buf, DWORD offset, DWORD length, FILE* fileptr) {
+	WAVEFORMATEX pcmwf;
+	BOOL result;
+	if (!buf) return false;
+	if (!GetWaveFormat(buf, &pcmwf))
+		return false;
+	void* lpvPtr1, * lpvPtr2; DWORD dwBytes1, dwBytes2;
+	if (!this->LockBuffer(buf, offset, length,
+		&lpvPtr1, &dwBytes1, // get pointer 1
+		&lpvPtr2, &dwBytes2)) // get pointer 2 (the buffer is circular)
+		return false;
+	// write a sinus sound now
+	result = (fread(lpvPtr1, 1, dwBytes1, fileptr) == dwBytes1);
+
+	// unlock memory
+	if (!this->UnlockBuffer(buf,
+		lpvPtr1, dwBytes1, // pointer 1
+		lpvPtr2, dwBytes2)) // pointer 2
+		return false;
+	return result;
+}
+
+bool CDirectSound::SetPlaybackVolume(LPDIRECTSOUNDBUFFER buf, LONG db)
+{
+	if (!buf) return false;
+	if (buf->SetVolume(db) != DS_OK) {
+		AfxMessageBox(L"Cannot change volume");
+		return false;
+	}
+	return true;
+}
+
+bool CDirectSound::SetBalance(LPDIRECTSOUNDBUFFER buf, LONG db)
+{
+	if (!buf) return false;
+	if (buf->SetPan(db) != DS_OK) {
+		AfxMessageBox(L"Cannot change balance");
+		return false;
+	}
+	return true;
+}
+
+int CDirectSound::GetPlayPosition(LPDIRECTSOUNDBUFFER buf) {
+	DSBCAPS caps;
+	caps.dwSize = sizeof(DSBCAPS);
+	if (buf->GetCaps(&caps) != DS_OK) {
+		AfxMessageBox(L"Cannot get buffer caps");
+		return -1;
+	}
+	DWORD playPos;
+	if (buf->GetCurrentPosition(&playPos, 0) != DS_OK) {
+		AfxMessageBox(L"Cannot get the secondary buffer positions");
+		return -1;
+	}
+	return ((playPos * 100) / caps.dwBufferBytes);
+}

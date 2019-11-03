@@ -16,6 +16,7 @@ public:
 	bool SetBalance(LPDIRECTSOUNDBUFFER buf, LONG db);
 	int GetPlayPosition(LPDIRECTSOUNDBUFFER buf);
 	bool GenerateSound(LPDIRECTSOUNDBUFFER buf, DWORD offset, DWORD length, int f);
+	bool LoadPCMSound(LPDIRECTSOUNDBUFFER buf, DWORD offset, DWORD length, FILE* fileptr);
 private:
 	DSBUFFERDESC dsbd; // buffer description
 	LPDIRECTSOUND lpds; // points to DirectSound-Interface
