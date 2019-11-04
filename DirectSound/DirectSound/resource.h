@@ -21,7 +21,7 @@
 #define IDC_BUTTON_Klavier_A            1013
 #define IDC_BUTTON_Klavier_H            1014
 #define IDC_BUTTON_Klavier_C2           1015
-#define IDC_CHECK1                      1016
+#define IDC_CHECK_Gitarrensound         1016
 #define IDC_BUTTON_Mittel_Balance       1017
 
 // Next default values for new objects

@@ -48,8 +48,9 @@ BEGIN_MESSAGE_MAP(CDirectSoundDlg, CDialogEx)
 	ON_BN_CLICKED(IDC_BUTTON_Klavier_A, &CDirectSoundDlg::OnBnClickedButtonKlavierA)
 	ON_BN_CLICKED(IDC_BUTTON_Klavier_H, &CDirectSoundDlg::OnBnClickedButtonKlavierH)
 	ON_BN_CLICKED(IDC_BUTTON_Klavier_C2, &CDirectSoundDlg::OnBnClickedButtonKlavierC2)
-	ON_BN_CLICKED(IDC_CHECK1, &CDirectSoundDlg::OnBnClickedCheck1)
+	ON_BN_CLICKED(IDC_CHECK_Gitarrensound, &CDirectSoundDlg::OnBnClickedCheckGitarrensound)
 	ON_BN_CLICKED(IDC_BUTTON_Mittel_Balance, &CDirectSoundDlg::OnBnClickedButtonMittelBalance)
+	ON_BN_CLICKED(IDC_CHECK_Gitarrensound, &CDirectSoundDlg::OnBnClickedCheckGitarrensound)
 END_MESSAGE_MAP()
 
 
@@ -170,7 +171,7 @@ void CDirectSoundDlg::OnBnClickedButtonCdurDreiklang()
 	file[2] = fopen("G.raw", "rb");
 
 	for (int i = 0; i < 3; i++) {
-		if (((CButton*)GetDlgItem(IDC_CHECK1))->GetCheck()) {
+		if (((CButton*)GetDlgItem(IDC_CHECK_Gitarrensound))->GetCheck()) {
 			m_ds.LoadPCMSound(lpDSBTri[i], 0, 2, file[i]);
 		}
 		else {
@@ -245,7 +246,7 @@ void CDirectSoundDlg::Tonleiter() {
 			return;
 		}
 
-		if (((CButton*)GetDlgItem(IDC_CHECK1))->GetCheck()) {
+		if (((CButton*)GetDlgItem(IDC_CHECK_Gitarrensound))->GetCheck()) {
 			// TODO: Use guitar sound for major scale
 			m_ds.GenerateSound(lpDSBSecondary, buffnr * 2, 2, ton[j]);
 		}
@@ -388,9 +389,9 @@ void CDirectSoundDlg::OnBnClickedButtonKlavierC2()
 }
 
 
-void CDirectSoundDlg::OnBnClickedCheck1()
+void CDirectSoundDlg::OnBnClickedCheckGitarrensound()
 {
-	if (((CButton*)GetDlgItem(IDC_CHECK1))->GetCheck()) {
+	if (((CButton*)GetDlgItem(IDC_CHECK_Gitarrensound))->GetCheck()) {
 		FILE* file[9];
 
 		file[0] = fopen("C.raw", "rb");
