@@ -67,6 +67,7 @@ BOOL CDirectSoundDlg::OnInitDialog()
 
 	// TODO: Hier zusätzliche Initialisierung einfügen
 
+	// calculate the sounds
 	ton[0] = c;
 	ton[1] = c * 9 / 8.;
 	ton[2] = c * 5 / 4.;
@@ -99,7 +100,7 @@ BOOL CDirectSoundDlg::OnInitDialog()
 		m_ds.GenerateSound(lpDSBPiano[i], 0, 1, ton[i]);
 	}
 
-	// set values for sliders
+	// set values for sliders (volume and balance)
 	((CSliderCtrl*)GetDlgItem(IDC_SLIDER_Lautstaerke))->SetRange(-5000, 0);
 	((CSliderCtrl*)GetDlgItem(IDC_SLIDER_Lautstaerke))->SetPos(-5000);
 	((CSliderCtrl*)GetDlgItem(IDC_SLIDER_Lautstaerke))->SetPos(0);
@@ -146,8 +147,7 @@ HCURSOR CDirectSoundDlg::OnQueryDragIcon()
 	return static_cast<HCURSOR>(m_hIcon);
 }
 
-
-
+// pressed button 264Hz
 void CDirectSoundDlg::OnBnClickedButton264hz()
 {
 	m_ds.GenerateSound(lpDSBSecondary, 0, 1, 264);
@@ -155,6 +155,7 @@ void CDirectSoundDlg::OnBnClickedButton264hz()
 		OnCancel();
 }
 
+// read files where created the raw sound files
 void CDirectSoundDlg::OnBnClickedButtonCdurDreiklang()
 {
 	//m_ds.GenerateSound(lpDSBSecondary, 0, 1, 262);
@@ -179,18 +180,20 @@ void CDirectSoundDlg::OnBnClickedButtonCdurDreiklang()
 		}
 	}
 
+	// play the sounds in a special soundbuffer
 	for (int i = 0; i < 3; i++) {
 		if (!m_ds.Play(lpDSBTri[i], true))
 			OnCancel();
 	}
 }
 
+// exit the program
 void CDirectSoundDlg::OnBnClickedButtonExit()
 {
 	exit(0);
 }
 
-
+// stop all soundbuffers
 void CDirectSoundDlg::OnBnClickedButtonStop()
 {
 	m_ds.Stop(lpDSBSecondary);
@@ -205,12 +208,13 @@ void CDirectSoundDlg::OnBnClickedButtonStop()
 	}
 }
 
-
 void CDirectSoundDlg::OnBnClickedButtonCdurTonleiter()
 {
+	// create timer 700ms
 	SetTimer(1, 700, NULL);
 	mode = 0;
 
+	// write 2 seconds on soundbuffer
 	m_ds.GenerateSound(lpDSBSecondary, 0, 2, 264);
 	if (!m_ds.Play(lpDSBSecondary, true))
 		OnCancel();
@@ -234,6 +238,8 @@ void CDirectSoundDlg::OnTimer(UINT_PTR nIDEvent)
 
 void CDirectSoundDlg::Tonleiter() {
 	static int j = 0, buffnr = 1, playpos;
+
+	// set value back to first sound and go back to last sound +1 
 	if ((playpos = m_ds.GetPlayPosition(lpDSBSecondary)) == -1) {
 		KillTimer(1); return;
 	}
@@ -246,13 +252,7 @@ void CDirectSoundDlg::Tonleiter() {
 			return;
 		}
 
-		if (((CButton*)GetDlgItem(IDC_CHECK_Gitarrensound))->GetCheck()) {
-			// TODO: Use guitar sound for major scale
-			m_ds.GenerateSound(lpDSBSecondary, buffnr * 2, 2, ton[j]);
-		}
-		else {
-			m_ds.GenerateSound(lpDSBSecondary, buffnr * 2, 2, ton[j]);
-		}
+		m_ds.GenerateSound(lpDSBSecondary, buffnr * 2, 2, ton[j]);
 
 		if (buffnr == 1) buffnr = 0; // change buffer
 		else buffnr = 1;
