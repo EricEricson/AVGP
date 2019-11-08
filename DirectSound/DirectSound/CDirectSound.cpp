@@ -143,10 +143,13 @@ bool CDirectSound::GenerateSound(LPDIRECTSOUNDBUFFER buf, DWORD offset, DWORD le
 
 	void* lpvPtr1, * lpvPtr2; DWORD dwBytes1, dwBytes2;
 
+	// lock this sound buffer, because its not a value adress
+	// get back a pointer on the data
 	if (!this->LockBuffer(buf, offset, length,
 		&lpvPtr1, &dwBytes1, // get pointer 1
 		&lpvPtr2, &dwBytes2)) // get pointer 2 (the buffer is circular)
 		return false;
+
 	// write a sinus sound now
 	DWORD i; short int* t; // points to 16 Bit
 	for (i = 0, t = (short int*)lpvPtr1; i < (dwBytes1 + dwBytes2); i += 4, t += 2) {
@@ -187,6 +190,7 @@ bool CDirectSound::LoadPCMSound(LPDIRECTSOUNDBUFFER buf, DWORD offset, DWORD len
 bool CDirectSound::SetPlaybackVolume(LPDIRECTSOUNDBUFFER buf, LONG db)
 {
 	if (!buf) return false;
+	// for each sound buffer we can calculate the soundbuffer
 	if (buf->SetVolume(db) != DS_OK) {
 		AfxMessageBox(L"Cannot change volume");
 		return false;
@@ -205,16 +209,23 @@ bool CDirectSound::SetBalance(LPDIRECTSOUNDBUFFER buf, LONG db)
 }
 
 int CDirectSound::GetPlayPosition(LPDIRECTSOUNDBUFFER buf) {
+	
 	DSBCAPS caps;
 	caps.dwSize = sizeof(DSBCAPS);
+	// über den Pointer von buf starten wir die Methode GetCaps()
+	// diese fragt ab, was mit dem Soundbuffer los ist, also wie
+	// viele Byte gehören in den Buffer
 	if (buf->GetCaps(&caps) != DS_OK) {
 		AfxMessageBox(L"Cannot get buffer caps");
 		return -1;
 	}
+	
 	DWORD playPos;
+	// wir fragen die Play Position ab
 	if (buf->GetCurrentPosition(&playPos, 0) != DS_OK) {
 		AfxMessageBox(L"Cannot get the secondary buffer positions");
 		return -1;
 	}
+	// berechnen uns den Wert des Buffers zwischen 0 und 100
 	return ((playPos * 100) / caps.dwBufferBytes);
 }

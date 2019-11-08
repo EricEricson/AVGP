@@ -67,7 +67,7 @@ BOOL CDirectSoundDlg::OnInitDialog()
 
 	// TODO: Hier zusätzliche Initialisierung einfügen
 
-	// calculate the sounds
+	// calculate the sounds, from the scripts
 	ton[0] = c;
 	ton[1] = c * 9 / 8.;
 	ton[2] = c * 5 / 4.;
@@ -87,6 +87,7 @@ BOOL CDirectSoundDlg::OnInitDialog()
 		OnCancel();
 
 	// create 3 sound buffers
+	// 3 pointer of the interface from the buffer
 	for (int i = 0; i < 3; i++) {
 		if ((lpDSBTri[i] = m_ds.CreateSoundBuffer(2, 16, 22050, 2)) == 0)
 			OnCancel();
@@ -158,13 +159,6 @@ void CDirectSoundDlg::OnBnClickedButton264hz()
 // read files where created the raw sound files
 void CDirectSoundDlg::OnBnClickedButtonCdurDreiklang()
 {
-	//m_ds.GenerateSound(lpDSBSecondary, 0, 1, 262);
-	//m_ds.GenerateSound(lpDSBSecondary, 1, 1, 330);
-	//m_ds.GenerateSound(lpDSBSecondary, 2, 1, 392);
-
-	//if (!m_ds.Play(lpDSBSecondary, true))
-	//	OnCancel();
-
 	FILE* file[3];
 
 	file[0] = fopen("C.raw", "rb");
@@ -216,6 +210,7 @@ void CDirectSoundDlg::OnBnClickedButtonCdurTonleiter()
 
 	// write 2 seconds on soundbuffer
 	m_ds.GenerateSound(lpDSBSecondary, 0, 2, 264);
+
 	if (!m_ds.Play(lpDSBSecondary, true))
 		OnCancel();
 }
@@ -243,8 +238,11 @@ void CDirectSoundDlg::Tonleiter() {
 	if ((playpos = m_ds.GetPlayPosition(lpDSBSecondary)) == -1) {
 		KillTimer(1); return;
 	}
+	// buffnr ist die nächste zu beschreibende bufferhälfte
+	// buffer von 0 bis 100 initialisiert, weil wir sicher gehen wollen,
+	// dass wir störungsfrei streamen können
 	if (((playpos > 50) && (buffnr == 0)) || ((playpos < 50) && (buffnr == 1))) {
-		if ((++j) == 9) { // major scale finished
+		if ((++j) == 9) { // major scale finished (Abspielvorgang ist beendet)
 			KillTimer(1);
 			j = 0;
 			if (!m_ds.Stop(lpDSBSecondary))
