@@ -169,13 +169,17 @@ bool CDirectSound::LoadPCMSound(LPDIRECTSOUNDBUFFER buf, DWORD offset, DWORD len
 	WAVEFORMATEX pcmwf;
 	BOOL result;
 	if (!buf) return false;
+
 	if (!GetWaveFormat(buf, &pcmwf))
 		return false;
+	
 	void* lpvPtr1, * lpvPtr2; DWORD dwBytes1, dwBytes2;
+	
 	if (!this->LockBuffer(buf, offset, length,
 		&lpvPtr1, &dwBytes1, // get pointer 1
 		&lpvPtr2, &dwBytes2)) // get pointer 2 (the buffer is circular)
 		return false;
+
 	// write a sinus sound now
 	result = (fread(lpvPtr1, 1, dwBytes1, fileptr) == dwBytes1);
 
