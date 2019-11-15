@@ -361,3 +361,6 @@ ASALocalRun/
 *.exe
 *.out
 *.app
+
+#DirectX3D SDK
+Direct3D/DXSDK9
