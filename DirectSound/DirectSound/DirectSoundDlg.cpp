@@ -51,6 +51,7 @@ BEGIN_MESSAGE_MAP(CDirectSoundDlg, CDialogEx)
 	ON_BN_CLICKED(IDC_CHECK_Gitarrensound, &CDirectSoundDlg::OnBnClickedCheckGitarrensound)
 	ON_BN_CLICKED(IDC_BUTTON_Mittel_Balance, &CDirectSoundDlg::OnBnClickedButtonMittelBalance)
 	ON_BN_CLICKED(IDC_CHECK_Gitarrensound, &CDirectSoundDlg::OnBnClickedCheckGitarrensound)
+	ON_BN_CLICKED(IDC_CHECK_Gitarrensound, &CDirectSoundDlg::OnB)
 END_MESSAGE_MAP()
 
 
@@ -223,7 +224,6 @@ void CDirectSoundDlg::OnTimer(UINT_PTR nIDEvent)
 		break;
 	case 1:
 		PCM();
-		m_ds.Play(lpDSBSecondary);
 		break;
 	default:
 		break;
@@ -258,23 +258,26 @@ void CDirectSoundDlg::Tonleiter() {
 }
 
 void CDirectSoundDlg::PCM() {
-	static int buffnr = 1, playpos;
-	BOOL end;
+	static int buffnr = 1, playpos, i = 3;
+
 	if ((playpos = m_ds.GetPlayPosition(lpDSBSecondary)) == -1) {
 		KillTimer(1); return;
 	}
 	if (((playpos > 50) && (buffnr == 0)) || ((playpos < 50) && (buffnr == 1))) {
-		m_ds.GenerateSound(lpDSBSecondary, buffnr * 2, 2, 0);
-		end = m_ds.LoadPCMSound(lpDSBSecondary, buffnr * 2, 2, fileptr);
-		if (!end) { // major scale finished
-			KillTimer(1);
-			if (!m_ds.Stop(lpDSBSecondary))
+		//m_ds.GenerateSound(lpDSBSecondary, buffnr * 2, 2, 0);
+		if (!m_ds.LoadPCMSound(lpDSBSecondary, buffnr * 2, 2, fileptr)) {
+			i--;
+			if (i == 0) { // major scale finished
+				KillTimer(1);
+				if (!m_ds.Stop(lpDSBSecondary))
+					return;
 				return;
-			return;
+				buffnr = 1;
+			}
 		}
 		if (buffnr == 1) buffnr = 0; // change buffer
 		else buffnr = 1;
-	}
+	}	
 }
 
 void CDirectSoundDlg::OnNMCustomdrawSliderLautstaerke(NMHDR* pNMHDR, LRESULT* pResult)
@@ -328,6 +331,7 @@ void CDirectSoundDlg::OnBnClickedButtonpcm()
 
 	SetTimer(1, 200, NULL);
 	mode = 1; // 0 - Tonleiter, 1 - PCM-Datei
+	m_ds.Play(lpDSBSecondary,true);
 }
 
 
@@ -417,4 +421,10 @@ void CDirectSoundDlg::OnBnClickedCheckGitarrensound()
 void CDirectSoundDlg::OnBnClickedButtonMittelBalance()
 {
 	((CSliderCtrl*)GetDlgItem(IDC_SLIDER_Balance))->SetPos(0);
+}
+
+
+void CDirectSoundDlg::OnB()
+{
+	// TODO: Fügen Sie hier Ihren Handlercode für Benachrichtigungen des Steuerelements ein.
 }

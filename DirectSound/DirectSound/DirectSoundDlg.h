@@ -67,4 +67,5 @@ public:
 	afx_msg void OnBnClickedButtonKlavierC2();
 	afx_msg void OnBnClickedButtonMittelBalance();
 	afx_msg void OnBnClickedCheckGitarrensound();
+	afx_msg void OnB();
 };
