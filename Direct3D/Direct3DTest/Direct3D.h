@@ -1,6 +1,6 @@
 #pragma once
 #include <d3d9.h>
-#include <d3dx9math.h>
+//#include <d3dx9math.h>
 #include "Direct3DObject.h"
 #include "Direct3DLight.h"
 
