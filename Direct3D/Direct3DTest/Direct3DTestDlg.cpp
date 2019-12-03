@@ -165,6 +165,7 @@ void CDirect3DTestDlg::OnBnClickedDirect3d()
 		{ 0, 2} , { 1, 3} , { 3, 0},
 		{ 1, 3} , { 3, 0} , { 4, 1},     // {vertex_nr, textur_nr}
 	}; 
+	
 	o[0].BuildColoredVertexes(m_d3d.m_pd3dDevice, vertices, colors, modell1, 1);
 	o[0].Move(-1.5f, 1.0f, 1.0f);
 	o[1].BuildColoredVertexes(m_d3d.m_pd3dDevice, vertices, colors, modell2, 12);
