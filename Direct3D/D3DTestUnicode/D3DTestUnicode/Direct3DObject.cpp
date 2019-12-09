@@ -1,5 +1,5 @@
 
-#include "StdAfx.h"
+#include "pch.h"
 #include "Direct3DObject.h"
 #include "stdio.h"
 

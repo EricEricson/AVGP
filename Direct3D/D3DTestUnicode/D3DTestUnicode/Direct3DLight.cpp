@@ -1,4 +1,4 @@
-#include "StdAfx.h"
+#include "pch.h"
 #include "Direct3DLight.h"
 
 CDirect3DLight::CDirect3DLight(void)

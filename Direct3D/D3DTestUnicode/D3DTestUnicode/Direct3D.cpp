@@ -1,4 +1,4 @@
-#include "StdAfx.h"
+#include "pch.h"
 #include "Direct3D.h"
 #include "mmsystem.h"
 
