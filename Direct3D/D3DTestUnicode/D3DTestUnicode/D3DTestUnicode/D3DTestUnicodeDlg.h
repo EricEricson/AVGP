@@ -48,4 +48,5 @@ public:
 	afx_msg void OnClose();
 	afx_msg void OnMouseMove(UINT nFlags, CPoint point);
 	afx_msg void OnRButtonDown(UINT nFlags, CPoint point);
+	afx_msg void OnBnClickedButtonTexturex();
 };

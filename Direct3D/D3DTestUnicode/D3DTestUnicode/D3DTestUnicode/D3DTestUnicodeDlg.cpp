@@ -74,6 +74,7 @@ BEGIN_MESSAGE_MAP(CD3DTestUnicodeDlg, CDialogEx)
 	ON_WM_CLOSE()
 	ON_WM_MOUSEMOVE()
 	ON_WM_RBUTTONDOWN()
+	ON_BN_CLICKED(IDC_BUTTON_TextureX, &CD3DTestUnicodeDlg::OnBnClickedButtonTexturex)
 END_MESSAGE_MAP()
 
 
@@ -163,11 +164,116 @@ HCURSOR CD3DTestUnicodeDlg::OnQueryDragIcon()
 }
 
 void CD3DTestUnicodeDlg::DisableButtons() {
+	GetDlgItem(IDC_BUTTON_TextureX)->EnableWindow(FALSE);
 	GetDlgItem(IDC_DIRECT3D)->EnableWindow(FALSE);
 	GetDlgItem(IDC_TRANSPARENTTEXTURE)->EnableWindow(FALSE);
 	GetDlgItem(IDC_TRANSFORM)->EnableWindow(FALSE);
 	GetDlgItem(IDC_TRANSFORM3)->EnableWindow(FALSE);
 	GetDlgItem(IDC_LIGHT)->EnableWindow(FALSE);
+}
+
+void CD3DTestUnicodeDlg::OnBnClickedButtonTexturex()
+{
+	// Ausführen der Praktikumsaufgabe
+	MSG msg;
+
+	if (!m_d3d.Create(GetDlgItem(IDC_OUTPUT), 0x00000000)) { // color as ARGB
+		AfxMessageBox(L"Direct3D nicht verfügbar"); return;
+	}
+	DisableButtons();
+
+	// Einstellungen um Alphablending als Colorkey zu missbrauchen
+	m_d3d.m_pd3dDevice->SetRenderState(D3DRS_ALPHABLENDENABLE, TRUE);
+	m_d3d.m_pd3dDevice->SetRenderState(D3DRS_SRCBLEND, D3DBLEND_SRCALPHA);
+	m_d3d.m_pd3dDevice->SetRenderState(D3DRS_DESTBLEND, D3DBLEND_INVSRCALPHA);
+
+	// Set up our view matrix. A view matrix can be defined given an eye point,
+	// a point to lookat, and a direction for which way is up. Here, we look at the
+	// origin, and define "up" to be in the y-direction.
+	D3DXVECTOR3 vEyePt(0.0f, 3.0f, -8.0f),
+		vLookatPt(0.0f, 0.0f, 0.0f),
+		vUpVec(0.0f, 1.0f, 0.0f);
+	if (!m_d3d.ViewTransform(vEyePt, vLookatPt, vUpVec)) {
+		AfxMessageBox(L"ViewPoint konnte nicht initialisiert werden"); return;
+	}
+	LPD3DXFONT font = m_d3d.CreateD3DFont(12, L"Verdana", 0xffffffff);
+
+	// 3 Beispielobjekte als "Modell"	
+	D3DXVECTOR3 vertices[] = {
+		D3DXVECTOR3(-1.0f,-1.0f, 0.0f), // 0
+		D3DXVECTOR3(1.0f,-1.0f, 0.0f), // 1
+		D3DXVECTOR3(0.0f, 1.0f, 0.0f), // 2
+		D3DXVECTOR3(-1.0f, 1.0f, 0.0f), // 3
+		D3DXVECTOR3(1.0f, 1.0f, 0.0f), // 4
+		D3DXVECTOR3(-1.0f,-1.0f, 2.0f), // 5
+		D3DXVECTOR3(1.0f,-1.0f, 2.0f), // 6
+		D3DXVECTOR3(-1.0f, 1.0f, 2.0f), // 7
+		D3DXVECTOR3(1.0f, 1.0f, 2.0f)  // 8
+	};
+	DWORD colors[] = { 0xffff0000,		 // 0 - rot  
+						0xff0000ff,      // 1 - blau 
+						0xff00ff00,      // 2 - grün 
+						0xffffffff,      // 3 - weiss 
+						0xff000000,      // 4 - schwarz
+						0xffffff00,      // 5 - gelb    (blau+rot)
+						0xff00ff00,      // 6 - magenda (grün+blau)
+						0xff00ff00       // 7 - cyan    (grün+rot)
+	};
+	D3DXVECTOR2 textures[] = {
+		D3DXVECTOR2(0.0f, 0.0f), // 0
+		D3DXVECTOR2(1.0f, 0.0f), // 1
+		D3DXVECTOR2(0.0f, 1.0f), // 2
+		D3DXVECTOR2(1.0f, 1.0f), // 3
+	};
+
+	// -- Textur
+	int modell1[][2] = {                 // Modell 1 (Rechteck mit Textur) 
+	{ 0, 2} , { 1, 3} , { 3, 0},
+	{ 1, 3} , { 3, 0} , { 4, 1},     // {vertex_nr, texture_nr}
+	};
+
+	// -- Farbe
+	//o[0].BuildColoredVertexes(m_d3d.m_pd3dDevice, vertices, colors, modell1, 2);
+	//o[0].Move(0.0f, 0.0f, 0.0f);
+	//o[0].Scale(1.5f, 1.5f, 1.5f);
+	//o[1].BuildColoredVertexes(m_d3d.m_pd3dDevice, vertices, colors, modell1, 2);
+	//o[1].Move(0.0f, 0.0f, 0.0f);
+	//o[1].Scale(1.5f, 1.5f, 1.5f);
+	//o[1].Rotate(3.14f/2, 0.0f, 0.0f, false);
+
+	// -- Textur
+	o[0].BuildTexturedVertexes(m_d3d.m_pd3dDevice, vertices, textures, modell1, 2);
+	o[0].Move(0.0f, 0.0f, 0.0f);
+	o[0].Scale(1.5f, 1.5f, 1.5f);
+	o[0].SetTextureFromFile(L"mytexture.jpg");
+	o[1].BuildTexturedVertexes(m_d3d.m_pd3dDevice, vertices, textures, modell1, 2);
+	o[1].Move(0.0f, 0.0f, 0.0f);
+	o[1].Scale(1.5f, 1.5f, 1.5f);
+	o[1].Rotate(3.14f / 2, 0.0f, 0.0f, false);
+	o[1].SetTextureFromFile(L"mytexture.jpg");
+
+	for (m_run = true; m_run;) {              // animation loop
+		if (GetKeyState(VK_LBUTTON) >= 0) {
+			o[0].Rotate(0.01f, 0.01f, 0.0f);
+			o[1].Rotate(0.01f, 0.01f, 0.0f);
+		}
+		m_d3d.BeginRender();
+		if (!m_d3d.Render(o, 2)) {
+			AfxMessageBox(L"Szene konnte nicht gerendert werden"); return;
+		}
+		CString s;
+		s.Format(L"%.2f fps\nRechtecke", m_d3d.m_fps);	// Framerate ausgeben
+		m_d3d.TextOut(20, 20, s, font);
+		m_d3d.EndRender();
+
+		// process messages if there any
+		while (PeekMessage(&msg, 0, 0, 0, PM_REMOVE)) {
+			TranslateMessage(&msg);
+			DispatchMessage(&msg);
+		}
+	}
+	font->Release();
+
 }
 
 void CD3DTestUnicodeDlg::OnBnClickedDirect3d()
@@ -379,7 +485,7 @@ void CD3DTestUnicodeDlg::OnBnClickedTransform()
 	o[0].RenderWired(true);
 
 	for (m_run = true; m_run;) {              // animation loop
-		//o[0].Rotate(0.0f, 0.01f, 0.0f);
+		o[0].Rotate(0.0f, 0.01f, 0.0f);
 		m_d3d.BeginRender();
 		if (!m_d3d.Render(o, 1)) {
 			AfxMessageBox(L"Szene konnte nicht gerendert werden"); return;
@@ -555,4 +661,3 @@ void CD3DTestUnicodeDlg::OnRButtonDown(UINT nFlags, CPoint point)
 	RedrawWindow();
 	CDialog::OnRButtonDown(nFlags, point);
 }
-
