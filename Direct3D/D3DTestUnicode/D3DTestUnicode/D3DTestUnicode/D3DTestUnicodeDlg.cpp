@@ -75,6 +75,7 @@ BEGIN_MESSAGE_MAP(CD3DTestUnicodeDlg, CDialogEx)
 	ON_WM_MOUSEMOVE()
 	ON_WM_RBUTTONDOWN()
 	ON_BN_CLICKED(IDC_BUTTON_TextureX, &CD3DTestUnicodeDlg::OnBnClickedButtonTexturex)
+	ON_WM_MOUSEWHEEL()
 END_MESSAGE_MAP()
 
 
@@ -664,4 +665,23 @@ void CD3DTestUnicodeDlg::OnRButtonDown(UINT nFlags, CPoint point)
 	}
 	RedrawWindow();
 	CDialog::OnRButtonDown(nFlags, point);
+}
+
+BOOL CD3DTestUnicodeDlg::OnMouseWheel(UINT nFlags, short zDelta, CPoint pt)
+{
+	// TODO: Fügen Sie hier Ihren Meldungshandlercode ein, und/oder benutzen Sie den Standard.
+	if (zDelta > 0) {
+		o[0].Scale(1.5f, 1.5f, 1.5f);
+	}
+
+	if (zDelta < 0) {
+		o[0].Scale(0.8f, 0.8f, 0.8f);
+	}
+
+	//if (zDelta < 0) {
+	//	o[0].Scale(-1.0f, -1.0f, -1.0f);
+	//}
+	
+
+	return CDialogEx::OnMouseWheel(nFlags, zDelta, pt);
 }
