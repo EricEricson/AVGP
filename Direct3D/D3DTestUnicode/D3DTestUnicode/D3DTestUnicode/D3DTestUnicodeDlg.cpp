@@ -181,7 +181,7 @@ void CD3DTestUnicodeDlg::OnBnClickedButtonTexturex()
 	if (!m_d3d.Create(GetDlgItem(IDC_OUTPUT), 0x00000000)) { // color as ARGB
 		AfxMessageBox(L"Direct3D nicht verfügbar"); return;
 	}
-	DisableButtons();
+	//DisableButtons();
 
 	// Einstellungen um Alphablending als Colorkey zu missbrauchen
 	m_d3d.m_pd3dDevice->SetRenderState(D3DRS_ALPHABLENDENABLE, TRUE);
@@ -209,7 +209,17 @@ void CD3DTestUnicodeDlg::OnBnClickedButtonTexturex()
 		D3DXVECTOR3(-1.0f,-1.0f, 2.0f), // 5
 		D3DXVECTOR3(1.0f,-1.0f, 2.0f), // 6
 		D3DXVECTOR3(-1.0f, 1.0f, 2.0f), // 7
-		D3DXVECTOR3(1.0f, 1.0f, 2.0f)  // 8
+		D3DXVECTOR3(1.0f, 1.0f, 2.0f),  // 8
+		
+		D3DXVECTOR3(-1.0f, 1.0f, .0f),  // 9
+		D3DXVECTOR3(1.0f, 1.0f, .0f),  // 10
+		D3DXVECTOR3(1.0f, -1.0f, .0f),  // 11
+		D3DXVECTOR3(-1.0f, -1.0f, .0f),  // 12
+		
+		D3DXVECTOR3(-1.0f, .0f, -1.0f),  // 13
+		D3DXVECTOR3(1.0f, .0f, -1.0f),  // 14
+		D3DXVECTOR3(1.0f, .0f, 1.0f),  // 15
+		D3DXVECTOR3(-1.0f, .0f, 1.0f),  // 16
 	};
 	DWORD colors[] = { 0xffff0000,		 // 0 - rot  
 						0xff0000ff,      // 1 - blau 
@@ -229,8 +239,10 @@ void CD3DTestUnicodeDlg::OnBnClickedButtonTexturex()
 
 	// -- Textur
 	int modell1[][2] = {                 // Modell 1 (Rechteck mit Textur) 
-	{ 0, 2} , { 1, 3} , { 3, 0},
-	{ 1, 3} , { 3, 0} , { 4, 1},     // {vertex_nr, texture_nr}
+		{ 9, 2}, { 11, 1}, {12, 0},
+		{ 9, 2} , { 10, 3}, { 11, 1},     
+		{ 14, 1}, { 16, 2}, { 15, 3},
+		{ 16, 2}, { 14, 1}, { 13, 0}
 	};
 
 	// -- Farbe
@@ -243,23 +255,23 @@ void CD3DTestUnicodeDlg::OnBnClickedButtonTexturex()
 	//o[1].Rotate(3.14f/2, 0.0f, 0.0f, false);
 
 	// -- Textur
-	o[0].BuildTexturedVertexes(m_d3d.m_pd3dDevice, vertices, textures, modell1, 2);
+	o[0].BuildTexturedVertexes(m_d3d.m_pd3dDevice, vertices, textures, modell1, 4);
 	o[0].Move(0.0f, 0.0f, 0.0f);
-	o[0].Scale(1.5f, 1.5f, 1.5f);
-	o[0].SetTextureFromFile(L"mytexture.jpg");
-	o[1].BuildTexturedVertexes(m_d3d.m_pd3dDevice, vertices, textures, modell1, 2);
+	o[0].Scale(1.f, 1.f, 1.f);
+	o[0].SetTextureFromFile(L"textur.jpg");
+/*o[1].BuildTexturedVertexes(m_d3d.m_pd3dDevice, vertices, textures, modell1, 2);
 	o[1].Move(0.0f, 0.0f, 0.0f);
 	o[1].Scale(1.5f, 1.5f, 1.5f);
 	o[1].Rotate(3.14f / 2, 0.0f, 0.0f, false);
 	o[1].SetTextureFromFile(L"mytexture.jpg");
-
+	*/
 	for (m_run = true; m_run;) {              // animation loop
 		if (GetKeyState(VK_LBUTTON) >= 0) {
 			o[0].Rotate(0.01f, 0.01f, 0.0f);
-			o[1].Rotate(0.01f, 0.01f, 0.0f);
+			//o[1].Rotate(0.01f, 0.01f, 0.0f);
 		}
 		m_d3d.BeginRender();
-		if (!m_d3d.Render(o, 2)) {
+		if (!m_d3d.Render(o, 1)) {
 			AfxMessageBox(L"Szene konnte nicht gerendert werden"); return;
 		}
 		CString s;
@@ -487,6 +499,34 @@ void CD3DTestUnicodeDlg::OnBnClickedTransform()
 
 	for (m_run = true; m_run;) {              // animation loop
 		//o[0].Rotate(0.0f, 0.01f, 0.0f);
+
+		// Rotation um x-Achse
+		if (GetKeyState('Q') & 0x8000) {
+			o[0].Rotate(0.02f, 0.0f, 0.0f);
+		}
+		
+		// Rotation um y-Achse
+		if (GetKeyState('W') & 0x8000) {
+			o[0].Rotate(0.0f, 0.02f, 0.0f);
+		}
+
+		// Rotation um z-Achse
+		if (GetKeyState('E') & 0x8000) {
+			o[0].Rotate(0.0f, 0.0f, 0.02f);
+		}
+
+		// Zoom in
+		if (GetKeyState('P') & 0x8000) {
+			o[0].Scale(1.02f, 1.02f, 1.02f);
+		}
+
+		// Zoom out
+		if (GetKeyState('L') & 0x8000) {
+			o[0].Scale(0.85f, 0.85f, 0.85f);
+		}
+
+
+		
 		m_d3d.BeginRender();
 		if (!m_d3d.Render(o, 1)) {
 			AfxMessageBox(L"Szene konnte nicht gerendert werden"); return;
@@ -671,7 +711,7 @@ BOOL CD3DTestUnicodeDlg::OnMouseWheel(UINT nFlags, short zDelta, CPoint pt)
 {
 	// TODO: Fügen Sie hier Ihren Meldungshandlercode ein, und/oder benutzen Sie den Standard.
 	if (zDelta > 0) {
-		o[0].Scale(1.5f, 1.5f, 1.5f);
+		o[0].Scale(1.2f, 1.2f, 1.2f);
 	}
 
 	if (zDelta < 0) {
