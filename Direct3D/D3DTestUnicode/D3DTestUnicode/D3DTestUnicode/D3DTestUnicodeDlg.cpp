@@ -485,7 +485,7 @@ void CD3DTestUnicodeDlg::OnBnClickedTransform()
 	o[0].RenderWired(true);
 
 	for (m_run = true; m_run;) {              // animation loop
-		o[0].Rotate(0.0f, 0.01f, 0.0f);
+		//o[0].Rotate(0.0f, 0.01f, 0.0f);
 		m_d3d.BeginRender();
 		if (!m_d3d.Render(o, 1)) {
 			AfxMessageBox(L"Szene konnte nicht gerendert werden"); return;
@@ -630,12 +630,16 @@ void CD3DTestUnicodeDlg::OnMouseMove(UINT nFlags, CPoint point)
 	if (nFlags & MK_LBUTTON) {
 		if (point.x < m_p.x)
 			o[0].Rotate(0.0f, 0.05f, 0.0f);
+			o[1].Rotate(0.0f, 0.05f, 0.0f);
 		if (point.x > m_p.x)
 			o[0].Rotate(0.0f, -0.05f, 0.0f);
+			o[1].Rotate(0.0f, -0.05f, 0.0f);
 		if (point.y < m_p.y)
 			o[0].Rotate(0.05f, 0.0f, 0.0f);
+			o[1].Rotate(0.05f, 0.0f, 0.0f);
 		if (point.y > m_p.y)
 			o[0].Rotate(-0.05f, 0.0f, 0.0f);
+			o[1].Rotate(-0.05f, 0.0f, 0.0f);
 		m_p = point;
 	}
 	CDialog::OnMouseMove(nFlags, point);
