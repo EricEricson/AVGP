@@ -33,7 +33,7 @@
     <ClInclude Include="pch.h">
       <Filter>Headerdateien</Filter>
     </ClInclude>
-    <ClInclude Include="DirectShowFunc.h">
+    <ClInclude Include="DirectX_Show.h">
       <Filter>Headerdateien</Filter>
     </ClInclude>
   </ItemGroup>
@@ -47,7 +47,7 @@
     <ClCompile Include="pch.cpp">
       <Filter>Quelldateien</Filter>
     </ClCompile>
-    <ClCompile Include="DirectShowFunc.cpp">
+    <ClCompile Include="DirectX_Show.cpp">
       <Filter>Quelldateien</Filter>
     </ClCompile>
   </ItemGroup>

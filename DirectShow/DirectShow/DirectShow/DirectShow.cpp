@@ -3,90 +3,126 @@
 //
 
 #include "pch.h"
-#include "framework.h"
 #include "DirectShow.h"
-#include "DirectShowDlg.h"
-
-#ifdef _DEBUG
-#define new DEBUG_NEW
-#endif
 
 
-// CDirectShowApp
-
-BEGIN_MESSAGE_MAP(CDirectShowApp, CWinApp)
-	ON_COMMAND(ID_HELP, &CWinApp::OnHelp)
-END_MESSAGE_MAP()
-
-
-// CDirectShowApp-Erstellung
-
-CDirectShowApp::CDirectShowApp()
-{
-	// TODO: Hier Code zur Konstruktion einfügen
-	// Alle wichtigen Initialisierungen in InitInstance positionieren
+CDirectShow::CDirectShow() {
+	filename = L"ConfusedAlien.avi";
+	Init();
 }
 
-
-// Das einzige CDirectShowApp-Objekt
-
-CDirectShowApp theApp;
-
-
-// CDirectShowApp-Initialisierung
-
-BOOL CDirectShowApp::InitInstance()
-{
-	CWinApp::InitInstance();
-
-
-	// Shell-Manager erstellen, falls das Dialogfeld
-	// Shellbaumansicht- oder Shelllistenansicht-Steuerelemente enthält.
-	CShellManager *pShellManager = new CShellManager;
-
-	//Visuellen Manager "Windows Native" aktivieren, um Designs für MFC-Steuerelemente zu aktivieren
-	CMFCVisualManager::SetDefaultManager(RUNTIME_CLASS(CMFCVisualManagerWindows));
-
-	// Standardinitialisierung
-	// Wenn Sie diese Funktionen nicht verwenden und die Größe
-	// der ausführbaren Datei verringern möchten, entfernen Sie
-	// die nicht erforderlichen Initialisierungsroutinen.
-	// Ändern Sie den Registrierungsschlüssel, unter dem Ihre Einstellungen gespeichert sind.
-	// TODO: Ändern Sie diese Zeichenfolge entsprechend,
-	// z.B. zum Namen Ihrer Firma oder Organisation.
-	SetRegistryKey(_T("Vom lokalen Anwendungs-Assistenten generierte Anwendungen"));
-
-	CDirectShowDlg dlg;
-	m_pMainWnd = &dlg;
-	INT_PTR nResponse = dlg.DoModal();
-	if (nResponse == IDOK)
-	{
-		// TODO: Fügen Sie hier Code ein, um das Schließen des
-		//  Dialogfelds über "OK" zu steuern
-	}
-	else if (nResponse == IDCANCEL)
-	{
-		// TODO: Fügen Sie hier Code ein, um das Schließen des
-		//  Dialogfelds über "Abbrechen" zu steuern
-	}
-	else if (nResponse == -1)
-	{
-		TRACE(traceAppMsg, 0, "Warnung: Fehler bei der Dialogfelderstellung, unerwartetes Beenden der Anwendung.\n");
-		TRACE(traceAppMsg, 0, "Warnung: Wenn Sie MFC-Steuerelemente im Dialogfeld verwenden, ist #define _AFX_NO_MFC_CONTROLS_IN_DIALOGS nicht möglich.\n");
-	}
-
-	// Den oben erstellten Shell-Manager löschen.
-	if (pShellManager != nullptr)
-	{
-		delete pShellManager;
-	}
-
-#if !defined(_AFXDLL) && !defined(_AFX_NO_MFC_CONTROLS_IN_DIALOGS)
-	ControlBarCleanUp();
-#endif
-
-	// Da das Dialogfeld geschlossen wurde, FALSE zurückliefern, sodass wir die
-	//  Anwendung verlassen, anstatt das Nachrichtensystem der Anwendung zu starten.
-	return FALSE;
+CDirectShow::~CDirectShow() {
+	CleanUp();
 }
 
+void CDirectShow::Init() {
+	CoInitialize(NULL); // zur Initialisierung des COM-Interfaces
+	CoCreateInstance(CLSID_FilterGraph, NULL, CLSCTX_INPROC_SERVER,
+		IID_IGraphBuilder, (void**)&pGraph);
+
+	// Query Interface
+	pGraph->QueryInterface(IID_IMediaControl, (void**)&pMediaControl);
+	pGraph->QueryInterface(IID_IMediaEventEx, (void**)&pEvent);
+	pGraph->QueryInterface(IID_IVideoWindow, (void**)&pVidWin);
+	pGraph->QueryInterface(IID_IMediaSeeking, (void**)&pSeek);
+
+	pGraph->RenderFile(filename, NULL);
+
+	// set timeformat to 100-nanoseconds units
+	if (pSeek->IsFormatSupported(&TIME_FORMAT_MEDIA_TIME) == S_OK)
+		pSeek->SetTimeFormat(&TIME_FORMAT_MEDIA_TIME);
+	else
+		AfxMessageBox(L"Zeitformat wird nicht unterstuetzt");
+}
+
+void CDirectShow::setWindow(OAHWND parentWindow) {
+	window = parentWindow;
+}
+
+void CDirectShow::Resume() {
+	if (pMediaControl != 0)
+		pMediaControl->Run();
+}
+
+void CDirectShow::Pause() {
+	if (pMediaControl != 0)
+		pMediaControl->Pause();
+}
+
+void CDirectShow::Vollbild(bool v) {
+	if (pGraph) {
+		IVideoWindow* pVidWin1 = NULL;
+		pGraph->QueryInterface(IID_IVideoWindow, (void**)&pVidWin1);
+		pVidWin1->put_FullScreenMode(v ? OATRUE : OAFALSE);
+		pVidWin1->Release();
+	}
+}
+
+void CDirectShow::Run() {
+	pMediaControl->Run();
+}
+
+void CDirectShow::setCurrentPosition(REFERENCE_TIME pos) {
+	if (pSeek) {
+		pSeek->SetPositions(&pos, AM_SEEKING_AbsolutePositioning,
+			NULL, AM_SEEKING_NoPositioning);
+	}
+}
+
+REFERENCE_TIME CDirectShow::getCurrentPosition() {
+	REFERENCE_TIME time;
+	pSeek->GetCurrentPosition(&time);
+	return time;
+}
+
+REFERENCE_TIME CDirectShow::getLength() {
+	REFERENCE_TIME time;
+	pSeek->GetDuration(&time);
+	return time;
+}
+
+LONG CDirectShow::GetIt(UINT wparam, LONG lparam) {
+	long evCode, param1, param2; HRESULT hr;
+	while (SUCCEEDED(pEvent->GetEvent(&evCode, &param1, &param2, 0))) {
+		pEvent->FreeEventParams(evCode, param1, param2);
+		switch (evCode) {
+		case EC_COMPLETE:
+		case EC_USERABORT:
+			CleanUp(); return 0;
+		}
+	}
+	return 0;
+}
+
+void CDirectShow::setNotifyWindow(UINT NEAR WM_GRAPHNOTIFY) {
+	pEvent->SetNotifyWindow(window, WM_GRAPHNOTIFY, 0);
+}
+
+void CDirectShow::setVideoWindow() {
+	pVidWin->put_Owner(window);
+	pVidWin->put_WindowStyle(WS_CHILD | WS_CLIPSIBLINGS);
+	pVidWin->put_Visible(OATRUE);
+	pVidWin->SetWindowPosition(20, 50, 300, 200);
+	// Nachrichtenbehandlung (Maus, Keyboard)
+	pVidWin->put_MessageDrain(window);
+}
+
+void CDirectShow::setFilename(CString newfilename) {
+	CleanUp();
+	filename = newfilename;
+	Init();
+}
+
+void CDirectShow::CleanUp() {
+	Vollbild(FALSE);
+	pVidWin->put_Visible(OAFALSE);
+	pVidWin->put_Owner(NULL);
+	pSeek->Release();
+	pMediaControl->Release();
+	pVidWin->Release();
+	pEvent->Release();
+	pGraph->Release();
+	pMediaControl = 0; pVidWin = 0;
+	pEvent = 0; pGraph = 0;
+	CoUninitialize();
+}

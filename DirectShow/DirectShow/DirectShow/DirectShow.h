@@ -1,32 +1,39 @@
-
-// DirectShow.h: Hauptheaderdatei für die PROJECT_NAME-Anwendung
-//
-
 #pragma once
 
-#ifndef __AFXWIN_H__
-	#error "'pch.h' vor dieser Datei für PCH einschließen"
-#endif
-
 #include "resource.h"		// Hauptsymbole
+#include "pch.h"		// Hauptsymbole
 
 
-// CDirectShowApp:
-// Siehe DirectShow.cpp für die Implementierung dieser Klasse
-//
-
-class CDirectShowApp : public CWinApp
-{
+class CDirectShow {
 public:
-	CDirectShowApp();
+	CDirectShow();
+	~CDirectShow();
 
-// Überschreibungen
-public:
-	virtual BOOL InitInstance();
+	void Init();
+	void setWindow(OAHWND parentwindow);
+	void Resume();
+	void Pause();
+	void CleanUp();
+	void Vollbild(bool v);
+	void Run();
 
-// Implementierung
+	void setCurrentPosition(REFERENCE_TIME pos);
+	REFERENCE_TIME getCurrentPosition();
+	REFERENCE_TIME getLength();
 
-	DECLARE_MESSAGE_MAP()
+	LONG GetIt(UINT wparam, LONG lparam);
+	void setNotifyWindow(UINT NEAR WM_GRAPHNOTIFY);
+	void setVideoWindow();
+	void setFilename(CString filename);
+
+	CString filename;
+
+private:
+	OAHWND window;
+	IGraphBuilder* pGraph; // ein Zeiger auf das COM-Interface
+	IMediaControl* pMediaControl;
+	IMediaEventEx* pEvent;
+	IVideoWindow* pVidWin = NULL;
+	IMediaSeeking* pSeek = NULL;
 };
 
-extern CDirectShowApp theApp;

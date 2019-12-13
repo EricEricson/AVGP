@@ -115,12 +115,13 @@
       <PrecompiledHeader>Use</PrecompiledHeader>
       <WarningLevel>Level3</WarningLevel>
       <Optimization>Disabled</Optimization>
-      <SDLCheck>true</SDLCheck>
+      <SDLCheck>false</SDLCheck>
       <PreprocessorDefinitions>_WINDOWS;_DEBUG;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <PrecompiledHeaderFile>pch.h</PrecompiledHeaderFile>
     </ClCompile>
     <Link>
       <SubSystem>Windows</SubSystem>
+      <AdditionalDependencies>Strmiids.lib</AdditionalDependencies>
     </Link>
     <Midl>
       <MkTypLibCompatible>false</MkTypLibCompatible>
@@ -191,7 +192,7 @@
   <ItemGroup>
     <ClInclude Include="DirectShow.h" />
     <ClInclude Include="DirectShowDlg.h" />
-    <ClInclude Include="DirectShowFunc.h" />
+    <ClInclude Include="DirectX_Show.h" />
     <ClInclude Include="framework.h" />
     <ClInclude Include="pch.h" />
     <ClInclude Include="Resource.h" />
@@ -200,7 +201,7 @@
   <ItemGroup>
     <ClCompile Include="DirectShow.cpp" />
     <ClCompile Include="DirectShowDlg.cpp" />
-    <ClCompile Include="DirectShowFunc.cpp" />
+    <ClCompile Include="DirectX_Show.cpp" />
     <ClCompile Include="pch.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Create</PrecompiledHeader>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Create</PrecompiledHeader>
