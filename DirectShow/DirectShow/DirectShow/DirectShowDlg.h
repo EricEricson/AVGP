@@ -14,10 +14,8 @@ class CDirectShowDlg : public CDialogEx
 public:
 	CDirectShowDlg(CWnd* pParent = nullptr);	// Standardkonstruktor
 
-// Dialogfelddaten
-#ifdef AFX_DESIGN_TIME
+	// Dialogfelddaten
 	enum { IDD = IDD_DIRECTSHOW_DIALOG };
-#endif
 
 	protected:
 	virtual void DoDataExchange(CDataExchange* pDX);	// DDX/DDV-Unterstützung

@@ -1,6 +1,5 @@
 #pragma once
 
-#include "resource.h"		// Hauptsymbole
 #include "pch.h"		// Hauptsymbole
 
 

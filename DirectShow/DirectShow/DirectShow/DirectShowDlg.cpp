@@ -3,8 +3,7 @@
 //
 
 #include "pch.h"
-#include "framework.h"
-#include "DirectShow.h"
+#include "DirectX_Show.h"
 #include "DirectShowDlg.h"
 #include "afxdialogex.h"
 
@@ -16,7 +15,7 @@
 // CDirectShowDlg-Dialogfeld
 
 CDirectShowDlg::CDirectShowDlg(CWnd* pParent /*=nullptr*/)
-	: CDialogEx(IDD_DIRECTSHOW_DIALOG, pParent)
+	: CDialogEx(CDirectShowDlg::IDD, pParent)
 {
 	m_hIcon = AfxGetApp()->LoadIcon(IDR_MAINFRAME);
 }
@@ -26,7 +25,7 @@ void CDirectShowDlg::DoDataExchange(CDataExchange* pDX)
 	CDialogEx::DoDataExchange(pDX);
 }
 
-/*	Bevor die Main gestartet wird, wir die Variable initialisiert. Damit wird die Ausführung
+/*	Bevor die Main gestartet wird, wir die globale Variable initialisiert. Damit wird die Ausführung
 	gewährleistet. */
 static UINT NEAR WM_GRAPHNOTIFY = RegisterWindowMessage(L"GRAPHNOTIFY"); // globale Variable
 
@@ -166,13 +165,13 @@ void CDirectShowDlg::OnLButtonDown(UINT nFlags, CPoint point) {
 
 void CDirectShowDlg::OnBnClickedButtonFile() {
 	
-	//CString szFilters = L"Media Files|*.mpg;*.avi;*.wma;*.mov; *.wav;*.mp2;*.mp3|All Files (*.*)|*.*||";
+	CString szFilters = L"Media Files|*.mpg;*.avi;*.wma;*.mov; *.wav;*.mp2;*.mp3|All Files (*.*)|*.*||";
 	// Erstelle einen OpenDialog
-	//CFileDialog fileDlg(TRUE, NULL, NULL, OFN_FILEMUSTEXIST | OFN_HIDEREADONLY, szFilters, this);
+	CFileDialog fileDlg(TRUE, NULL, NULL, OFN_FILEMUSTEXIST | OFN_HIDEREADONLY, szFilters, this);
 
-	CString szFilters = L"AVI Files (*.avi)|*.avi|All Files (*.*)|*.*||";
+	//CString szFilters = L"AVI Files (*.avi)|*.avi|All Files (*.*)|*.*||";
 	// Create an Open dialog; the default file name extension is ".my".
-	CFileDialog fileDlg(TRUE, L"avi", L"*.avi", OFN_FILEMUSTEXIST | OFN_HIDEREADONLY, szFilters, this);
+	//CFileDialog fileDlg(TRUE, L"avi", L"*.avi", OFN_FILEMUSTEXIST | OFN_HIDEREADONLY, szFilters, this);
 
 	// Zeige den FileDialog ; Wenn der Nutzer OK klickt -> fileDlg.DoModal()
 	if (fileDlg.DoModal() == IDOK)

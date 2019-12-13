@@ -35,8 +35,8 @@ void CDirectShow::Init() {
 		AfxMessageBox(L"Zeitformat wird nicht unterstuetzt");
 }
 
-void CDirectShow::setWindow(OAHWND parentWindow) {
-	window = parentWindow;
+void CDirectShow::setWindow(OAHWND parentwindow) {
+	window = parentwindow;
 }
 
 void CDirectShow::Resume() {
