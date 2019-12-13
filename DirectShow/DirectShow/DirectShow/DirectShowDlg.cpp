@@ -15,6 +15,12 @@
 
 // CDirectShowDlg-Dialogfeld
 
+static UINT NEAR WM_GRAPHNOTIFY = RegisterWindowMessage(L"GRAPHNOTIFY"); // globale Variable
+/*
+	Bevor die Main gestartet wird, wir die Variable initialisiert. Damit wird die Ausführung
+	gewährleistet.
+*/
+
 
 
 CDirectShowDlg::CDirectShowDlg(CWnd* pParent /*=nullptr*/)
@@ -33,6 +39,10 @@ BEGIN_MESSAGE_MAP(CDirectShowDlg, CDialogEx)
 	ON_WM_QUERYDRAGICON()
 	ON_BN_CLICKED(IDC_BUTTON_Play, &CDirectShowDlg::OnBnClickedButtonPlay)
 	ON_BN_CLICKED(IDC_BUTTON_Exit, &CDirectShowDlg::OnBnClickedButtonExit)
+	ON_REGISTERED_MESSAGE(WM_GRAPHNOTIFY, GetIt)
+	ON_BN_CLICKED(IDC_BUTTON_Pause, &CDirectShowDlg::OnBnClickedButtonPause)
+	ON_BN_CLICKED(IDC_BUTTON_Resume, &CDirectShowDlg::OnBnClickedButtonResume)
+	ON_WM_TIMER()
 END_MESSAGE_MAP()
 
 
@@ -91,37 +101,96 @@ HCURSOR CDirectShowDlg::OnQueryDragIcon()
 
 
 void CDirectShowDlg::OnBnClickedButtonPlay() {
-	// pGraph Interface
-	IGraphBuilder* pGraph; // ein Zeiger auf das COM-Interface
+	
 	CoInitialize(NULL); // zur Initialisierung des COM-Interfaces
 	CoCreateInstance(CLSID_FilterGraph, NULL, CLSCTX_INPROC_SERVER,
 		IID_IGraphBuilder, (void**)&pGraph);
-
-	// MediaControl Interface
-	IMediaControl* pMediaControl;
-	IMediaEvent* pEvent;
+	
 	// Query Interface
 	pGraph->QueryInterface(IID_IMediaControl, (void**)&pMediaControl);
-	pGraph->QueryInterface(IID_IMediaEvent, (void**)&pEvent);
+	pGraph->QueryInterface(IID_IMediaEventEx, (void**)&pEvent);
+	pEvent->SetNotifyWindow((OAHWND)GetSafeHwnd(), WM_GRAPHNOTIFY, 0);
 
 	// Filtergraphen aufbauen
 	pGraph->RenderFile(L"ConfusedAlien.avi", NULL);
+	// Interface pVidWin
+	pGraph->QueryInterface(IID_IVideoWindow, (void**)&pVidWin);
 
+	// Seeking Interface
+	pGraph->QueryInterface(IID_IMediaSeeking, (void**)&pSeek);
+	// set timeformat to 100-nanoseconds units
+	if (pSeek->IsFormatSupported(&TIME_FORMAT_MEDIA_TIME) == S_OK)
+		pSeek->SetTimeFormat(&TIME_FORMAT_MEDIA_TIME);
+	else
+		AfxMessageBox(L"Zeitformat wird nicht unterstützt");
+
+	/*	
+		Interface nutzen, um das Fenster zu setzen
+		vorher muß der Filtergraph aufgebaut worden sein
+	*/
+	pVidWin->put_Owner((OAHWND)GetSafeHwnd());
+	pVidWin->put_WindowStyle(WS_CHILD | WS_CLIPSIBLINGS);
+	pVidWin->put_Visible(OATRUE);
+	pVidWin->SetWindowPosition(10, 70, 300, 200);
+
+	SetTimer(1, 200, 0);
 	// Run() arbeitet asynchron
 	pMediaControl->Run(); long evCode;
-	// WaitForCompletion() blockiert die Anwendung, bis das Abspielen beendet wurde
-	pEvent->WaitForCompletion(INFINITE, &evCode);
-
-	// Release auf alle Interface ausführen
-	pMediaControl->Release(); // COM-Interface freigeben
-	pEvent->Release();
-	pGraph->Release();
-	CoUninitialize(); // COM freigeben und Programm beenden
-
 
 }
 
+LONG CDirectShowDlg::GetIt(UINT wparam, LONG lparam) {
+	long evCode, param1, param2; HRESULT hr;
+	while (SUCCEEDED(pEvent->GetEvent(&evCode, &param1, &param2, 0))) {
+		pEvent->FreeEventParams(evCode, param1, param2);
+		switch (evCode) {
+		case EC_COMPLETE:
+		case EC_USERABORT:
+			CleanUp(); return 0;
+		}
+	}
+	return 0;
+}
+
+void CDirectShowDlg::CleanUp() {
+	pVidWin->put_Visible(OAFALSE);
+	pVidWin->put_Owner(NULL);
+	pMediaControl->Release();
+	pVidWin->Release();
+	pEvent->Release();
+	pGraph->Release();
+	pMediaControl = 0; pVidWin = 0;
+	pEvent = 0; pGraph = 0;
+	//CoUninitialize();
+}
 
 void CDirectShowDlg::OnBnClickedButtonExit() {
 	exit(0);
+}
+
+
+void CDirectShowDlg::OnBnClickedButtonPause() {
+	if (pMediaControl != 0)
+		pMediaControl->Pause();
+}
+
+
+void CDirectShowDlg::OnBnClickedButtonResume() {
+	if (pMediaControl != 0) 
+		pMediaControl->Run();
+}
+
+
+// Timer fragt regelmäßig ab, an welcher Stelle der Film gerade ist
+void CDirectShowDlg::OnTimer(UINT_PTR nIDEvent) {
+	REFERENCE_TIME rtTotal, rtNow = 0; CString s;
+	pSeek->GetDuration(&rtTotal);
+	pSeek->GetCurrentPosition(&rtNow);
+	s.Format(L"Abspielvorgang: %02d:%02d (%d%%)",
+		(int)((rtNow / 10000000L) / 60), // min
+		(int)((rtNow / 10000000L) % 60), // sek
+		(int)((rtNow * 100) / rtTotal)); // Prozent
+	GetDlgItem(IDC_STATUS)->SetWindowText(s);
+
+	CDialogEx::OnTimer(nIDEvent);
 }
