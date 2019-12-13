@@ -144,6 +144,9 @@ void CDirectShowDlg::OnBnClickedButtonPlay() {
 	pVidWin->put_Visible(OATRUE);
 	pVidWin->SetWindowPosition(10, 70, 300, 200);
 
+	// Nachrichtenbehandlung (Maus, Keyboard)
+	pVidWin->put_MessageDrain((OAHWND)GetSafeHwnd());
+
 	SetTimer(1, 200, 0);
 	// Run() arbeitet asynchron
 	pMediaControl->Run(); long evCode;

@@ -46,4 +46,5 @@ public:
 	afx_msg void OnTimer(UINT_PTR nIDEvent);
 	afx_msg void OnHScroll(UINT nSBCode, UINT nPos, CScrollBar* pScrollBar);
 	afx_msg void OnBnClickedButtonFullscreen();
+	afx_msg void OnLButtonDown(UINT nFlags, CPoint point);
 };
