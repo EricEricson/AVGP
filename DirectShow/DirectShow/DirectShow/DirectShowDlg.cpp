@@ -167,7 +167,7 @@ LONG CDirectShowDlg::GetIt(UINT wparam, LONG lparam) {
 }
 
 void CDirectShowDlg::CleanUp() {
-	Vollbild(FALSE);
+	//Vollbild(FALSE);
 	pVidWin->put_Visible(OAFALSE);
 	pVidWin->put_Owner(NULL);
 	pSeek->Release();
