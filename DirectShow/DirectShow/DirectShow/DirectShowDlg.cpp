@@ -43,6 +43,9 @@ BEGIN_MESSAGE_MAP(CDirectShowDlg, CDialogEx)
 	ON_BN_CLICKED(IDC_BUTTON_Pause, &CDirectShowDlg::OnBnClickedButtonPause)
 	ON_BN_CLICKED(IDC_BUTTON_Resume, &CDirectShowDlg::OnBnClickedButtonResume)
 	ON_WM_TIMER()
+	ON_WM_HSCROLL()
+	ON_BN_CLICKED(IDC_BUTTON_Fullscreen, &CDirectShowDlg::OnBnClickedButtonFullscreen)
+	ON_WM_LBUTTONDOWN()
 END_MESSAGE_MAP()
 
 
@@ -124,6 +127,14 @@ void CDirectShowDlg::OnBnClickedButtonPlay() {
 	else
 		AfxMessageBox(L"Zeitformat wird nicht unterstützt");
 
+	if (pSeek) {
+		REFERENCE_TIME d;
+		pSeek->GetDuration(&d);
+		CSliderCtrl* sl;
+		sl = (CSliderCtrl*)GetDlgItem(IDC_SLIDER_VideoLength);
+		sl->SetRange(0, (int)(d / 1000000)); sl->SetPos(0);
+	}
+
 	/*	
 		Interface nutzen, um das Fenster zu setzen
 		vorher muß der Filtergraph aufgebaut worden sein
@@ -153,8 +164,10 @@ LONG CDirectShowDlg::GetIt(UINT wparam, LONG lparam) {
 }
 
 void CDirectShowDlg::CleanUp() {
+	Vollbild(FALSE);
 	pVidWin->put_Visible(OAFALSE);
 	pVidWin->put_Owner(NULL);
+	pSeek->Release();
 	pMediaControl->Release();
 	pVidWin->Release();
 	pEvent->Release();
@@ -190,7 +203,45 @@ void CDirectShowDlg::OnTimer(UINT_PTR nIDEvent) {
 		(int)((rtNow / 10000000L) / 60), // min
 		(int)((rtNow / 10000000L) % 60), // sek
 		(int)((rtNow * 100) / rtTotal)); // Prozent
-	GetDlgItem(IDC_STATUS)->SetWindowText(s);
+	//GetDlgItem(IDC_STATUS)->SetWindowText(s);
+	SetWindowText(s);
+
+	((CSliderCtrl*)GetDlgItem(IDC_SLIDER_VideoLength))->SetPos((int)(rtNow / 1000000));
 
 	CDialogEx::OnTimer(nIDEvent);
+}
+
+
+void CDirectShowDlg::OnHScroll(UINT nSBCode, UINT nPos, CScrollBar* pScrollBar) {
+	CSliderCtrl* sl1 = (CSliderCtrl*)GetDlgItem(IDC_SLIDER_VideoLength);
+	// Für den Fall, dass es das Seek Ereignis gibt und das ScrollBar Ereignis, dann
+	// wird die Position des Sliders mit 1 Mio. multipliziert
+	if ((pSeek) && ((void*)sl1 == (void*)pScrollBar)) {
+		REFERENCE_TIME pos = (REFERENCE_TIME)sl1->GetPos() * 1000000;
+		// Mit SetPositions die neue Abspielposition setzen
+		pSeek->SetPositions(&pos, AM_SEEKING_AbsolutePositioning,
+			NULL, AM_SEEKING_NoPositioning);
+	}
+	CDialogEx::OnHScroll(nSBCode, nPos, pScrollBar);
+}
+
+
+void CDirectShowDlg::OnBnClickedButtonFullscreen() {
+	Vollbild(TRUE);
+}
+
+void CDirectShowDlg::Vollbild(BOOL v) {
+	// Prüfen, ob es überhaupt einen Graphen gibt
+	if (pGraph) {
+		IVideoWindow* pVidWin1 = NULL;
+		pGraph->QueryInterface(IID_IVideoWindow, (void**)&pVidWin1);
+		pVidWin1->put_FullScreenMode(v ? OATRUE : OAFALSE); // in Fullscreen wechseln
+		pVidWin1->Release();
+	}
+}
+
+
+void CDirectShowDlg::OnLButtonDown(UINT nFlags, CPoint point) {
+	Vollbild(FALSE);
+	CDialogEx::OnLButtonDown(nFlags, point);
 }

@@ -33,6 +33,7 @@ protected:
 	// Generierte Funktionen für die Meldungstabellen
 	virtual BOOL OnInitDialog();
 	void CleanUp();
+	void Vollbild(BOOL v);
 	afx_msg void OnPaint();
 	afx_msg HCURSOR OnQueryDragIcon();
 	DECLARE_MESSAGE_MAP()
@@ -43,4 +44,6 @@ public:
 	afx_msg void OnBnClickedButtonPause();
 	afx_msg void OnBnClickedButtonResume();
 	afx_msg void OnTimer(UINT_PTR nIDEvent);
+	afx_msg void OnHScroll(UINT nSBCode, UINT nPos, CScrollBar* pScrollBar);
+	afx_msg void OnBnClickedButtonFullscreen();
 };
