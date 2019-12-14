@@ -7,7 +7,7 @@
 
 
 CDirectShow::CDirectShow() {
-	filename = L"";
+	filename = L"ConfusedAlien.avi";
 	Init();
 }
 
