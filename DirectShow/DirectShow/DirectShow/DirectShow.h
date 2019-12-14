@@ -12,6 +12,7 @@ public:
 	void setWindow(OAHWND parentwindow);
 	void Resume();
 	void Pause();
+	void Stop();
 	void CleanUp();
 	void Vollbild(bool v);
 	void Run();

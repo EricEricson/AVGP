@@ -7,7 +7,7 @@
 
 
 CDirectShow::CDirectShow() {
-	filename = L"ConfusedAlien.avi";
+	filename = L"";
 	Init();
 }
 
@@ -47,6 +47,11 @@ void CDirectShow::Resume() {
 void CDirectShow::Pause() {
 	if (pMediaControl != 0)
 		pMediaControl->Pause();
+}
+
+void CDirectShow::Stop() {
+	if (pMediaControl != 0)
+		pMediaControl->Stop(); CleanUp();
 }
 
 void CDirectShow::Vollbild(bool v) {

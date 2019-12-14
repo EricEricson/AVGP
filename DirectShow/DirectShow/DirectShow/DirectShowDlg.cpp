@@ -43,6 +43,7 @@ BEGIN_MESSAGE_MAP(CDirectShowDlg, CDialogEx)
 	ON_BN_CLICKED(IDC_BUTTON_Fullscreen, &CDirectShowDlg::OnBnClickedButtonFullscreen)
 	ON_WM_LBUTTONDOWN()
 	ON_BN_CLICKED(IDC_BUTTON_File, &CDirectShowDlg::OnBnClickedButtonFile)
+	ON_BN_CLICKED(IDC_BUTTON_Stop, &CDirectShowDlg::OnBnClickedButtonStop)
 END_MESSAGE_MAP()
 
 
@@ -106,22 +107,24 @@ LONG CDirectShowDlg::GetIt(UINT wparam, LONG lparam) {
 
 // Timer fragt regelmäßig ab, an welcher Stelle der Film gerade ist
 void CDirectShowDlg::OnTimer(UINT_PTR nIDEvent) {
-	REFERENCE_TIME rtTotal, rtNow = 0; CString s;
-	rtTotal = directshow.getLength();
-	rtNow = directshow.getCurrentPosition();
-	s.Format(L"%02d:%02d (%d%%)",
-		(int)((rtNow / 10000000L) / 60), // min
-		(int)((rtNow / 10000000L) % 60), // sek
-		(int)((rtNow * 100) / rtTotal)); // Prozent
-	GetDlgItem(IDC_STATUS)->SetWindowText(s);
-	
-	REFERENCE_TIME d;
-	d = directshow.getLength();
-	CSliderCtrl* sl;
-	sl = (CSliderCtrl*)GetDlgItem(IDC_SLIDER_VideoLength);
-	sl->SetRange(0, (int)(d / 1000000)); sl->SetPos(0);
+	if (!(directshow.filename == "")) {
+		REFERENCE_TIME rtTotal, rtNow = 0; CString s;
+		rtTotal = directshow.getLength();
+		rtNow = directshow.getCurrentPosition();
+		s.Format(L"%02d:%02d (%d%%)",
+			(int)((rtNow / 10000000L) / 60), // min
+			(int)((rtNow / 10000000L) % 60), // sek
+			(int)((rtNow * 100) / rtTotal)); // Prozent
+		GetDlgItem(IDC_STATUS)->SetWindowText(s);
 
-	((CSliderCtrl*)GetDlgItem(IDC_SLIDER_VideoLength))->SetPos((int)(rtNow / 1000000));
+		REFERENCE_TIME d;
+		d = directshow.getLength();
+		CSliderCtrl* sl;
+		sl = (CSliderCtrl*)GetDlgItem(IDC_SLIDER_VideoLength);
+		sl->SetRange(0, (int)(d / 1000000)); sl->SetPos(0);
+
+		((CSliderCtrl*)GetDlgItem(IDC_SLIDER_VideoLength))->SetPos((int)(rtNow / 1000000));
+	}
 
 	CDialogEx::OnTimer(nIDEvent);
 }
@@ -156,6 +159,10 @@ void CDirectShowDlg::OnBnClickedButtonResume() {
 
 void CDirectShowDlg::OnBnClickedButtonFullscreen() {
 	directshow.Vollbild(TRUE);
+}
+
+void CDirectShowDlg::OnBnClickedButtonStop() {
+	directshow.Stop();
 }
 
 void CDirectShowDlg::OnLButtonDown(UINT nFlags, CPoint point) {
