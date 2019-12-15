@@ -12,7 +12,7 @@ CDirectShow::CDirectShow() {
 }
 
 CDirectShow::~CDirectShow() {
-	CleanUp();
+	//CleanUp();
 }
 
 void CDirectShow::Init() {
@@ -107,7 +107,7 @@ void CDirectShow::setVideoWindow() {
 	pVidWin->put_Owner(window);
 	pVidWin->put_WindowStyle(WS_CHILD | WS_CLIPSIBLINGS);
 	pVidWin->put_Visible(OATRUE);
-	pVidWin->SetWindowPosition(20, 50, 300, 200);
+	pVidWin->SetWindowPosition(10, 70, 300, 200);
 	// Nachrichtenbehandlung (Maus, Keyboard)
 	pVidWin->put_MessageDrain(window);
 }
