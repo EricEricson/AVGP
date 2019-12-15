@@ -8,8 +8,7 @@
 
 
 // CDirectShowDlg-Dialogfeld
-class CDirectShowDlg : public CDialogEx
-{
+class CDirectShowDlg : public CDialogEx {
 // Konstruktion
 public:
 	CDirectShowDlg(CWnd* pParent = nullptr);	// Standardkonstruktor
@@ -17,9 +16,8 @@ public:
 	// Dialogfelddaten
 	enum { IDD = IDD_DIRECTSHOW_DIALOG };
 
-	protected:
+protected:
 	virtual void DoDataExchange(CDataExchange* pDX);	// DDX/DDV-Unterstützung
-
 
 // Implementierung
 protected:
