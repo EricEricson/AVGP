@@ -30,10 +30,10 @@ public:
 
 private:
 	OAHWND window;
-	IGraphBuilder* pGraph; // ein Zeiger auf das COM-Interface
-	IMediaControl* pMediaControl;
-	IMediaEventEx* pEvent;
-	IVideoWindow* pVidWin = NULL;
-	IMediaSeeking* pSeek = NULL;
+	IGraphBuilder *pGraph; // ein Zeiger auf das COM-Interface
+	IMediaControl *pMediaControl;
+	IMediaEventEx *pEvent;
+	IVideoWindow *pVidWin = NULL;
+	IMediaSeeking *pSeek = NULL;
 };
 
