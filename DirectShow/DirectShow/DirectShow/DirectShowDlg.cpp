@@ -71,8 +71,7 @@ BOOL CDirectShowDlg::OnInitDialog()
 
 void CDirectShowDlg::OnPaint()
 {
-	if (IsIconic())
-	{
+	if (IsIconic()) {
 		CPaintDC dc(this); // Gerätekontext zum Zeichnen
 
 		SendMessage(WM_ICONERASEBKGND, reinterpret_cast<WPARAM>(dc.GetSafeHdc()), 0);
@@ -88,8 +87,7 @@ void CDirectShowDlg::OnPaint()
 		// Symbol zeichnen
 		dc.DrawIcon(x, y, m_hIcon);
 	}
-	else
-	{
+	else {
 		CDialogEx::OnPaint();
 	}
 }
