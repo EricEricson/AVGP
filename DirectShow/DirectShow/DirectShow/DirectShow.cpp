@@ -50,8 +50,9 @@ void CDirectShow::Pause() {
 }
 
 void CDirectShow::Stop() {
-	if (pMediaControl != 0)
+	if (pMediaControl != 0) {
 		pMediaControl->Stop(); CleanUp();
+	}
 }
 
 void CDirectShow::Vollbild(bool v) {
@@ -119,15 +120,17 @@ void CDirectShow::setFilename(CString newfilename) {
 }
 
 void CDirectShow::CleanUp() {
-	Vollbild(FALSE);
-	pVidWin->put_Visible(OAFALSE);
-	pVidWin->put_Owner(NULL);
-	pSeek->Release();
-	pMediaControl->Release();
-	pVidWin->Release();
-	pEvent->Release();
-	pGraph->Release();
-	pMediaControl = 0; pVidWin = 0;
-	pEvent = 0; pGraph = 0;
-	CoUninitialize();
+	if (pGraph) {
+		Vollbild(FALSE);
+		pVidWin->put_Visible(OAFALSE);
+		pVidWin->put_Owner(NULL);
+		pSeek->Release();
+		pMediaControl->Release();
+		pVidWin->Release();
+		pEvent->Release();
+		pGraph->Release();
+		pMediaControl = 0; pVidWin = 0;
+		pEvent = 0; pGraph = 0;
+	}
+	//CoUninitialize();
 }
