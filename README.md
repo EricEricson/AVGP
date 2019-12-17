@@ -63,7 +63,4 @@ Erstellen Sie ein C++-Projekt (Dialoganwendung) mit Direct3D-Anbindung. Zur Init
 2. Messen Sie die aktuelle Framerate und zeigen diese im Fenster (entweder permanent oder auf Tastendruck) an [0.5P].
 3. Ermöglichen Sie dem Nutzer, das Objekt auch mit der Maus (bei gedrückter linker Maustaste) zu bewegen [1P]. Nutzen Sie hierzu die in der Klasse CDirect3DObject implementierten Transformationsmatrizen.
 
-![alt text][photo04]
-[photo04]: https://www.informatik.htw-dresden.de/~bruns/prakt_mm_prog_bild1.png "photo04"
-
 Erweitern Sie Ihr Modell mit Texturkoordinaten und laden Sie eine beliebige Textur auf die entsprechenden Rechtecke [1P]. 
