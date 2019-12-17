@@ -144,7 +144,7 @@ void CDirectShowDlg::OnBnClickedButtonPlay() {
 
 void CDirectShowDlg::OnBnClickedButtonExit() {
 	directshow.CleanUp();
-	exit(0);
+	OnOK();
 }
 
 void CDirectShowDlg::OnBnClickedButtonPause() {
@@ -160,6 +160,8 @@ void CDirectShowDlg::OnBnClickedButtonFullscreen() {
 }
 
 void CDirectShowDlg::OnBnClickedButtonStop() {
+	// Timer vorher beenden, damit keine Werte mehr im Timer aufgerufen werden können
+	KillTimer(1);
 	directshow.Stop();
 }
 
@@ -170,7 +172,7 @@ void CDirectShowDlg::OnLButtonDown(UINT nFlags, CPoint point) {
 
 void CDirectShowDlg::OnBnClickedButtonFile() {
 	
-	CString szFilters = L"Media Files|*.mpg;*.avi;*.wma;*.mov; *.wav;*.mp2;*.mp3|All Files (*.*)|*.*||";
+	CString szFilters = L"Media Files|*.mpg;*.avi;*.wma;*.mov;*.wav;*.mp2;*.mp3;*.mp4|All Files (*.*)|*.*||";
 	// Erstelle einen OpenDialog
 	CFileDialog fileDlg(TRUE, NULL, NULL, OFN_FILEMUSTEXIST | OFN_HIDEREADONLY, szFilters, this);
 
