@@ -49,3 +49,20 @@ Versuchen Sie mit Hilfe der Doppelpuffertechnik und der von Ihnen programmierten
 Wenn auf einem Instrument, wie z.B. einer Gitarre, Geige oder einem Klavier, ein Ton erzeugt wird, dann besteht dieser nicht nur aus einer einzigen Frequenz, sondern es schwingen noch verschiedene Obertöne mit. Man kann jedoch im Allgemeinen diesem Ton eine Grundfrequenz zuordnen. So ist dem Kammerton 'A' die Frequenz 440Hz zugeordnet oder dem Ton 'C' die Frequenz 264 Hz. Weitere Töne können über die folgende Tabelle bestimmt werden.
 
 Die Musiktheorie besagt, dass die Tonabstände innerhalb einer Tonleiter in die Intervalle Prime, Sekunde, Terz, Quarte, Quinte, Sexte, Septime und Oktave eingeteilt sind. Nachfolgend ist als Beispiel eine C-Dur Tonleiter (reine Stimmung) und die dafür notwendigen Frequenzverhältnisse aufgeführt. Ähnliches gilt natürlich für Tonleitern in Moll.
+
+Fügen Sie nun Ihrem Programm Schaltflächen (Buttons) für die einzelnen Töne einer Tonleiter hinzu und behandeln Sie das BN_CLICKED-Ereignis dahingehend, dass der jeweilige Ton kurz angespielt wird (je Ton ein eigener Soundpuffer). [1P].
+
+Geben Sie nun dem Nutzer die Möglichkeit, über weitere Schaltflächen den C-Dur Dreiklang (als Akkord mit Hilfe von 3 Soundpuffern) abzuspielen.[1P].
+
+Wir haben Ihnen im Praktikumsordner noch Gitarrentöne im pcm(raw)-Format (44.1 kHz Samplingrate, 16 Bit pro Sample, mono) bereitgestellt. Der Nutzer soll über eine geeignete Schaltfläche entscheiden können, ob er die oben genannte Funktionalität mit generiertem Sound oder Gitarrensound abgespielt bekommt. Optionale Zusatzpunkte: [3P]. 
+
+###  Aufgabe 2: Direct3D
+Erstellen Sie ein C++-Projekt (Dialoganwendung) mit Direct3D-Anbindung. Zur Initialisierung der Direct3D-Interfaces können Sie die auf dem Praktikumsordner (I:/PRAKT/bruns/DirectX/Direct3D) bereitgestellten Klassen in der aus der Vorlesung bekannten Beispielanwendung nutzen. Machen Sie sich hierzu deren Aufbau und Nutzung in dem Beispielprojekt deutlich, bevor Sie die Klassen in Ihr eigenes Projekt übernehmen. Erzeugen Sie ein einfaches 3D-Objekt aus 2 Rechtecken wie unten abgebildet. 
+
+1. Zunächst soll dieses Objekt mit beliebiger Farbe dargestellt werden. Realisieren Sie über Transformationsmatrizen eine langsame Drehung (Rotation) um die x- und y-Achse [0.5P].
+2. Messen Sie die aktuelle Framerate und zeigen diese im Fenster (entweder permanent oder auf Tastendruck) an [0.5P].
+3. Ermöglichen Sie dem Nutzer, das Objekt auch mit der Maus (bei gedrückter linker Maustaste) zu bewegen [1P]. Nutzen Sie hierzu die in der Klasse CDirect3DObject implementierten Transformationsmatrizen.
+
+![alt text][photo04]
+ Erweitern Sie Ihr Modell mit Texturkoordinaten und laden Sie eine beliebige Textur auf die entsprechenden Rechtecke [1P]. 
+[photo04]: https://www.informatik.htw-dresden.de/~bruns/prakt_mm_prog_bild1.png "photo04"
