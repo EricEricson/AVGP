@@ -9,7 +9,7 @@ public:
 	~CDirectShow();
 
 	void Init();
-	void setWindow(OAHWND parentwindow);
+	void setWindow(OAHWND parentwindow);	//Cwnd*
 	void Resume();
 	void Pause();
 	void Stop();
@@ -30,9 +30,9 @@ public:
 
 private:
 	OAHWND window;
-	IGraphBuilder *pGraph; // ein Zeiger auf das COM-Interface
-	IMediaControl *pMediaControl;
-	IMediaEventEx *pEvent;
+	IGraphBuilder *pGraph = 0; // ein Zeiger auf das COM-Interface
+	IMediaControl *pMediaControl = 0;
+	IMediaEventEx *pEvent = 0;
 	IVideoWindow *pVidWin = NULL;
 	IMediaSeeking *pSeek = NULL;
 };
