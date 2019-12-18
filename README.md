@@ -74,6 +74,10 @@ Wir haben Ihnen im Praktikumsordner noch Gitarrentöne im pcm(raw)-Format (44.1 
 ###  Aufgabe 2: Direct3D
 Erstellen Sie ein C++-Projekt (Dialoganwendung) mit Direct3D-Anbindung. Zur Initialisierung der Direct3D-Interfaces können Sie die auf dem Praktikumsordner (I:/PRAKT/bruns/DirectX/Direct3D) bereitgestellten Klassen in der aus der Vorlesung bekannten Beispielanwendung nutzen. Machen Sie sich hierzu deren Aufbau und Nutzung in dem Beispielprojekt deutlich, bevor Sie die Klassen in Ihr eigenes Projekt übernehmen. Erzeugen Sie ein einfaches 3D-Objekt aus 2 Rechtecken wie unten abgebildet. 
 
+![alt text][photo04]
+
+[photo04]: https://www2.htw-dresden.de/~bruns/prakt_mm_prog_bild15.png "photo04"
+
 1. Zunächst soll dieses Objekt mit beliebiger Farbe dargestellt werden. Realisieren Sie über Transformationsmatrizen eine langsame Drehung (Rotation) um die x- und y-Achse [0.5P].
 2. Messen Sie die aktuelle Framerate und zeigen diese im Fenster (entweder permanent oder auf Tastendruck) an [0.5P].
 3. Ermöglichen Sie dem Nutzer, das Objekt auch mit der Maus (bei gedrückter linker Maustaste) zu bewegen [1P]. Nutzen Sie hierzu die in der Klasse CDirect3DObject implementierten Transformationsmatrizen.
