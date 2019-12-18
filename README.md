@@ -1,5 +1,3 @@
-[![Build Status](https://travis-ci.org/{EricEricson}/{AVGP}.png?branch=master)](https://travis-ci.org/{EricEricson}/{AVGP})
-
 # Audio-, Video-, Grafikprogrammierung
 ## MCI- und WPF-Anwendungen
 
@@ -17,6 +15,7 @@ Implementieren Sie ein Programm das mit Hilfe der Klasse CMCIObject die Ausgabe 
 Die Klasse CMCIObject ist um die Methoden SetAviPosition(...), TMSFSeek(...) und GetTMSFPosition(...) mit der in der Vorlesung besprochenen Funktionalität zu erweitern. Die Oberfläche Ihres Programms ist funktional entsprechend des hier dargestellten Screenshots zu gestalten [1P].
 
 Erweitern Sie Ihr Programm dahingehend, das Schaltflächen zum Starten, Stoppen und Schließen der Wiedergabe einer Audio-CD, sowie zum gezielten Wechsel auf einzelne Titel der Audio-CD bereitstellt werden. Alle Titel der eingelegten Audio-CD sind ein einer ListBox mit Angabe der Titellänge aufzuführen. Außerdem ist während des Abspielvorgangs die aktuelle Titel-Nummer und die laufende Abspielzeit in einem geeigneten Intervall auszugeben [1P].
+
 ![alt text][photo01]
 
 [photo01]: https://www.informatik.htw-dresden.de/~bruns/prakt_mm_prog_bild3.jpg "photo01"
@@ -26,8 +25,8 @@ Erweitern Sie die Klasse CMCIObject um eine Methode zur Ermittlung der Länge ei
 
 <a name="wpf"/></a>
 ###  Aufgabe 2: (Audio-) Video-Player (mit der Windows Presentation Foundation)
-Implementieren Sie mit C# eine WPF Anwendung unter Nutzung der in der Vorlesung erarbeiteten Wrapperklasse. Hierzu ist die Grundfunktionalität (Play-, Pause-, Stopp) zum Abspielen einer Videodatei bereitzustellen [2P].
-Eine weitere Schaltfläche dient zum Umschalten in den Vollbildmodus, der dann zum Beispiel mit der linken Maustaste wieder verlassen werden kann [1P]. 
+Implementieren Sie mit C# eine WPF Anwendung unter Nutzung der in der Vorlesung erarbeiteten Wrapperklasse. Hierzu ist die Grundfunktionalität (Play-, Pause-, Stopp) zum Abspielen einer Videodatei bereitzustellen [2P]. Eine weitere Schaltfläche dient zum Umschalten in den Vollbildmodus, der dann zum Beispiel mit der linken Maustaste wieder verlassen werden kann [1P]. 
+
 ![alt text][photo02]
 
 [photo02]: https://www.informatik.htw-dresden.de/~bruns/prakt_mm_prog_bild_wpf.jpg "photo02"
