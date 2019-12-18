@@ -8,7 +8,7 @@
 4. [Direct3D](#dx3D)
 5. [DirectShow](#dxShow)
 
-<a name="mciwpf"/>
+<a name="mci"/>
 ### Aufgabe 1: Audio-/Midi-/Video-Player (mit der CMCIObject-Klasse)
 Implementieren Sie ein Programm das mit Hilfe der Klasse CMCIObject die Ausgabe einer Audiodatei im wav- oder mp3-Format ermöglicht [1P]. Erweitern Sie das Programm um zwei weitere Schaltflächen, mit deren Hilfe der Nutzer eine Ihnen im Praktikum zur Verfügung gestellte MIDI- und eine Video-Datei (im aktuellen Fenster) abspielen kann [1P].
 
@@ -75,3 +75,13 @@ Erstellen Sie ein C++-Projekt (Dialoganwendung) mit Direct3D-Anbindung. Zur Init
 3. Ermöglichen Sie dem Nutzer, das Objekt auch mit der Maus (bei gedrückter linker Maustaste) zu bewegen [1P]. Nutzen Sie hierzu die in der Klasse CDirect3DObject implementierten Transformationsmatrizen.
 
 Erweitern Sie Ihr Modell mit Texturkoordinaten und laden Sie eine beliebige Textur auf die entsprechenden Rechtecke [1P]. 
+
+<a name="dxShow"/>
+###  Aufgabe 3: DirectShow
+Erstellen Sie ein Abspielprogramm für Videodateien. Die folgende Funktionalität ist dabei zu implementieren: 
+- Der Dateiname ist über eine Dateidialogbox (CFileDialog) auszuwählen (oder via "Drag and Drop" an das Programm zu übermitteln) [1P].
+- Das Abspielen erfolgt asynchron und das Video ist im aktuellen (Dialog)Fenster darzustellen [1P].
+- Die aktuelle Abspielposition ist anzuzeigen (Textfeld und Schieberegler). Die aktuelle Abspielposition kann über den Schieberegler eingestellt werden. [1P]
+- Die Ausgabe kann in den Vollbildmodus geschalten werden. Der Vollbildmodus kann mit der linken Maustaste wieder verlassen werden. Am Ende des Abspielvorgangs schaltet die Anwendung (automatisch) wieder in den Fenstermodus und an den Anfang des Videos. [1P]
+- Kapseln Sie die Funktionalität von DirectShow sinnvoll und wiederverwendbar in einer eigenen Klasse [1P].
+Nutzen Sie hierfür das in der Vorlesung entwickelte Beispiel und lassen Sie sich den Filtergraphen automatisch mit Hilfe der Methode "RenderFile" erstellen. Testen Sie Ihre Anwendung.
