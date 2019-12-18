@@ -40,6 +40,7 @@ Ein mitlaufender Slider dient zum Navigieren innerhalb des Videos. Zwei weitere 
 **Termine:** Diese Aufgaben 1 und 2 werden in der 43., 44. und 45. KW bearbeitet. Die Punkte (PVL) können in der 45. KW erworben werden. 
 
 ## DirectX
+Zur Bearbeitung der folgenden Aufgaben ist eine DirectX-SDK erforderlich.
 <a name="dxSound"/></a>
 ###  Aufgabe 1: DirectSound
 Implementieren Sie eine einfache Dialoganwendung und binden Sie die in der Vorlesung besprochene Klasse CDirectSound ein. Initialisieren Sie ein Objekt dieser Klasse und erzeugen Sie einen "Secondary DirectSoundBuffer" mit folgenden Eigenschaften:
