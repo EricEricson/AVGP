@@ -8,6 +8,8 @@
 4. [Direct3D](#dx3D)
 5. [DirectShow](#dxShow)
 
+---
+
 <a name="mci"/></a>
 ### Aufgabe 1: Audio-/Midi-/Video-Player (mit der CMCIObject-Klasse)
 Implementieren Sie ein Programm das mit Hilfe der Klasse CMCIObject die Ausgabe einer Audiodatei im wav- oder mp3-Format ermöglicht [1P]. Erweitern Sie das Programm um zwei weitere Schaltflächen, mit deren Hilfe der Nutzer eine Ihnen im Praktikum zur Verfügung gestellte MIDI- und eine Video-Datei (im aktuellen Fenster) abspielen kann [1P].
@@ -93,3 +95,5 @@ Erstellen Sie ein Abspielprogramm für Videodateien. Die folgende Funktionalitä
 - Die Ausgabe kann in den Vollbildmodus geschalten werden. Der Vollbildmodus kann mit der linken Maustaste wieder verlassen werden. Am Ende des Abspielvorgangs schaltet die Anwendung (automatisch) wieder in den Fenstermodus und an den Anfang des Videos. [1P]
 - Kapseln Sie die Funktionalität von DirectShow sinnvoll und wiederverwendbar in einer eigenen Klasse [1P].
 Nutzen Sie hierfür das in der Vorlesung entwickelte Beispiel und lassen Sie sich den Filtergraphen automatisch mit Hilfe der Methode "RenderFile" erstellen. Testen Sie Ihre Anwendung.
+
+© Alle Text- und Bildrechte liegen bei bei Herrn [Prof. Kai Bruns](https://www2.htw-dresden.de/~bruns/mmprog.html "Homepage von Prof. Kai Bruns an der HTW Dresden") (HTW Dresden) - Stand 12.2019
