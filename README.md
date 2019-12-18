@@ -21,7 +21,7 @@ Erweitern Sie Ihr Programm dahingehend, das Schaltflächen zum Starten, Stoppen 
 
 Erweitern Sie die Klasse CMCIObject um eine Methode zur Ermittlung der Länge einer Mediendatei. Ergänzen Sie nun die Darstellung der Zeitanzeige um eine Prozentangabe zum Abspielfortschritt [1P]. Testen Sie Ihre Anwendung und machen Sie sich die Grenzen des Media Control Interface deutlich.
 
-<a name="wpf"/>
+<a name="wpf"/></a>
 ###  Aufgabe 2: (Audio-) Video-Player (mit der Windows Presentation Foundation)
 Implementieren Sie mit C# eine WPF Anwendung unter Nutzung der in der Vorlesung erarbeiteten Wrapperklasse. Hierzu ist die Grundfunktionalität (Play-, Pause-, Stopp) zum Abspielen einer Videodatei bereitzustellen [2P].
 Eine weitere Schaltfläche dient zum Umschalten in den Vollbildmodus, der dann zum Beispiel mit der linken Maustaste wieder verlassen werden kann [1P]. 
@@ -35,7 +35,7 @@ Ein mitlaufender Slider dient zum Navigieren innerhalb des Videos. Zwei weitere 
 **Termine:** Diese Aufgaben 1 und 2 werden in der 43., 44. und 45. KW bearbeitet. Die Punkte (PVL) können in der 45. KW erworben werden. 
 
 ## DirectX
-<a name="dxSound"/>
+<a name="dxSound"/></a>
 ###  Aufgabe 1: DirectSound
 Implementieren Sie eine einfache Dialoganwendung und binden Sie die in der Vorlesung besprochene Klasse CDirectSound ein. Initialisieren Sie ein Objekt dieser Klasse und erzeugen Sie einen "Secondary DirectSoundBuffer" mit folgenden Eigenschaften:
 * PCM-Format,
@@ -66,7 +66,7 @@ Geben Sie nun dem Nutzer die Möglichkeit, über weitere Schaltflächen den C-Du
 
 Wir haben Ihnen im Praktikumsordner noch Gitarrentöne im pcm(raw)-Format (44.1 kHz Samplingrate, 16 Bit pro Sample, mono) bereitgestellt. Der Nutzer soll über eine geeignete Schaltfläche entscheiden können, ob er die oben genannte Funktionalität mit generiertem Sound oder Gitarrensound abgespielt bekommt. Optionale Zusatzpunkte: [3P]. 
 
-<a name="dx3D"/>
+<a name="dx3D"/></a>
 ###  Aufgabe 2: Direct3D
 Erstellen Sie ein C++-Projekt (Dialoganwendung) mit Direct3D-Anbindung. Zur Initialisierung der Direct3D-Interfaces können Sie die auf dem Praktikumsordner (I:/PRAKT/bruns/DirectX/Direct3D) bereitgestellten Klassen in der aus der Vorlesung bekannten Beispielanwendung nutzen. Machen Sie sich hierzu deren Aufbau und Nutzung in dem Beispielprojekt deutlich, bevor Sie die Klassen in Ihr eigenes Projekt übernehmen. Erzeugen Sie ein einfaches 3D-Objekt aus 2 Rechtecken wie unten abgebildet. 
 
@@ -76,7 +76,7 @@ Erstellen Sie ein C++-Projekt (Dialoganwendung) mit Direct3D-Anbindung. Zur Init
 
 Erweitern Sie Ihr Modell mit Texturkoordinaten und laden Sie eine beliebige Textur auf die entsprechenden Rechtecke [1P]. 
 
-<a name="dxShow"/>
+<a name="dxShow"/></a>
 ###  Aufgabe 3: DirectShow
 Erstellen Sie ein Abspielprogramm für Videodateien. Die folgende Funktionalität ist dabei zu implementieren: 
 - Der Dateiname ist über eine Dateidialogbox (CFileDialog) auszuwählen (oder via "Drag and Drop" an das Programm zu übermitteln) [1P].
