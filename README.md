@@ -1,3 +1,5 @@
+[![Build Status](https://travis-ci.org/{EricEricson}/{AVGP}.png?branch=master)](https://travis-ci.org/{EricEricson}/{AVGP})
+
 # Audio-, Video-, Grafikprogrammierung
 ## MCI- und WPF-Anwendungen
 
@@ -19,6 +21,7 @@ Erweitern Sie Ihr Programm dahingehend, das Schaltflächen zum Starten, Stoppen 
 
 [photo01]: https://www.informatik.htw-dresden.de/~bruns/prakt_mm_prog_bild3.jpg "photo01"
 
+
 Erweitern Sie die Klasse CMCIObject um eine Methode zur Ermittlung der Länge einer Mediendatei. Ergänzen Sie nun die Darstellung der Zeitanzeige um eine Prozentangabe zum Abspielfortschritt [1P]. Testen Sie Ihre Anwendung und machen Sie sich die Grenzen des Media Control Interface deutlich.
 
 <a name="wpf"/></a>
@@ -28,6 +31,7 @@ Eine weitere Schaltfläche dient zum Umschalten in den Vollbildmodus, der dann z
 ![alt text][photo02]
 
 [photo02]: https://www.informatik.htw-dresden.de/~bruns/prakt_mm_prog_bild_wpf.jpg "photo02"
+
 
 Die aktuelle Abspielposition ist als Zeitangabe und prozentual auszugeben [1P].
 Ein mitlaufender Slider dient zum Navigieren innerhalb des Videos. Zwei weitere Slider dienen der Einstellung von Lautstärke und Balance [1P]. 
@@ -47,6 +51,7 @@ Implementieren Sie eine einfache Dialoganwendung und binden Sie die in der Vorle
 ![alt text][photo03]
 
 [photo03]: https://www.informatik.htw-dresden.de/~bruns/prakt_mm_prog_bild2.jpg "photo03"
+
 
 Schreiben Sie 2 Sekunden Sound mit einer Sinusamplitute und einer Frequenz von 264 Hz ("Ton c") in den Soundpuffer und spielen Sie diesen Soundpuffer zyklisch ab [1P].
 
