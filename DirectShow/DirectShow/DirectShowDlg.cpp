@@ -105,7 +105,6 @@ LONG CDirectShowDlg::GetIt(UINT wparam, LONG lparam) {
 
 // Timer fragt regelmäßig ab, an welcher Stelle der Film gerade ist
 void CDirectShowDlg::OnTimer(UINT_PTR nIDEvent) {
-	if (!(directshow.filename == "")) {
 		REFERENCE_TIME rtTotal, rtNow = 0; CString s;
 		rtTotal = directshow.getLength();
 		rtNow = directshow.getCurrentPosition();
@@ -122,7 +121,6 @@ void CDirectShowDlg::OnTimer(UINT_PTR nIDEvent) {
 		sl->SetRange(0, (int)(d / 1000000)); sl->SetPos(0);
 
 		((CSliderCtrl*)GetDlgItem(IDC_SLIDER_VideoLength))->SetPos((int)(rtNow / 1000000));
-	}
 
 	CDialogEx::OnTimer(nIDEvent);
 }
