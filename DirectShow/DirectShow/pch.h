@@ -9,4 +9,5 @@
 
 // Fügen Sie hier Header hinzu, die vorkompiliert werden sollen.
 #include "framework.h"
+#include "dshow.h"
 #endif //PCH_H
