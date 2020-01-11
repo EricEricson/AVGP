@@ -28,7 +28,7 @@ protected:
 	
 	CDIB m_dib;
 	CMenu menu;
-	bool histogramm;
+	bool histogram;
 
 	// Generierte Funktionen für die Meldungstabellen
 	virtual BOOL OnInitDialog();

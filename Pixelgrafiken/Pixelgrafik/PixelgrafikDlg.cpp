@@ -43,25 +43,38 @@ BOOL CPixelgrafikDlg::OnInitDialog()
 {
 	CDialogEx::OnInitDialog();
 
+	histogram = FALSE;
+
+	create_popup_menu();
+
 	// Symbol für dieses Dialogfeld festlegen.  Wird automatisch erledigt
 	//  wenn das Hauptfenster der Anwendung kein Dialogfeld ist
 	SetIcon(m_hIcon, TRUE);			// Großes Symbol verwenden
 	SetIcon(m_hIcon, FALSE);		// Kleines Symbol verwenden
 
-	// TODO: Hier zusätzliche Initialisierung einfügen
+	// TODO: Hier zusaetzliche Initialisierung einfügen
 
 	return TRUE;  // TRUE zurückgeben, wenn der Fokus nicht auf ein Steuerelement gesetzt wird
 }
 
-// Wenn Sie dem Dialogfeld eine Schaltfläche "Minimieren" hinzufügen, benötigen Sie
+// Wenn Sie dem Dialogfeld eine Schaltflaeche "Minimieren" hinzufügen, benötigen Sie
 //  den nachstehenden Code, um das Symbol zu zeichnen.  Für MFC-Anwendungen, die das 
 //  Dokument/Ansicht-Modell verwenden, wird dies automatisch ausgeführt.
 
-void CPixelgrafikDlg::OnPaint()
-{
+void CPixelgrafikDlg::OnPaint() {
+
+	CPaintDC dc(this); // Geraetekontext zum Zeichnen
+
+	CRect rect;
+	GetClientRect(&rect);
+	m_dib.Draw(&dc, 0, 0, rect.Width(), rect.Height());
+	if (histogram) {
+		drawHistogramm();
+	}
+
 	if (IsIconic())
 	{
-		CPaintDC dc(this); // Gerätekontext zum Zeichnen
+		CPaintDC dc(this); // Geraetekontext zum Zeichnen
 
 		SendMessage(WM_ICONERASEBKGND, reinterpret_cast<WPARAM>(dc.GetSafeHdc()), 0);
 
@@ -82,7 +95,7 @@ void CPixelgrafikDlg::OnPaint()
 	}
 }
 
-// Die System ruft diese Funktion auf, um den Cursor abzufragen, der angezeigt wird, während der Benutzer
+// Die System ruft diese Funktion auf, um den Cursor abzufragen, der angezeigt wird, waehrend der Benutzer
 //  das minimierte Fenster mit der Maus zieht.
 HCURSOR CPixelgrafikDlg::OnQueryDragIcon()
 {
@@ -106,8 +119,6 @@ void CPixelgrafikDlg::OnContextMenu(CWnd* pWnd, CPoint point) {
 void CPixelgrafikDlg::OnMenuSelect(UINT nItemID, UINT nFlags, HMENU hSysMenu)
 {
 	CDialogEx::OnMenuSelect(nItemID, nFlags, hSysMenu);
-
-	// TODO: Fügen Sie hier Ihren Meldungshandlercode ein.
 }
 
 BOOL CPixelgrafikDlg::OnCommand(WPARAM wParam, LPARAM lParam) {
@@ -150,11 +161,13 @@ BOOL CPixelgrafikDlg::OnCommand(WPARAM wParam, LPARAM lParam) {
 				m_dib.Save(agendaPath + "\\" + agendaName);
 			}
 			else if (SaveFileDlg.GetFileExt() == L"jpg") {
+				/*
 				CQualityDlg saveDlg;
 				if (saveDlg.DoModal() == IDOK) {
 
 				}
-				m_dib.SaveJpeg(agendaPath + "\\" + agendaName, saveDlg.quality);
+				m_dib.SaveJpeg(agendaPath + "\\" + agendaName, saveDlg.quality); 
+				*/
 			}
 			else {
 				AfxMessageBox(L"File extension is not supported");
@@ -188,10 +201,10 @@ BOOL CPixelgrafikDlg::OnCommand(WPARAM wParam, LPARAM lParam) {
 	case 1011: // Histogramm
 		histogram = !histogram;
 		break;
-	case 1012: // Schärfen
+	case 1012: // Schaerfen
 		m_dib.matrix(sharpen_matrix, 1, 1);
 		break;
-	case 1013: // Unschärfe
+	case 1013: // Unschaerfe
 		m_dib.matrix(soften_matrix, 1, 97);
 		break;
 	case 1014: // Emboss
@@ -209,7 +222,7 @@ BOOL CPixelgrafikDlg::OnCommand(WPARAM wParam, LPARAM lParam) {
 	case 1018: // Schmelzen
 		m_dib.slur(90);
 		break;
-	case 1019: // Ölgemälde
+	case 1019: // Ölgemaelde
 		m_dib.oil(5, 20);
 		break;
 	case 1020: // Mosaik
@@ -221,14 +234,16 @@ BOOL CPixelgrafikDlg::OnCommand(WPARAM wParam, LPARAM lParam) {
 	case 1022: // merge other CDIB
 		if (MergeFileDlg.DoModal() == IDOK)
 		{
-			CQualityDlg percentageDlg;
+			//CQualityDlg percentageDlg;
 			CString agendaName = MergeFileDlg.GetFileName(); //filename
 			CString agendaPath = MergeFileDlg.GetFolderPath(); //filepath (folders)
 			if (MergeFileDlg.GetFileExt() == L"bmp") {
+			/*
 				if (percentageDlg.DoModal() == IDOK) {
 
 				}
 				m_dib.merge(agendaPath + "\\" + agendaName, percentageDlg.quality);
+			*/
 			}
 			else if (MergeFileDlg.GetFileExt() == L"jpg") {
 				//m_dib.LoadJpeg(agendaPath + "\\" + agendaName);
@@ -277,7 +292,7 @@ void CPixelgrafikDlg::create_popup_menu() {
 	menu.AppendMenu(MF_SEPARATOR, 0, L"");
 
 	menu.AppendMenu(MF_STRING, 1008, L"Rotebene");
-	menu.AppendMenu(MF_STRING, 1009, L"Grünebene");
+	menu.AppendMenu(MF_STRING, 1009, L"Gruenebene");
 	menu.AppendMenu(MF_STRING, 1010, L"Blauebene");
 
 	// Seperatorline
@@ -288,8 +303,8 @@ void CPixelgrafikDlg::create_popup_menu() {
 	// Seperatorline
 	menu.AppendMenu(MF_SEPARATOR, 0, L"");
 
-	menu.AppendMenu(MF_STRING, 1012, L"Schärfen");
-	menu.AppendMenu(MF_STRING, 1013, L"Unschärfe");
+	menu.AppendMenu(MF_STRING, 1012, L"Schaerfen");
+	menu.AppendMenu(MF_STRING, 1013, L"Unschaerfe");
 	menu.AppendMenu(MF_STRING, 1014, L"Emboss");
 	menu.AppendMenu(MF_STRING, 1015, L"Kantenerkennung");
 
@@ -299,7 +314,7 @@ void CPixelgrafikDlg::create_popup_menu() {
 	menu.AppendMenu(MF_STRING, 1016, L"Flip horizontal");
 	menu.AppendMenu(MF_STRING, 1017, L"Flip vertikal");
 	menu.AppendMenu(MF_STRING, 1018, L"Schmelzen");
-	menu.AppendMenu(MF_STRING, 1019, L"Ölgemälde");
+	menu.AppendMenu(MF_STRING, 1019, L"Oelgemaelde");
 	menu.AppendMenu(MF_STRING, 1020, L"Mosaik");
 
 	// Seperatorline
