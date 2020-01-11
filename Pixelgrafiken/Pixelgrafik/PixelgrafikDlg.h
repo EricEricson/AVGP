@@ -25,11 +25,21 @@ public:
 // Implementierung
 protected:
 	HICON m_hIcon;
-	CDIB mdib;
+	
+	CDIB m_dib;
+	CMenu menu;
+	bool histogramm;
 
 	// Generierte Funktionen für die Meldungstabellen
 	virtual BOOL OnInitDialog();
 	afx_msg void OnPaint();
 	afx_msg HCURSOR OnQueryDragIcon();
 	DECLARE_MESSAGE_MAP()
+public:
+	afx_msg void OnSize(UINT nType, int cx, int cy);
+	afx_msg void OnContextMenu(CWnd* /*pWnd*/, CPoint /*point*/);
+	afx_msg void OnMenuSelect(UINT nItemID, UINT nFlags, HMENU hSysMenu);
+	BOOL OnCommand(WPARAM wParam, LPARAM lParam);
+	void drawHistogramm();
+	void create_popup_menu();
 };
