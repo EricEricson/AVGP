@@ -1,3 +1,8 @@
+extern "C" {
+#include "jpeglib.h"
+}
+
+
 class CDIB {
 public:
 	CDIB();
