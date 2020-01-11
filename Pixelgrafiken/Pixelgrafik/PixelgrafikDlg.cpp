@@ -155,8 +155,7 @@ BOOL CPixelgrafikDlg::OnCommand(WPARAM wParam, LPARAM lParam) {
 		}
 		break;
 	case 1002: // Speichern
-		if (SaveFileDlg.DoModal() == IDOK)
-		{
+		if (SaveFileDlg.DoModal() == IDOK) {
 			CString agendaName = SaveFileDlg.GetFileName(); //filename
 			CString agendaPath = SaveFileDlg.GetFolderPath(); //filepath (folders)
 			if (SaveFileDlg.GetFileExt() == L"bmp") {
