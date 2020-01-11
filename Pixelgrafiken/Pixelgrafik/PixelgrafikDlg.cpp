@@ -7,6 +7,7 @@
 #include "Pixelgrafik.h"
 #include "PixelgrafikDlg.h"
 #include "afxdialogex.h"
+#include "CQualityMerge.h"
 
 #ifdef _DEBUG
 #define new DEBUG_NEW
@@ -123,7 +124,8 @@ void CPixelgrafikDlg::OnMenuSelect(UINT nItemID, UINT nFlags, HMENU hSysMenu)
 
 BOOL CPixelgrafikDlg::OnCommand(WPARAM wParam, LPARAM lParam) {
 
-	char strFilter[] = { "Windows Bitmap (*.bmp)|*.bmp|JPEG File (*.jpg)|*.jpg|" };
+	char strFilter[] = { "Media Files|*.bmp;*.jpg;*.jpeg|All Files (*.*)|*.*||" };
+	
 	CFileDialog OpenFileDlg(TRUE, CString(".bmp"), NULL, 0, CString(strFilter)); // 1001
 	CFileDialog SaveFileDlg(FALSE, CString(".bmp"), NULL, 0, CString(strFilter)); // 1002
 
@@ -315,11 +317,11 @@ void CPixelgrafikDlg::create_popup_menu() {
 	menu.AppendMenu(MF_STRING, 1017, L"Flip vertikal");
 	menu.AppendMenu(MF_STRING, 1018, L"Schmelzen");
 	menu.AppendMenu(MF_STRING, 1019, L"Oelgemaelde");
-	menu.AppendMenu(MF_STRING, 1020, L"Mosaik");
+	//menu.AppendMenu(MF_STRING, 1020, L"Mosaik");
 
 	// Seperatorline
 	menu.AppendMenu(MF_SEPARATOR, 0, L"");
 
-	menu.AppendMenu(MF_STRING, 1021, L"(inverse) FFT");
+	//menu.AppendMenu(MF_STRING, 1021, L"(inverse) FFT");
 	menu.AppendMenu(MF_STRING, 1022, L"Verschmelzen");
 }

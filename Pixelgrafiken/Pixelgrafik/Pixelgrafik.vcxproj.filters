@@ -36,6 +36,9 @@
     <ClInclude Include="CDIB.h">
       <Filter>Headerdateien</Filter>
     </ClInclude>
+    <ClInclude Include="CQualityMerge.h">
+      <Filter>Headerdateien</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Pixelgrafik.cpp">
@@ -48,6 +51,9 @@
       <Filter>Quelldateien</Filter>
     </ClCompile>
     <ClCompile Include="CDIB.cpp">
+      <Filter>Quelldateien</Filter>
+    </ClCompile>
+    <ClCompile Include="CQualityMerge.cpp">
       <Filter>Quelldateien</Filter>
     </ClCompile>
   </ItemGroup>

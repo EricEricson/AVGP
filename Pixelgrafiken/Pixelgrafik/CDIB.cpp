@@ -270,7 +270,6 @@ void CDIB::rgb(char ch) {
 }
 
 void CDIB::slur(int percentage) {
-	// https://docs.gimp.org/de/plug-in-randomize-slur.html
 	if ((m_pBMFH == 0) || (m_pBMI->bmiHeader.biBitCount != 24))
 		return;
 	BYTE* t, * o, * temp;
