@@ -96,8 +96,8 @@
     </ClCompile>
     <Link>
       <SubSystem>Windows</SubSystem>
-      <AdditionalDependencies>D:\Studium\mi\5. Semester\AVGP\Praktikum\Pixelgrafiken\Pixelgrafik\Pixelgrafik\jpeg.lib;%(AdditionalDependencies)</AdditionalDependencies>
-      <IgnoreSpecificDefaultLibraries>D:\Studium\mi\5. Semester\AVGP\Praktikum\Pixelgrafiken\Pixelgrafik\Pixelgrafik\libcmt.lib;%(IgnoreSpecificDefaultLibraries)</IgnoreSpecificDefaultLibraries>
+      <AdditionalDependencies>D:\Studium\mi\5. Semester\AVGP\Praktikum\Pixelgrafiken\Pixelgrafik\jpeg.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <IgnoreSpecificDefaultLibraries>D:\Studium\mi\5. Semester\AVGP\Praktikum\Pixelgrafiken\Pixelgrafik\libcmt.lib;%(IgnoreSpecificDefaultLibraries)</IgnoreSpecificDefaultLibraries>
     </Link>
     <Midl>
       <MkTypLibCompatible>false</MkTypLibCompatible>
