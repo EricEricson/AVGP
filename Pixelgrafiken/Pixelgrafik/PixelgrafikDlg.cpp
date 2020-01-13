@@ -162,13 +162,13 @@ BOOL CPixelgrafikDlg::OnCommand(WPARAM wParam, LPARAM lParam) {
 				m_dib.Save(agendaPath + "\\" + agendaName);
 			}
 			else if (SaveFileDlg.GetFileExt() == L"jpg") {
-				/*
-				CQualityDlg saveDlg;
+				
+				CQualityMerge saveDlg;
 				if (saveDlg.DoModal() == IDOK) {
 
 				}
 				m_dib.SaveJpeg(agendaPath + "\\" + agendaName, saveDlg.quality); 
-				*/
+				
 			}
 			else {
 				AfxMessageBox(L"File extension is not supported");
@@ -235,16 +235,14 @@ BOOL CPixelgrafikDlg::OnCommand(WPARAM wParam, LPARAM lParam) {
 	case 1022: // merge other CDIB
 		if (MergeFileDlg.DoModal() == IDOK)
 		{
-			//CQualityDlg percentageDlg;
+			CQualityMerge percentageDlg;
 			CString agendaName = MergeFileDlg.GetFileName(); //filename
 			CString agendaPath = MergeFileDlg.GetFolderPath(); //filepath (folders)
 			if (MergeFileDlg.GetFileExt() == L"bmp") {
-			/*
 				if (percentageDlg.DoModal() == IDOK) {
 
 				}
 				m_dib.merge(agendaPath + "\\" + agendaName, percentageDlg.quality);
-			*/
 			}
 			else if (MergeFileDlg.GetFileExt() == L"jpg") {
 				//m_dib.LoadJpeg(agendaPath + "\\" + agendaName);
