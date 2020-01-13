@@ -5,7 +5,6 @@
 #define IDD_PIXELGRAFIK_DIALOG          102
 #define IDR_MAINFRAME                   128
 #define IDD_DIALOG1                     132
-#define IDC_SLIDER1                     1004
 #define IDC_SLIDER_MERGE                1004
 
 // Next default values for new objects
