@@ -182,6 +182,7 @@ void CDirectShowDlg::OnBnClickedButtonFile() {
 	if (fileDlg.DoModal() == IDOK)
 	{
 		directshow.setFilename(fileDlg.GetPathName());
-		GetDlgItem(IDC_FILENAME)->SetWindowText(directshow.filename);
+		CString gfn = fileDlg.GetFileName();
+		GetDlgItem(IDC_FILENAME)->SetWindowText(gfn);
 	}
 }
