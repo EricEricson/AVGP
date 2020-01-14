@@ -1,4 +1,5 @@
 #pragma once
+#include "Resource.h"
 
 class CQualityMerge : public CDialogEx {
 	DECLARE_DYNAMIC(CQualityMerge)
