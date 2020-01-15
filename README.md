@@ -1,7 +1,7 @@
 # Audio-, Video-, Grafikprogrammierung
 
 ## Inhaltsverzeichnis
-1. [Getting startet](#gs)
+1. [Getting started](#gs)
 2. [MCI Anwendung](#mci)
 3. [WPF Anwendung](#wpf)
 4. [DirectSound](#dxSound)
