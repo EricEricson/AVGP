@@ -3,24 +3,23 @@
 ## Inhaltsverzeichnis
 1. [Getting startet](#gs)
 2. [Aufgaben](#aufgaben)
-2.1 [MCI Anwendung](#mci)
-2.2 [WPF Anwendung](#wpf)
-2.3 [DirectSound](#dxSound)
-2.4 [Direct3D](#dx3D)
-2.5 [DirectShow](#dxShow)
-2.6 [Encoder](#encoder)
-2.7 [Pixelgrafiken](#pixelgrafiken)
+    2.1 [MCI Anwendung](#mci)
+    2.2 [WPF Anwendung](#wpf)
+    2.3 [DirectSound](#dxSound)
+    2.4 [Direct3D](#dx3D)
+    2.5 [DirectShow](#dxShow)
+    2.6 [Encoder](#encoder)
+    2.7 [Pixelgrafiken](#pixelgrafiken)
 
 ---
 
 <a name="gs"/></a>
 ## Getting started
-Zur Bearbeitung der Aufgaben wurde die IDE [Visual Studio 2019](https://visualstudio.microsoft.com/de/vs/ "microsoft Visual Studio") genutzt. 
-Lade Dir zu erst das Repository herunter:
+Zur Bearbeitung der Aufgaben wurde die IDE [Visual Studio 2019](https://visualstudio.microsoft.com/de/vs/ "Microsoft Visual Studio") genutzt. Während der Installation der IDE wirst DU gefragt, welche Packages Du zusätzlich herunterladen möchtest. Wähle hier MCI und WPF aus. Nach der Installation der IDE lädst Du dir das Repository herunter:
 ```git
 git clone https://github.com/EricEricson/AVGP.git
 ```
-In jedem Ordner findest du eine `*.sln` Projektdatei - starte diese.
+Um ein Projekt zu starten, öffnest Du in dem jeweiligen Ordner die `*.sln` VS19-Projektdatei.
 
 ---
 <a name="aufgaben"/></a>
