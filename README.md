@@ -1,16 +1,30 @@
 # Audio-, Video-, Grafikprogrammierung
 
-# Inhaltsverzeichnis
-1. [MCI Anwendung](#mci)
-2. [WPF Anwendung](#wpf)
-3. [DirectSound](#dxSound)
-4. [Direct3D](#dx3D)
-5. [DirectShow](#dxShow)
-7. [Encoder](#encoder)
-6. [Pixelgrafiken](#pixelgrafiken)
+## Inhaltsverzeichnis
+1. [Getting startet](#gs)
+2. [Aufgaben](#aufgaben)
+2.1 [MCI Anwendung](#mci)
+2.2 [WPF Anwendung](#wpf)
+2.3 [DirectSound](#dxSound)
+2.4 [Direct3D](#dx3D)
+2.5 [DirectShow](#dxShow)
+2.6 [Encoder](#encoder)
+2.7 [Pixelgrafiken](#pixelgrafiken)
 
 ---
 
+<a name="gs"/></a>
+## Getting started
+Zur Bearbeitung der Aufgaben wurde die IDE [Visual Studio 2019](https://visualstudio.microsoft.com/de/vs/ "microsoft Visual Studio") genutzt. 
+Lade Dir zu erst das Repository herunter:
+```git
+git clone https://github.com/EricEricson/AVGP.git
+```
+In jedem Ordner findest du eine `*.sln` Projektdatei - starte diese.
+
+---
+<a name="aufgaben"/></a>
+## Aufgaben
 ## MCI- und WPF-Anwendungen
 <a name="mci"/></a>
 ### Aufgabe 1: Audio-/Midi-/Video-Player (mit der CMCIObject-Klasse)
