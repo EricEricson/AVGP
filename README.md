@@ -6,6 +6,7 @@
 3. [DirectSound](#dxSound)
 4. [Direct3D](#dx3D)
 5. [DirectShow](#dxShow)
+6. [Pixelgrafiken](#pixelgrafiken)
 
 ---
 
@@ -97,15 +98,38 @@ Erstellen Sie ein Abspielprogramm für Videodateien. Die folgende Funktionalitä
 - Kapseln Sie die Funktionalität von DirectShow sinnvoll und wiederverwendbar in einer eigenen Klasse.
 Nutzen Sie hierfür das in der Vorlesung entwickelte Beispiel und lassen Sie sich den Filtergraphen automatisch mit Hilfe der Methode "RenderFile" erstellen. Testen Sie Ihre Anwendung.
 
+### Aufgabe 4: mp3_to_wav und wav_to_mp3 Encoder
+Erstellen Sie eine Dialoganwendung, welche 2 Dateinamen als Eingabe erhält und wahlweise eine mp3-Datei in eine wav-Datei oder umgekehrt umwandelt. Sie können als Vorlage auch eine Kopie Ihres Programms aus der vorangegangenen Aufgabe verwenden.
+
+Ereugen Sie die entsprechenden Filtergraphen manuell. Die Dateinamen für Quell- und Zieldatei sind über ein `IFileSourceFilter`-Interface (bzw. über ein `IFileSinkFilter`-Interface) zu benennen. Fügen Sie die erzeugten Filter dem Filtergraphen hinzu und verbinden Sie die entsprechenden Pins wie in der nachstehenden Grafik angegeben (achten Sie dabei auf die genaue Pin-Bezeichnung!).
+
+
+![alt text][photo05]
+
+[photo05]: https://www2.htw-dresden.de/~bruns/prakt_mm_mp3towav.png "photo05"
+
+Wenn die Filter in den Graphen eingefügt sind, können Sie die Filter-Interfaces wieder freigeben (Release) und den Graphen testen. Vergessen Sie nicht, ggf. die für diese Aufgabe zusätzlich notwendigen DirectShow- Filter zu registrieren. Die Filter finden im Praktikumsordner auf P:\bruns für Ihren Rechner daheim. An der Hochschule sollte alles richtig installiert/registriert sein. Dies könnten Sie aber auch aus Ihrem Programm heraus zur Laufzeit tun:
+
+```
+      RegisterFilterDll("DUMP.AX",true);
+      RegisterFilterDll("lame_dshow.ax",true);
+      RegisterFilterDll("WAVDEST.AX",true);
+ ```
+
+Steuern Sie den Filtergraphen über die in der Vorlesung besprochenen COM-Interfaces. Zerstören Sie den Filtergraphen im Ereignishandler EC_COMPLETE bzw. EC_USERABORT.
+
+Der mp3-Encoder unterstützt einen Einstellungsdialog, nutzen Sie diesen.
+
+<a name="pixelgrafiken"/></a>
 ## Pixelgrafiken
 ### Aufgabe 1: Darstellung einer Bilddatei
 Erstellen Sie ein neues MFC-Projekt. Die dialogbasierte Applikation hat eine Schaltflächen mit der Aufschrift "Zeige das Bild". Wenn diese Schaltfläche gedrückt wird, zeigt Ihr Programm eine Bilddatei im bmp-Format. Nutzen Sie die in der Vorlesung erarbeitete Klasse CDIB.
 
 Erweitern Sie die Klasse CDIB um eine Methode DrawRect, die es Ihnen ermöglicht, die Bitmap bei der Ausgabe zu skalieren. Fügen Sie Ihrer Applikation zwei weitere Schaltflächen hinzu, die zur Vergrößerung bzw. zur Verkleinerung der Darstellung dienen. Gern können Sie auch ein in seiner Grösse variables Dialogfenster nutzen und das Ereignis WM_SIZE entsprechend behandeln. Siehe hier: 
 
-![alt text][photo05]
+![alt text][photo06]
 
-[photo05]: https://www2.htw-dresden.de/~bruns/CDIB.jpg "photo05"
+[photo06]: https://www2.htw-dresden.de/~bruns/CDIB.jpg "photo06"
 
 ### Aufgabe 2: Das jpg-Dateiformat
 Ihr Projekt aus der vorangegangenen Aufgabe ist zu erweitern. Ziel dieser Erweiterung ist das Laden und Speichern von Pixelgrafiken im jpg-Dateiformat. Nutzen Sie hierzu die in der Vorlesung entwickelten Methoden der Klasse CDIB. Ein Schieberegler für die Qualität der Komprimierung ist ebenfalls einzufügen.
