@@ -6,6 +6,7 @@
 3. [DirectSound](#dxSound)
 4. [Direct3D](#dx3D)
 5. [DirectShow](#dxShow)
+7. [Encoder](#encoder)
 6. [Pixelgrafiken](#pixelgrafiken)
 
 ---
@@ -98,6 +99,7 @@ Erstellen Sie ein Abspielprogramm für Videodateien. Die folgende Funktionalitä
 - Kapseln Sie die Funktionalität von DirectShow sinnvoll und wiederverwendbar in einer eigenen Klasse.
 Nutzen Sie hierfür das in der Vorlesung entwickelte Beispiel und lassen Sie sich den Filtergraphen automatisch mit Hilfe der Methode "RenderFile" erstellen. Testen Sie Ihre Anwendung.
 
+<a name="encoder"/></a>
 ### Aufgabe 4: mp3_to_wav und wav_to_mp3 Encoder
 Erstellen Sie eine Dialoganwendung, welche 2 Dateinamen als Eingabe erhält und wahlweise eine mp3-Datei in eine wav-Datei oder umgekehrt umwandelt. Sie können als Vorlage auch eine Kopie Ihres Programms aus der vorangegangenen Aufgabe verwenden.
 
