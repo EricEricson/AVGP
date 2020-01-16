@@ -128,13 +128,13 @@ BOOL CPixelgrafikDlg::OnCommand(WPARAM wParam, LPARAM lParam) {
 	
 	CFileDialog OpenFileDlg(TRUE, CString(".bmp"), NULL, 0, CString(strFilter)); // 1001
 	CFileDialog SaveFileDlg(FALSE, CString(".bmp"), NULL, 0, CString(strFilter)); // 1002
+	CFileDialog MergeFileDlg(TRUE, CString(".bmp"), NULL, 0, CString(strFilter)); // 1001
 
 	int sharpen_matrix[9] = { -1, -1, -1, -1, 9, -1, -1, -1, -1 }; // 1012
 	int soften_matrix[9] = { 6, 12, 6, 12, 25, 12, 6, 12, 6 }; // 1013
 	int emboss_matrix[9] = { -1, 0, 0, 0, 0, 0, 0, 0, 1 }; // 1014
 	int edge_matrix[9] = { -1, -1, -1, -1, 8, -1, -1, -1, -1 }; // 1015
 
-	CFileDialog MergeFileDlg(TRUE, CString(".bmp"), NULL, 0, CString(strFilter)); // 1001
 
 	switch (wParam)
 	{
@@ -165,10 +165,8 @@ BOOL CPixelgrafikDlg::OnCommand(WPARAM wParam, LPARAM lParam) {
 				
 				CQualityMerge saveDlg;
 				if (saveDlg.DoModal() == IDOK) {
-
+					m_dib.SaveJpeg(agendaPath + "\\" + agendaName, saveDlg.quality);
 				}
-				m_dib.SaveJpeg(agendaPath + "\\" + agendaName, saveDlg.quality); 
-				
 			}
 			else {
 				AfxMessageBox(L"File extension is not supported");
@@ -238,14 +236,15 @@ BOOL CPixelgrafikDlg::OnCommand(WPARAM wParam, LPARAM lParam) {
 			CQualityMerge percentageDlg;
 			CString agendaName = MergeFileDlg.GetFileName(); //filename
 			CString agendaPath = MergeFileDlg.GetFolderPath(); //filepath (folders)
+			
 			if (MergeFileDlg.GetFileExt() == L"bmp") {
 				if (percentageDlg.DoModal() == IDOK) {
-
+					m_dib.merge(agendaPath + "\\" + agendaName, percentageDlg.quality);
 				}
-				m_dib.merge(agendaPath + "\\" + agendaName, percentageDlg.quality);
 			}
 			else if (MergeFileDlg.GetFileExt() == L"jpg") {
 				//m_dib.LoadJpeg(agendaPath + "\\" + agendaName);
+				m_dib.merge(agendaPath + "\\" + agendaName, 50);
 			}
 			else {
 				AfxMessageBox(L"File extension is not supported");
