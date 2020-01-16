@@ -11,14 +11,14 @@
 #include "resource.h"		// Hauptsymbole
 
 
-// Pixelgrafik:
+// CPixelgrafikApp:
 // Siehe Pixelgrafik.cpp für die Implementierung dieser Klasse
 //
 
-class Pixelgrafik : public CWinApp
+class CPixelgrafikApp : public CWinApp
 {
 public:
-	Pixelgrafik();
+	CPixelgrafikApp();
 
 // Überschreibungen
 public:
@@ -29,4 +29,4 @@ public:
 	DECLARE_MESSAGE_MAP()
 };
 
-extern Pixelgrafik theApp;
+extern CPixelgrafikApp theApp;

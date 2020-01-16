@@ -14,6 +14,39 @@
 #endif
 
 
+// CAboutDlg-Dialogfeld für Anwendungsbefehl "Info"
+
+class CAboutDlg : public CDialogEx
+{
+public:
+	CAboutDlg();
+
+// Dialogfelddaten
+#ifdef AFX_DESIGN_TIME
+	enum { IDD = IDD_ABOUTBOX };
+#endif
+
+	protected:
+	virtual void DoDataExchange(CDataExchange* pDX);    // DDX/DDV-Unterstützung
+
+// Implementierung
+protected:
+	DECLARE_MESSAGE_MAP()
+};
+
+CAboutDlg::CAboutDlg() : CDialogEx(IDD_ABOUTBOX)
+{
+}
+
+void CAboutDlg::DoDataExchange(CDataExchange* pDX)
+{
+	CDialogEx::DoDataExchange(pDX);
+}
+
+BEGIN_MESSAGE_MAP(CAboutDlg, CDialogEx)
+END_MESSAGE_MAP()
+
+
 // CPixelgrafikDlg-Dialogfeld
 
 
@@ -30,11 +63,12 @@ void CPixelgrafikDlg::DoDataExchange(CDataExchange* pDX)
 }
 
 BEGIN_MESSAGE_MAP(CPixelgrafikDlg, CDialogEx)
+	ON_WM_SYSCOMMAND()
 	ON_WM_PAINT()
 	ON_WM_QUERYDRAGICON()
-	ON_WM_SIZE()
 	ON_WM_CONTEXTMENU()
 	ON_WM_MENUSELECT()
+	ON_WM_SIZE()
 END_MESSAGE_MAP()
 
 
@@ -48,24 +82,56 @@ BOOL CPixelgrafikDlg::OnInitDialog()
 
 	create_popup_menu();
 
+	// Hinzufügen des Menübefehls "Info..." zum Systemmenü.
+
+	// IDM_ABOUTBOX muss sich im Bereich der Systembefehle befinden.
+	ASSERT((IDM_ABOUTBOX & 0xFFF0) == IDM_ABOUTBOX);
+	ASSERT(IDM_ABOUTBOX < 0xF000);
+
+	CMenu* pSysMenu = GetSystemMenu(FALSE);
+	if (pSysMenu != nullptr)
+	{
+		BOOL bNameValid;
+		CString strAboutMenu;
+		bNameValid = strAboutMenu.LoadString(IDS_ABOUTBOX);
+		ASSERT(bNameValid);
+		if (!strAboutMenu.IsEmpty())
+		{
+			pSysMenu->AppendMenu(MF_SEPARATOR);
+			pSysMenu->AppendMenu(MF_STRING, IDM_ABOUTBOX, strAboutMenu);
+		}
+	}
+
 	// Symbol für dieses Dialogfeld festlegen.  Wird automatisch erledigt
 	//  wenn das Hauptfenster der Anwendung kein Dialogfeld ist
 	SetIcon(m_hIcon, TRUE);			// Großes Symbol verwenden
 	SetIcon(m_hIcon, FALSE);		// Kleines Symbol verwenden
 
-	// TODO: Hier zusaetzliche Initialisierung einfügen
+	// TODO: Hier zusätzliche Initialisierung einfügen
 
 	return TRUE;  // TRUE zurückgeben, wenn der Fokus nicht auf ein Steuerelement gesetzt wird
 }
 
-// Wenn Sie dem Dialogfeld eine Schaltflaeche "Minimieren" hinzufügen, benötigen Sie
+void CPixelgrafikDlg::OnSysCommand(UINT nID, LPARAM lParam)
+{
+	if ((nID & 0xFFF0) == IDM_ABOUTBOX)
+	{
+		CAboutDlg dlgAbout;
+		dlgAbout.DoModal();
+	}
+	else
+	{
+		CDialogEx::OnSysCommand(nID, lParam);
+	}
+}
+
+// Wenn Sie dem Dialogfeld eine Schaltfläche "Minimieren" hinzufügen, benötigen Sie
 //  den nachstehenden Code, um das Symbol zu zeichnen.  Für MFC-Anwendungen, die das 
 //  Dokument/Ansicht-Modell verwenden, wird dies automatisch ausgeführt.
 
-void CPixelgrafikDlg::OnPaint() {
-
+void CPixelgrafikDlg::OnPaint()
+{
 	CPaintDC dc(this); // Geraetekontext zum Zeichnen
-
 	CRect rect;
 	GetClientRect(&rect);
 	m_dib.Draw(&dc, 0, 0, rect.Width(), rect.Height());
@@ -75,7 +141,7 @@ void CPixelgrafikDlg::OnPaint() {
 
 	if (IsIconic())
 	{
-		CPaintDC dc(this); // Geraetekontext zum Zeichnen
+		CPaintDC dc(this); // Gerätekontext zum Zeichnen
 
 		SendMessage(WM_ICONERASEBKGND, reinterpret_cast<WPARAM>(dc.GetSafeHdc()), 0);
 
@@ -96,7 +162,7 @@ void CPixelgrafikDlg::OnPaint() {
 	}
 }
 
-// Die System ruft diese Funktion auf, um den Cursor abzufragen, der angezeigt wird, waehrend der Benutzer
+// Die System ruft diese Funktion auf, um den Cursor abzufragen, der angezeigt wird, während der Benutzer
 //  das minimierte Fenster mit der Maus zieht.
 HCURSOR CPixelgrafikDlg::OnQueryDragIcon()
 {
@@ -105,27 +171,25 @@ HCURSOR CPixelgrafikDlg::OnQueryDragIcon()
 
 
 
-void CPixelgrafikDlg::OnSize(UINT nType, int cx, int cy) {
-
-	RedrawWindow();
-	CDialogEx::OnSize(nType, cx, cy);
-}
-
-
 void CPixelgrafikDlg::OnContextMenu(CWnd* pWnd, CPoint point) {
 	menu.TrackPopupMenu(TPM_LEFTALIGN | TPM_LEFTBUTTON, point.x, point.y, this);
 }
 
 
-void CPixelgrafikDlg::OnMenuSelect(UINT nItemID, UINT nFlags, HMENU hSysMenu)
-{
+void CPixelgrafikDlg::OnMenuSelect(UINT nItemID, UINT nFlags, HMENU hSysMenu) {
+	//
 	CDialogEx::OnMenuSelect(nItemID, nFlags, hSysMenu);
 }
 
-BOOL CPixelgrafikDlg::OnCommand(WPARAM wParam, LPARAM lParam) {
 
+void CPixelgrafikDlg::OnSize(UINT nType, int cx, int cy) {
+	RedrawWindow();
+	CDialogEx::OnSize(nType, cx, cy);
+}
+
+BOOL CPixelgrafikDlg::OnCommand(WPARAM wParam, LPARAM lParam) {
 	char strFilter[] = { "Media Files|*.bmp;*.jpg;*.jpeg|All Files (*.*)|*.*||" };
-	
+
 	CFileDialog OpenFileDlg(TRUE, CString(".bmp"), NULL, 0, CString(strFilter)); // 1001
 	CFileDialog SaveFileDlg(FALSE, CString(".bmp"), NULL, 0, CString(strFilter)); // 1002
 	CFileDialog MergeFileDlg(TRUE, CString(".bmp"), NULL, 0, CString(strFilter)); // 1001
@@ -169,7 +233,7 @@ BOOL CPixelgrafikDlg::OnCommand(WPARAM wParam, LPARAM lParam) {
 				m_dib.Save(agendaPath + "\\" + agendaName);
 			}
 			else if (SaveFileDlg.GetFileExt() == L"jpg") {
-				
+
 				CQualityMerge saveDlg;
 				if (saveDlg.DoModal() == IDOK) {
 					m_dib.SaveJpeg(agendaPath + "\\" + agendaName, saveDlg.quality);
@@ -243,7 +307,7 @@ BOOL CPixelgrafikDlg::OnCommand(WPARAM wParam, LPARAM lParam) {
 			CQualityMerge percentageDlg;
 			CString agendaName = MergeFileDlg.GetFileName(); //filename
 			CString agendaPath = MergeFileDlg.GetFolderPath(); //filepath (folders)
-			
+
 			if (MergeFileDlg.GetFileExt() == L"bmp") {
 				if (percentageDlg.DoModal() == IDOK) {
 					m_dib.merge(agendaPath + "\\" + agendaName, percentageDlg.quality);
@@ -263,7 +327,6 @@ BOOL CPixelgrafikDlg::OnCommand(WPARAM wParam, LPARAM lParam) {
 	}
 	RedrawWindow();
 	return CDialog::OnCommand(wParam, lParam);
-
 }
 
 void CPixelgrafikDlg::drawHistogramm() {

@@ -497,7 +497,7 @@ bool CDIB::SaveJpeg(CString pszFileName, int quality) {
 	struct jpeg_error_mgr jerr;
 	cinfo.err = jpeg_std_error(&jerr);
 	jpeg_create_compress(&cinfo);
-	
+
 	FILE* outfile; // Ausgabedatei festlegen
 	if ((outfile = _wfopen(pszFileName, L"wb")) == 0) {
 		CString s;
@@ -506,7 +506,7 @@ bool CDIB::SaveJpeg(CString pszFileName, int quality) {
 		return false;
 	}
 	jpeg_stdio_dest(&cinfo, outfile);
-	
+
 	cinfo.image_width = m_pBMI->bmiHeader.biWidth;
 	cinfo.image_height = m_pBMI->bmiHeader.biHeight;
 	cinfo.input_components = m_pBMI->bmiHeader.biBitCount / 8;
@@ -516,11 +516,11 @@ bool CDIB::SaveJpeg(CString pszFileName, int quality) {
 		cinfo.in_color_space = JCS_GRAYSCALE;
 	jpeg_set_defaults(&cinfo);
 
-	
+
 	jpeg_set_quality(&cinfo, quality, TRUE); // Komprimierungsqualität
-	
+
 	jpeg_start_compress(&cinfo, TRUE); // Komrimierung starten
-	
+
 	BYTE* adr, h, * line = new BYTE[StorageWidth()];
 	while (cinfo.next_scanline < cinfo.image_height) {
 		adr = (unsigned char*)GetPixelAddress(0, cinfo.next_scanline);
@@ -530,10 +530,10 @@ bool CDIB::SaveJpeg(CString pszFileName, int quality) {
 		}
 		jpeg_write_scanlines(&cinfo, &line, 1); // Zeile schreiben
 	}
-	
+
 	jpeg_finish_compress(&cinfo); // Komrimierung beenden
 	fclose(outfile);
-	
+
 	delete[] line;
 	jpeg_destroy_compress(&cinfo); // Ressourcen freigeben
 
@@ -543,12 +543,12 @@ bool CDIB::SaveJpeg(CString pszFileName, int quality) {
 bool CDIB::LoadJpeg(CString pszFileName) {
 	if (m_pBMFH != 0) delete[] m_pBMFH; // CDIB sollte leer sein
 
-	
+
 	struct jpeg_decompress_struct cinfo; // Initialisierung
 	struct jpeg_error_mgr jerr;
 	cinfo.err = jpeg_std_error(&jerr);
 	jpeg_create_decompress(&cinfo);
-	
+
 	FILE* infile; // Datei öffnen
 	if ((infile = _wfopen(pszFileName, L"rb")) == 0) {
 		CString s;
@@ -557,14 +557,14 @@ bool CDIB::LoadJpeg(CString pszFileName) {
 		return false;
 	}
 	jpeg_stdio_src(&cinfo, infile);
-	
+
 	jpeg_read_header(&cinfo, TRUE); // Bildheader (Metadaten) lesen
 	if (cinfo.num_components != 3) { // 24 bit test
 		AfxMessageBox(L"We support only 24 Bit RGB pictures!!!");
 		fclose(infile); return false;
 	}
 	jpeg_start_decompress(&cinfo);
-	
+
 	int bytes_per_line = // Speicher allocieren
 		(cinfo.output_width * cinfo.num_components + 3) & ~3;
 	int bytes_per_picture = cinfo.output_height * bytes_per_line;
@@ -575,7 +575,7 @@ bool CDIB::LoadJpeg(CString pszFileName) {
 		return false;
 	}
 
-	
+
 	m_pBMFH->bfType = 0x4d42; // BITMAPFILEHEADER
 	m_pBMFH->bfReserved1 = m_pBMFH->bfReserved2 = 0;
 	m_pBMFH->bfOffBits = sizeof(BITMAPFILEHEADER) +
@@ -594,7 +594,7 @@ bool CDIB::LoadJpeg(CString pszFileName) {
 		m_pBMI->bmiHeader.biClrUsed = m_pBMI->bmiHeader.biClrImportant = 0;
 	m_pBits = (unsigned char*)m_pBMFH + // Pixeldaten
 		sizeof(BITMAPFILEHEADER) + sizeof(BITMAPINFO);
-	
+
 	// Dekomprimierungsschleife
 	unsigned char* adr, h;
 	while (cinfo.output_scanline < cinfo.output_height) {
@@ -604,7 +604,7 @@ bool CDIB::LoadJpeg(CString pszFileName) {
 			h = adr[j]; adr[j] = adr[j + 2]; adr[j + 2] = h;
 		}
 	}
-	
+
 	jpeg_finish_decompress(&cinfo); // Ressourcen freigeben
 	jpeg_destroy_decompress(&cinfo);
 	fclose(infile);

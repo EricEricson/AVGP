@@ -12,33 +12,48 @@
 #endif
 
 
-// Pixelgrafik
+// CPixelgrafikApp
 
-BEGIN_MESSAGE_MAP(Pixelgrafik, CWinApp)
+BEGIN_MESSAGE_MAP(CPixelgrafikApp, CWinApp)
 	ON_COMMAND(ID_HELP, &CWinApp::OnHelp)
 END_MESSAGE_MAP()
 
 
-// Pixelgrafik-Erstellung
+// CPixelgrafikApp-Erstellung
 
-Pixelgrafik::Pixelgrafik()
+CPixelgrafikApp::CPixelgrafikApp()
 {
+	// Neustart-Manager unterstützen
+	m_dwRestartManagerSupportFlags = AFX_RESTART_MANAGER_SUPPORT_RESTART;
+
 	// TODO: Hier Code zur Konstruktion einfügen
 	// Alle wichtigen Initialisierungen in InitInstance positionieren
 }
 
 
-// Das einzige Pixelgrafik-Objekt
+// Das einzige CPixelgrafikApp-Objekt
 
-Pixelgrafik theApp;
+CPixelgrafikApp theApp;
 
 
-// Pixelgrafik-Initialisierung
+// CPixelgrafikApp-Initialisierung
 
-BOOL Pixelgrafik::InitInstance()
+BOOL CPixelgrafikApp::InitInstance()
 {
+	// InitCommonControlsEx() ist für Windows XP erforderlich, wenn ein Anwendungsmanifest
+	// die Verwendung von ComCtl32.dll Version 6 oder höher zum Aktivieren
+	// von visuellen Stilen angibt.  Ansonsten treten beim Erstellen von Fenstern Fehler auf.
+	INITCOMMONCONTROLSEX InitCtrls;
+	InitCtrls.dwSize = sizeof(InitCtrls);
+	// Legen Sie dies fest, um alle allgemeinen Steuerelementklassen einzubeziehen,
+	// die Sie in Ihrer Anwendung verwenden möchten.
+	InitCtrls.dwICC = ICC_WIN95_CLASSES;
+	InitCommonControlsEx(&InitCtrls);
+
 	CWinApp::InitInstance();
 
+
+	AfxEnableControlContainer();
 
 	// Shell-Manager erstellen, falls das Dialogfeld
 	// Shellbaumansicht- oder Shelllistenansicht-Steuerelemente enthält.
