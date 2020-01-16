@@ -7,6 +7,7 @@ class CDIB {
 public:
 	CDIB();
 	~CDIB();
+	virtual bool ImageLoaded();	// Check if a picture is loaded
 	virtual bool Load(char* fname); // Load from file
 	virtual bool Load(CString fname); // Load from file
 	virtual bool Save(char* fname); // Save to file

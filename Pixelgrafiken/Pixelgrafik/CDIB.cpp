@@ -16,6 +16,15 @@ CDIB::~CDIB() {
 		delete[] m_pBMFH; // free the memory.
 }
 
+bool CDIB::ImageLoaded() {
+	if (m_pBMFH != 0) {
+		return true;	// image is loaded
+	}
+	else {
+		return false;	// no image is loaded
+	}
+}
+
 // gibt mir die Breite zurück
 int CDIB::DibWidth() {
 	if (m_pBMFH)

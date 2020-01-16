@@ -135,6 +135,13 @@ BOOL CPixelgrafikDlg::OnCommand(WPARAM wParam, LPARAM lParam) {
 	int emboss_matrix[9] = { -1, 0, 0, 0, 0, 0, 0, 0, 1 }; // 1014
 	int edge_matrix[9] = { -1, -1, -1, -1, 8, -1, -1, -1, -1 }; // 1015
 
+	if (wParam > 1001) {
+		if (!m_dib.ImageLoaded()) {
+			AfxMessageBox(L"No picture loaded. Please load a picture first.");
+			wParam = 1001;
+			exit;
+		}
+	}
 
 	switch (wParam)
 	{
