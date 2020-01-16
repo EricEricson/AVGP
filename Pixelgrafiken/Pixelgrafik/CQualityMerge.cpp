@@ -47,6 +47,9 @@ BOOL CQualityMerge::OnInitDialog()
 void CQualityMerge::OnNMCustomdrawSliderMerge(NMHDR* pNMHDR, LRESULT* pResult)
 {
 	LPNMCUSTOMDRAW pNMCD = reinterpret_cast<LPNMCUSTOMDRAW>(pNMHDR);
+	CString s;
 	quality = ((CSliderCtrl*)GetDlgItem(IDC_SLIDER_MERGE))->GetPos();
 	*pResult = 0;
+	s.Format(L"Wert %2d", (int)(quality));
+	GetDlgItem(IDC_STATIC_VALUE)->SetWindowText(s + " %");
 }
