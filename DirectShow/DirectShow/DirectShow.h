@@ -14,7 +14,7 @@ public:
 	void Pause();
 	void Stop();
 	void CleanUp();
-	void Vollbild(bool v);
+	void fullscreen(bool v);
 	void Run();
 
 	void setCurrentPosition(REFERENCE_TIME pos);

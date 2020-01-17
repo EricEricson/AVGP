@@ -55,7 +55,7 @@ void CDirectShow::Stop() {
 	}
 }
 
-void CDirectShow::Vollbild(bool v) {
+void CDirectShow::fullscreen(bool v) {
 	if (pGraph) {
 		IVideoWindow* pVidWin1 = NULL;
 		pGraph->QueryInterface(IID_IVideoWindow, (void**)&pVidWin1);
@@ -121,7 +121,7 @@ void CDirectShow::setFilename(CString newfilename) {
 
 void CDirectShow::CleanUp() {
 	if (pGraph) {
-		Vollbild(FALSE);
+		fullscreen(FALSE);
 		pVidWin->put_Visible(OAFALSE);
 		pVidWin->put_Owner(NULL);
 		pSeek->Release();

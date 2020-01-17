@@ -154,7 +154,7 @@ void CDirectShowDlg::OnBnClickedButtonResume() {
 }
 
 void CDirectShowDlg::OnBnClickedButtonFullscreen() {
-	directshow.Vollbild(TRUE);
+	directshow.fullscreen(TRUE);
 }
 
 void CDirectShowDlg::OnBnClickedButtonStop() {
@@ -164,7 +164,7 @@ void CDirectShowDlg::OnBnClickedButtonStop() {
 }
 
 void CDirectShowDlg::OnLButtonDown(UINT nFlags, CPoint point) {
-	directshow.Vollbild(FALSE);
+	directshow.fullscreen(FALSE);
 	CDialogEx::OnLButtonDown(nFlags, point);
 }
 
