@@ -108,6 +108,20 @@ void CDirectShowDlg::OnTimer(UINT_PTR nIDEvent) {
 		REFERENCE_TIME rtTotal, rtNow = 0; CString s;
 		rtTotal = directshow.getLength();
 		rtNow = directshow.getCurrentPosition();
+
+		// if fullscreen and video is eof set video to begin and end video
+		//if ((int)(rtNow * 100) == 100) {
+		//	((CSliderCtrl*)GetDlgItem(IDC_SLIDER_VideoLength))->SetPos((int)(0));
+		//	directshow.Pause();
+
+		//	CSliderCtrl* sl1 = (CSliderCtrl*)GetDlgItem(IDC_SLIDER_VideoLength);
+		//	REFERENCE_TIME pos = (REFERENCE_TIME)sl1->GetPos() * 1000000;
+		//	directshow.setCurrentPosition(pos);
+		//	
+		//	directshow.Vollbild(false);
+		//	exit;
+		//}
+
 		s.Format(L"%02d:%02d (%d%%)",
 			(int)((rtNow / 10000000L) / 60), // min
 			(int)((rtNow / 10000000L) % 60), // sek
