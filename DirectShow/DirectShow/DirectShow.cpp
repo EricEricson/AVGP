@@ -74,6 +74,11 @@ void CDirectShow::setZero() {
 		NULL, AM_SEEKING_NoPositioning);
 }
 
+void CDirectShow::seek(REFERENCE_TIME* rtTotal, REFERENCE_TIME* rtNow) {
+	pSeek->GetDuration(rtTotal);
+	pSeek->GetCurrentPosition(rtNow);
+}
+
 void CDirectShow::setCurrentPosition(REFERENCE_TIME pos) {
 	if (pSeek) {
 		pSeek->SetPositions(&pos, AM_SEEKING_AbsolutePositioning,

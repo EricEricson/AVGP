@@ -17,6 +17,7 @@ public:
 	void fullscreen(bool v);
 	void Run();
 	void setZero();
+	void seek(REFERENCE_TIME* rtTotal, REFERENCE_TIME* rtNow);
 
 	void setCurrentPosition(REFERENCE_TIME pos);
 	REFERENCE_TIME getCurrentPosition();

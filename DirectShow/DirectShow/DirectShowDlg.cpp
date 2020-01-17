@@ -105,9 +105,20 @@ LONG CDirectShowDlg::GetIt(UINT wparam, LONG lparam) {
 
 // Timer fragt regelmäßig ab, an welcher Stelle der Film gerade ist
 void CDirectShowDlg::OnTimer(UINT_PTR nIDEvent) {
-		REFERENCE_TIME rtTotal, rtNow = 0; CString s;
-		rtTotal = directshow.getLength();
-		rtNow = directshow.getCurrentPosition();
+		REFERENCE_TIME rtTotal, rtNow = 0; 
+		CString s;
+		CSliderCtrl* sl = (CSliderCtrl*)GetDlgItem(IDC_SLIDER_VideoLength);
+		//rtTotal = directshow.getLength();
+		//rtNow = directshow.getCurrentPosition();
+		directshow.seek(&rtTotal, &rtNow);
+
+		if ((rtNow * 100) / rtTotal == 100) {
+			directshow.setZero();
+			directshow.Pause();
+			directshow.fullscreen(FALSE);
+			sl->SetPos(0);
+		}
+
 		s.Format(L"%02d:%02d (%d%%)",
 			(int)((rtNow / 10000000L) / 60), // min
 			(int)((rtNow / 10000000L) % 60), // sek
@@ -116,10 +127,9 @@ void CDirectShowDlg::OnTimer(UINT_PTR nIDEvent) {
 
 		REFERENCE_TIME d;
 		d = directshow.getLength();
-		CSliderCtrl* sl;
-		sl = (CSliderCtrl*)GetDlgItem(IDC_SLIDER_VideoLength);
-		sl->SetRange(0, (int)(d / 1000000)); sl->SetPos(0);
-
+		
+		sl->SetRange(0, (int)(d / 1000000)); 
+		sl->SetPos(0);
 		((CSliderCtrl*)GetDlgItem(IDC_SLIDER_VideoLength))->SetPos((int)(rtNow / 1000000));
 
 	CDialogEx::OnTimer(nIDEvent);
