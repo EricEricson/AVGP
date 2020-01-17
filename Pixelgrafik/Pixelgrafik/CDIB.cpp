@@ -125,8 +125,8 @@ void CDIB::Draw(CDC* pDC, int x, int y, int width, int height) {
 			y,								// Destination y
 
 			// Skalierbarkeit
-			DibWidth(),						// Destination width
-			DibHeight(),					// Destination height
+			width,							// Destination width
+			height,							// Destination height
 			0,								// Source x
 			0,								// Source y
 			DibWidth(),						// Source width
