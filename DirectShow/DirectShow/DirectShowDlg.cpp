@@ -174,10 +174,6 @@ void CDirectShowDlg::OnBnClickedButtonFile() {
 	// Erstelle einen OpenDialog
 	CFileDialog fileDlg(TRUE, NULL, NULL, OFN_FILEMUSTEXIST | OFN_HIDEREADONLY, szFilters, this);
 
-	//CString szFilters = L"AVI Files (*.avi)|*.avi|All Files (*.*)|*.*||";
-	// Create an Open dialog; the default file name extension is ".my".
-	//CFileDialog fileDlg(TRUE, L"avi", L"*.avi", OFN_FILEMUSTEXIST | OFN_HIDEREADONLY, szFilters, this);
-
 	// Zeige den FileDialog ; Wenn der Nutzer OK klickt -> fileDlg.DoModal()
 	if (fileDlg.DoModal() == IDOK)
 	{
