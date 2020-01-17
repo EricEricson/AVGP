@@ -491,3 +491,39 @@ void CWAVMP3ConverterDlg::OnBnClickedCancel()
 {
 	OnOK();
 }
+
+LONG CWAVMP3ConverterDlg::NewMessage(UINT wparam, LONG lparam) {
+
+	LONG evCode, evParam1, evParam2;
+
+	if (m_Event1) {
+		while (SUCCEEDED(m_Event1->GetEvent(&evCode, &evParam1, &evParam2, 0))) {
+			m_Event1->FreeEventParams(evCode, evParam1, evParam2);
+			switch (evCode) {
+			case EC_COMPLETE:
+				OnRelease();
+				AfxMessageBox(L"Abgeschlossen"); return 0;
+			case EC_USERABORT:
+				OnRelease(); return 0;
+			}
+		}
+	}
+	return 0;
+}
+
+void CWAVMP3ConverterDlg::OnRelease() {
+	if (m_Ctrl1) {
+		m_Ctrl1->Stop();
+		m_Ctrl1->Release();
+		m_Ctrl1 = NULL;
+	}
+	if (m_Event1) {
+		m_Event1->Release();
+		m_Event1 = NULL;
+	}
+	if (m_Graph1) {
+		m_Graph1->Release();
+		m_Graph1 = NULL;
+	}
+	CoUninitialize();
+}
