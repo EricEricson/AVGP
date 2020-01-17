@@ -68,6 +68,12 @@ void CDirectShow::Run() {
 	pMediaControl->Run();
 }
 
+void CDirectShow::setZero() {
+	REFERENCE_TIME pos = 0;
+	pSeek->SetPositions(&pos, AM_SEEKING_AbsolutePositioning,
+		NULL, AM_SEEKING_NoPositioning);
+}
+
 void CDirectShow::setCurrentPosition(REFERENCE_TIME pos) {
 	if (pSeek) {
 		pSeek->SetPositions(&pos, AM_SEEKING_AbsolutePositioning,

@@ -16,6 +16,7 @@ public:
 	void CleanUp();
 	void fullscreen(bool v);
 	void Run();
+	void setZero();
 
 	void setCurrentPosition(REFERENCE_TIME pos);
 	REFERENCE_TIME getCurrentPosition();
