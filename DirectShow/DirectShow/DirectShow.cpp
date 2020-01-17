@@ -119,6 +119,10 @@ void CDirectShow::setFilename(CString newfilename) {
 	Init();
 }
 
+CString CDirectShow::getFilename() {
+	return filename;
+}
+
 void CDirectShow::CleanUp() {
 	if (pGraph) {
 		fullscreen(FALSE);

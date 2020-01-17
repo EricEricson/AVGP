@@ -25,10 +25,11 @@ public:
 	void setNotifyWindow(UINT NEAR WM_GRAPHNOTIFY);
 	void setVideoWindow();
 	void setFilename(CString filename);
-
-	CString filename;
+	CString getFilename();
 
 private:
+	CString filename;
+
 	OAHWND window;
 	IGraphBuilder *pGraph = 0; // ein Zeiger auf das COM-Interface
 	IMediaControl *pMediaControl = 0;
