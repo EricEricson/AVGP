@@ -105,6 +105,7 @@ LONG CDirectShowDlg::GetIt(UINT wparam, LONG lparam) {
 
 // Timer fragt regelmäßig ab, an welcher Stelle der Film gerade ist
 void CDirectShowDlg::OnTimer(UINT_PTR nIDEvent) {
+<<<<<<< HEAD
 		REFERENCE_TIME rtTotal, rtNow = 0; CString s;
 		rtTotal = directshow.getLength();
 		rtNow = directshow.getCurrentPosition();
@@ -121,6 +122,21 @@ void CDirectShowDlg::OnTimer(UINT_PTR nIDEvent) {
 		//	directshow.Vollbild(false);
 		//	exit;
 		//}
+=======
+		REFERENCE_TIME rtTotal, rtNow = 0; 
+		CString s;
+		CSliderCtrl* sl = (CSliderCtrl*)GetDlgItem(IDC_SLIDER_VideoLength);
+		//rtTotal = directshow.getLength();
+		//rtNow = directshow.getCurrentPosition();
+		directshow.seek(&rtTotal, &rtNow);
+
+		if ((rtNow * 100) / rtTotal == 100) {
+			directshow.setZero();
+			directshow.Pause();
+			directshow.fullscreen(FALSE);
+			sl->SetPos(0);
+		}
+>>>>>>> 7dc8e8a9772bd29fdb86dcc9a12b591f8e5c08e8
 
 		s.Format(L"%02d:%02d (%d%%)",
 			(int)((rtNow / 10000000L) / 60), // min
@@ -130,10 +146,9 @@ void CDirectShowDlg::OnTimer(UINT_PTR nIDEvent) {
 
 		REFERENCE_TIME d;
 		d = directshow.getLength();
-		CSliderCtrl* sl;
-		sl = (CSliderCtrl*)GetDlgItem(IDC_SLIDER_VideoLength);
-		sl->SetRange(0, (int)(d / 1000000)); sl->SetPos(0);
-
+		
+		sl->SetRange(0, (int)(d / 1000000)); 
+		sl->SetPos(0);
 		((CSliderCtrl*)GetDlgItem(IDC_SLIDER_VideoLength))->SetPos((int)(rtNow / 1000000));
 
 	CDialogEx::OnTimer(nIDEvent);
@@ -168,7 +183,7 @@ void CDirectShowDlg::OnBnClickedButtonResume() {
 }
 
 void CDirectShowDlg::OnBnClickedButtonFullscreen() {
-	directshow.Vollbild(TRUE);
+	directshow.fullscreen(TRUE);
 }
 
 void CDirectShowDlg::OnBnClickedButtonStop() {
@@ -178,7 +193,7 @@ void CDirectShowDlg::OnBnClickedButtonStop() {
 }
 
 void CDirectShowDlg::OnLButtonDown(UINT nFlags, CPoint point) {
-	directshow.Vollbild(FALSE);
+	directshow.fullscreen(FALSE);
 	CDialogEx::OnLButtonDown(nFlags, point);
 }
 
@@ -187,10 +202,6 @@ void CDirectShowDlg::OnBnClickedButtonFile() {
 	CString szFilters = L"Media Files|*.mpg;*.avi;*.wma;*.mov;*.wav;*.mp2;*.mp3;*.mp4|All Files (*.*)|*.*||";
 	// Erstelle einen OpenDialog
 	CFileDialog fileDlg(TRUE, NULL, NULL, OFN_FILEMUSTEXIST | OFN_HIDEREADONLY, szFilters, this);
-
-	//CString szFilters = L"AVI Files (*.avi)|*.avi|All Files (*.*)|*.*||";
-	// Create an Open dialog; the default file name extension is ".my".
-	//CFileDialog fileDlg(TRUE, L"avi", L"*.avi", OFN_FILEMUSTEXIST | OFN_HIDEREADONLY, szFilters, this);
 
 	// Zeige den FileDialog ; Wenn der Nutzer OK klickt -> fileDlg.DoModal()
 	if (fileDlg.DoModal() == IDOK)

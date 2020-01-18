@@ -55,7 +55,7 @@ void CDirectShow::Stop() {
 	}
 }
 
-void CDirectShow::Vollbild(bool v) {
+void CDirectShow::fullscreen(bool v) {
 	if (pGraph) {
 		IVideoWindow* pVidWin1 = NULL;
 		pGraph->QueryInterface(IID_IVideoWindow, (void**)&pVidWin1);
@@ -66,6 +66,17 @@ void CDirectShow::Vollbild(bool v) {
 
 void CDirectShow::Run() {
 	pMediaControl->Run();
+}
+
+void CDirectShow::setZero() {
+	REFERENCE_TIME pos = 0;
+	pSeek->SetPositions(&pos, AM_SEEKING_AbsolutePositioning,
+		NULL, AM_SEEKING_NoPositioning);
+}
+
+void CDirectShow::seek(REFERENCE_TIME* rtTotal, REFERENCE_TIME* rtNow) {
+	pSeek->GetDuration(rtTotal);
+	pSeek->GetCurrentPosition(rtNow);
 }
 
 void CDirectShow::setCurrentPosition(REFERENCE_TIME pos) {
@@ -119,9 +130,13 @@ void CDirectShow::setFilename(CString newfilename) {
 	Init();
 }
 
+CString CDirectShow::getFilename() {
+	return filename;
+}
+
 void CDirectShow::CleanUp() {
 	if (pGraph) {
-		Vollbild(FALSE);
+		fullscreen(FALSE);
 		pVidWin->put_Visible(OAFALSE);
 		pVidWin->put_Owner(NULL);
 		pSeek->Release();
