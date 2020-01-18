@@ -155,6 +155,7 @@ int CDIB::StorageWidth() {
 		(m_pBMI->bmiHeader.biBitCount / 8) + 3) & ~3) : 0);
 }
 
+// Differenz pro Kanal (RGB) zu weiß um 10% anheben/aufhellen
 void CDIB::brighten(int value) {
 	if ((m_pBMFH == 0) || (m_pBMI->bmiHeader.biBitCount != 24))
 		return; // do nothing (not supported)
@@ -182,6 +183,7 @@ void CDIB::brighten(int value) {
 	}
 }
 
+// spiegel alle pixel pro kanal
 void CDIB::negative() {
 	if ((m_pBMFH == 0) || (m_pBMI->bmiHeader.biBitCount != 24))
 		return;
@@ -196,6 +198,8 @@ void CDIB::negative() {
 	}
 }
 
+// gewichteter wert der helligkeit aller 3 farbkanäle
+// das erste byte ist der Blaukanal der letzten zeile des bildes (BGR)
 void CDIB::grey() {
 	if ((m_pBMFH == 0) || (m_pBMI->bmiHeader.biBitCount != 24))
 		return;
@@ -210,6 +214,7 @@ void CDIB::grey() {
 	}
 }
 
+// zeigt die relative häufigkeit alles grauwerte eines bildes
 void CDIB::histogramm(float* h, float zoom) {
 	if ((m_pBMFH == 0) || (m_pBMI->bmiHeader.biBitCount != 24))
 		return;
@@ -230,6 +235,8 @@ void CDIB::histogramm(float* h, float zoom) {
 		}
 }
 
+// kontrasterhöhung macht dunkle bereiche noch dunkler und hellere bereiche noch heller
+// die lut streckt die farbwerte
 void CDIB::contrast(float alpha) {
 	if ((m_pBMFH == 0) || (m_pBMI->bmiHeader.biBitCount != 24))
 		return;
