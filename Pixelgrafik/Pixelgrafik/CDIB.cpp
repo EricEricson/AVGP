@@ -1,6 +1,41 @@
 #include "pch.h"
 #include "CDIB.h"
+#include "cfft.h"
 #include <math.h>
+
+CDIB::CDIB(int w, int h) {
+	m_dwLength = ((w * 3 + 3) & ~3) * h + sizeof(BITMAPFILEHEADER) + sizeof(BITMAPINFOHEADER);
+	if ((m_pBMFH = (BITMAPFILEHEADER*) new char[m_dwLength]) == 0) {
+		AfxMessageBox(L"Unable to allocate DIB-Memory");
+		return;
+	}
+
+	/* Initialize BITMAPFILEHEADER */
+	m_pBMFH->bfType = 0x4d42;
+	m_pBMFH->bfReserved1 = m_pBMFH->bfReserved2 = 0;
+	m_pBMFH->bfOffBits = sizeof(BITMAPFILEHEADER) + sizeof(BITMAPINFOHEADER);
+
+	m_pBMI = (BITMAPINFO*)((BYTE*)m_pBMFH + sizeof(BITMAPFILEHEADER));
+	m_pBits = (BYTE*)m_pBMFH + m_pBMFH->bfOffBits;
+
+	/* Initialize BITMAPINFOHEADER */
+	m_pBMI->bmiHeader.biSize = sizeof(BITMAPINFOHEADER);
+	m_pBMI->bmiHeader.biWidth = w;
+	m_pBMI->bmiHeader.biHeight = h;
+	m_pBMI->bmiHeader.biPlanes = 1;
+	m_pBMI->bmiHeader.biBitCount = 24;       // 3*8  (RGB)
+	m_pBMI->bmiHeader.biCompression = BI_RGB;
+	m_pBMI->bmiHeader.biSizeImage =
+		m_pBMI->bmiHeader.biXPelsPerMeter =
+		m_pBMI->bmiHeader.biYPelsPerMeter =
+		m_pBMI->bmiHeader.biClrUsed =
+		m_pBMI->bmiHeader.biClrImportant = 0;
+
+	m_pBMFH->bfSize = sizeof(BITMAPFILEHEADER) + sizeof(BITMAPINFOHEADER) +
+		StorageWidth() * h;
+
+	memset(m_pBits, 0, StorageWidth() * h);
+}
 
 // alle Member auf 0 setzen
 CDIB::CDIB() {
@@ -21,6 +56,7 @@ bool CDIB::ImageLoaded() {
 		return true;	// image is loaded
 	}
 	else {
+		return false;	// no image is loaded
 		return false;	// no image is loaded
 	}
 }
@@ -214,6 +250,27 @@ void CDIB::grey() {
 	}
 }
 
+void CDIB::blending(CDIB& b1, CDIB& b2, int p) {
+	if ((m_pBMFH == 0) || (b1.m_pBMFH == 0) || (b2.m_pBMFH == 0)) return;
+	if ((m_pBMI->bmiHeader.biBitCount != 24) ||
+		(b1.m_pBMI->bmiHeader.biBitCount != 24) ||
+		(b2.m_pBMI->bmiHeader.biBitCount != 24)) return;
+	if ((DibWidth() != b1.DibWidth()) || (DibWidth() != b2.DibWidth()) ||
+		(DibHeight() != b1.DibHeight()) || (DibHeight() != b2.DibHeight())) return;
+
+	BYTE* t, * t1, * t2; int sw = StorageWidth();
+	for (int i = 0; i < DibHeight(); i++) {
+		t = (BYTE*)GetPixelAddress(0, i);
+		t1 = (BYTE*)b1.GetPixelAddress(0, i);
+		t2 = (BYTE*)b2.GetPixelAddress(0, i);
+		for (int j = 0; j < sw; j += 3) {
+			*(t + j) = *(t1 + j) + ((*(t2 + j) - *(t1 + j)) * (p / 100.f));
+			*(t + j + 1) = *(t1 + j + 1) + ((*(t2 + j + 1) - *(t1 + j + 1)) * (p / 100.f));
+			*(t + j + 2) = *(t1 + j + 2) + ((*(t2 + j + 2) - *(t1 + j + 2)) * (p / 100.f));
+		}
+	}
+}
+
 // zeigt die relative h‰ufigkeit alles grauwerte eines bildes
 void CDIB::histogramm(float* h, float zoom) {
 	if ((m_pBMFH == 0) || (m_pBMI->bmiHeader.biBitCount != 24))
@@ -400,12 +457,292 @@ double CDIB::dist(int x1, int y1, int x2, int y2) {
 	return sqrt((double)((x1 - x2) * (x1 - x2)) + ((y1 - y2, 2) * (y1 - y2, 2)));
 }
 
-void CDIB::mosaic() {
-	// TODO:
+void CDIB::mosaic(int value) {
+	if ((m_pBMFH == 0) || (m_pBMI->bmiHeader.biBitCount != 24))
+		return;
+
+	if (value > (DibWidth()) || value > (DibHeight())) {
+		AfxMessageBox(L"Zu groﬂe Kantenl‰nge.");
+		return;
+	}
+
+	if (value <= 0) return;
+
+	BYTE* t;
+	int red = 0, green = 0, blue = 0;
+	int kernel_size = 0;
+
+	//Durchlaufen der Bitmap
+	//durchschnittswerte aus value*value umgebung berechnen
+	//am rand entsprechend k¸rzen
+
+	for (int i = 0; i < DibHeight(); i += value) {
+		for (int j = 0; j < StorageWidth(); j += (3 * value)) {
+			for (int k = 0; k < value && (i + k) < DibHeight(); k += 1) {
+				t = (BYTE*)GetPixelAddress(0, i + k);
+				for (int l = 0; l < 3 * value && (j + l) < StorageWidth(); l += 3) {
+					kernel_size++;
+					blue += (*(t + j + l));
+					green += (*(t + j + 1 + l));
+					red += (*(t + j + 2 + l));
+				}
+			}
+
+			red /= kernel_size;
+			green /= kernel_size;
+			blue /= kernel_size;
+
+			for (int k = 0; k < value && (i + k) < DibHeight(); k += 1) {
+				if (k == 0) {
+					t = (BYTE*)GetPixelAddress(0, i + k);
+					for (int l = 0; l < 3 * value && (j + l) < StorageWidth(); l += 3) {
+						(*(t + j + l)) = blue - blue / 12;
+						(*(t + j + 1 + l)) = green - green / 12;
+						(*(t + j + 2 + l)) = red - red / 12;
+					}
+				}
+				else
+				{
+					t = (BYTE*)GetPixelAddress(0, i + k);
+					for (int l = 0; l < 3 * value && (j + l) < StorageWidth(); l += 3) {
+						if (l == 0) {
+							(*(t + j + l)) = blue - blue / 15;
+							(*(t + j + 1 + l)) = green - green / 15;
+							(*(t + j + 2 + l)) = red - red / 15;
+						}
+						else {
+							(*(t + j + l)) = blue;
+							(*(t + j + 1 + l)) = green;
+							(*(t + j + 2 + l)) = red;
+						}
+					}
+				}
+			}
+			red = green = blue = 0;
+			kernel_size = 0;
+		}
+	}
 }
 
-void CDIB::fft() {
-	// TODO:
+CDIB* CDIB::fft() {
+	static bool fourier = true;
+	static CFFT m_fft;
+	static int b, h;
+	CDIB* temp;
+
+	if (fourier) {
+		if ((m_pBMFH == 0) || (m_pBMI->bmiHeader.biBitCount != 24))
+			return 0;
+
+		temp = new CDIB(CFFT::MakePowerOf2(b = DibWidth()),
+			CFFT::MakePowerOf2(h = DibHeight()));
+		m_fft.real[0] = fftrealvektor(0);
+		m_fft.real[1] = fftrealvektor(1);
+		m_fft.real[2] = fftrealvektor(2);
+		m_fft.imag[0] = fftimagvektor();
+		m_fft.imag[1] = fftimagvektor();
+		m_fft.imag[2] = fftimagvektor();
+		m_fft.width = temp->DibWidth();
+		m_fft.height = temp->DibHeight();
+
+		m_fft.FFT2D(1, 0);
+		m_fft.FFT2D(1, 1);
+		m_fft.FFT2D(1, 2);
+		temp->fftcopy(m_fft.real[0], m_fft.imag[0], 0);
+		temp->fftcopy(m_fft.real[1], m_fft.imag[1], 1);
+		temp->fftcopy(m_fft.real[2], m_fft.imag[2], 2);
+		temp->fftcorrect();
+	}
+	else {
+		temp = new CDIB(b, h);  // Bild mit vorangegangerner Breite, Hˆhe
+		m_fft.FFT2D(-1, 0);
+		temp->fftbackcopy(m_fft.real[0], 0, m_fft.width, m_fft.height);
+		m_fft.FFT2D(-1, 1);
+		temp->fftbackcopy(m_fft.real[1], 1, m_fft.width, m_fft.height);
+		m_fft.FFT2D(-1, 2);
+		temp->fftbackcopy(m_fft.real[2], 2, m_fft.width, m_fft.height);
+	}
+	fourier = !fourier;
+	return temp;
+}
+
+//+ fftrealvektor
+//Vektor mit real-anteilen f¸r fft aus bild herstellen
+//COLOR f¸r farbkanal, 0-blau,1-gr¸n,2-rot
+double* CDIB::fftrealvektor(int COLOR)
+{
+	if ((m_pBMFH == 0) || (m_pBMI->bmiHeader.biBitCount != 24))
+		return 0;
+
+	BYTE* t;
+	int height = DibHeight(), width = DibWidth();
+	int height_pow2 = CFFT::MakePowerOf2(height);
+	int width_pow2 = CFFT::MakePowerOf2(width);
+
+	//offset werte, alles drunter ist 0 (schwarzer rand) im fft-vektor
+	int height_offset, width_offset;
+	int i, j, k;
+
+	if (height_pow2 == 0 || width_pow2 == 0)
+		return 0;
+
+	double* vektor = new double[height_pow2 * width_pow2 + 1];
+	memset(vektor, 0, (height_pow2 * width_pow2 + 1) * sizeof(double));
+
+	height_offset = ((height_pow2 - height) / 2) * width_pow2;
+	width_offset = (width_pow2 - width) / 2;
+
+	for (i = 0; i < height; i++) {
+		t = (BYTE*)GetPixelAddress(0, i);
+		for (j = 0, k = 0; j < width * 3; j += 3, k++)
+			vektor[height_offset + (i * width_pow2) + width_offset + k] = (*(t + j + COLOR));
+	}
+	return vektor;
+}
+//-
+
+//+ fftimagvektor
+//imagin‰r-vektor f¸r fft zur¸ckgeben, mit nullen gef¸llt
+double* CDIB::fftimagvektor()
+{
+	if ((m_pBMFH == 0) || (m_pBMI->bmiHeader.biBitCount != 24))
+		return 0;
+
+	int height = DibHeight(), width = DibWidth();
+	int height_pow2 = CFFT::MakePowerOf2(height);
+	int width_pow2 = CFFT::MakePowerOf2(width);
+
+	if (height_pow2 == 0 || width_pow2 == 0)
+		return 0;
+
+	double* vektor = new double[height_pow2 * width_pow2 + 1];
+
+	//leeren Vektor erzeugen, keine imagin‰r Anteile
+	memset(vektor, 0, (height_pow2 * width_pow2 + 1) * sizeof(double));
+
+	return vektor;
+}
+//-
+
+
+//+ fftcorrect
+//fft-Bild zur besseren Visualisierung in 4 quadranten aufteilen
+void CDIB::fftcorrect()
+{
+	int i, j, index = 0;
+	if ((m_pBMFH == 0) || (m_pBMI->bmiHeader.biBitCount != 24))
+		return;
+
+	int height = DibHeight(), width = DibWidth();
+	BYTE* t, * tneu;
+
+	//Quadrant oben links nach unten rechts kopieren
+	for (i = 0; i < height / 2; i++)
+	{
+		t = (BYTE*)GetPixelAddress(0, i);
+		for (j = 0; j < width * 3 / 2; j += 3)
+		{
+			tneu = (BYTE*)GetPixelAddress(j / 3 + width / 2 - 1, i + height / 2);
+			memcpy(tneu, t + j, 3);
+		}
+
+	}
+
+	//rechts unten gespiegelt nach links oben kopieren
+	for (i = height / 2; i < height; i++)
+	{
+		t = (BYTE*)GetPixelAddress(width / 2, i);
+		for (j = 0; j < width * 3 / 2; j += 3)
+		{
+			tneu = (BYTE*)GetPixelAddress(width / 2 - j / 3 - 1, height - i - 1);
+			memcpy(tneu, t + j, 3);
+		}
+
+	}
+
+	//rechts oben nach links unten kopieren
+	for (i = 0; i < height / 2; i++)
+	{
+		t = (BYTE*)GetPixelAddress(width / 2, i);
+		for (j = 0; j < width * 3 / 2; j += 3)
+		{
+			tneu = (BYTE*)GetPixelAddress(j / 3, i + height / 2);
+			memcpy(tneu, t + j, 3);
+		}
+
+	}
+
+	//links unten gepiegelt nach rechts oben kopieren
+	for (i = height / 2; i < height; i++)
+	{
+		t = (BYTE*)GetPixelAddress(0, i);
+		for (j = 0; j < width * 3 / 2; j += 3)
+		{
+			tneu = (BYTE*)GetPixelAddress(width - j / 3 - 1, height - i - 1);
+			memcpy(tneu, t + j, 3);
+		}
+
+	}
+}
+//-
+
+
+//+ fftcopy
+// kopiere die real und imagin‰r ergebnisse der fft in ein dib zur visualisierung
+// real und image sind die vektoren mit den Werten, COLOR bestimmt den Farbkanal
+// 0-blau, 1-gr¸n, 2-rot
+void CDIB::fftcopy(double* real, double* image, int COLOR)
+{
+	int i, j, index = 0;
+	if ((m_pBMFH == 0) || (m_pBMI->bmiHeader.biBitCount != 24))
+		return;
+
+	int pixels = DibHeight() * DibWidth();
+	BYTE* t;
+
+	//vorw‰rts-fft, frequenzen darstellen
+	for (i = 0; i < DibHeight(); i++) {
+		t = (BYTE*)GetPixelAddress(0, i);
+
+		for (j = 0; j < StorageWidth(); j += 3, index++) {
+			if (index < (pixels)) {
+				//errechne Betrag der komplexen Zahl
+				double betrag = (double)sqrt((real[index] * real[index]) + (image[index] * image[index]));
+				//logarithmische Darstellung
+				(*(t + j + COLOR)) = (BYTE)(150 * (log(betrag + 1)));
+				//  (*(t+j))=(*(t+j+1))=(*(t+j+2))=betrag;
+			}
+		}
+	}
+}
+//-
+
+//+ fftbackcopy
+// kopieren von r¸cktransformierten Werten zur¸ck in das dib,
+// ggf. schwarzen randauslassen
+// ¸bergeben werden real-Werte (imag ist 0), Farbkanal, Breite
+// und Hˆhe des fouriertransformierten Bildes
+void CDIB::fftbackcopy(double* real, int COLOR, int fftwidth, int fftheight)
+{
+	int height_offset, width_offset;
+	int value;
+	int i, j, k;
+
+	height_offset = ((fftheight - DibHeight()) / 2) * fftwidth;
+	width_offset = (fftwidth - DibWidth()) / 2;
+
+	BYTE* t;
+
+	for (i = 0; i < DibHeight(); i++) {
+		t = (BYTE*)GetPixelAddress(0, i);
+		for (j = 0, k = 0; j < StorageWidth(); j += 3, k++)
+		{
+			value = (int)(real[height_offset + (i * fftwidth) + width_offset + k]);
+			if (value < 0) value = 0;
+			if (value > 255) value = 255;
+			(*(t + j + COLOR)) = (unsigned char)value;
+		}
+	}
 }
 
 void CDIB::merge(CString filename, int percentage) {
