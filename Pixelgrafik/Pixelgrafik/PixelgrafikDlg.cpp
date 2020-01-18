@@ -193,6 +193,7 @@ BOOL CPixelgrafikDlg::OnCommand(WPARAM wParam, LPARAM lParam) {
 	CFileDialog OpenFileDlg(TRUE, CString(".bmp"), NULL, 0, CString(strFilter)); // 1001
 	CFileDialog SaveFileDlg(FALSE, CString(".bmp"), NULL, 0, CString(strFilter)); // 1002
 	CFileDialog MergeFileDlg(TRUE, CString(".bmp"), NULL, 0, CString(strFilter)); // 1001
+	CQualityMerge percentageDlg;
 
 	int sharpen_matrix[9] = { -1, -1, -1, -1, 9, -1, -1, -1, -1 }; // 1012
 	int soften_matrix[9] = { 6, 12, 6, 12, 25, 12, 6, 12, 6 }; // 1013
@@ -296,7 +297,9 @@ BOOL CPixelgrafikDlg::OnCommand(WPARAM wParam, LPARAM lParam) {
 		m_dib.oil(5, 20);
 		break;
 	case 1020: // Mosaik
-		m_dib.mosaic();
+		if (percentageDlg.DoModal() == IDOK) {
+			m_dib.mosaic(percentageDlg.quality);
+		}
 		break;
 	case 1021: // inverse FFT
 		m_dib.fft();
@@ -383,11 +386,11 @@ void CPixelgrafikDlg::create_popup_menu() {
 	menu.AppendMenu(MF_STRING, 1017, L"Flip vertikal");
 	menu.AppendMenu(MF_STRING, 1018, L"Schmelzen");
 	menu.AppendMenu(MF_STRING, 1019, L"Oelgemaelde");
-	//menu.AppendMenu(MF_STRING, 1020, L"Mosaik");
+	menu.AppendMenu(MF_STRING, 1020, L"Mosaik");
 
 	// Seperatorline
 	menu.AppendMenu(MF_SEPARATOR, 0, L"");
 
-	//menu.AppendMenu(MF_STRING, 1021, L"(inverse) FFT");
+	menu.AppendMenu(MF_STRING, 1021, L"(inverse) FFT");
 	menu.AppendMenu(MF_STRING, 1022, L"Verschmelzen");
 }
