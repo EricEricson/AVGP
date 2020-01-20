@@ -10,8 +10,8 @@
 #define IDC_BUTTON_Wav_to_Mp3           1000
 #define IDC_BUTTON_mp3_to_wav           1001
 #define IDC_EDIT1                       1002
-#define IDC_EDIT2                       1003
 #define IDC_OUTPUT                      1003
+#define IDC_OUTPUT2                     1004
 
 // Next default values for new objects
 // 
