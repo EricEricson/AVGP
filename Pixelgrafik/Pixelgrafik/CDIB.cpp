@@ -57,7 +57,6 @@ bool CDIB::ImageLoaded() {
 	}
 	else {
 		return false;	// no image is loaded
-		return false;	// no image is loaded
 	}
 }
 
