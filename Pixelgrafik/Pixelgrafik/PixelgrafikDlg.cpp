@@ -132,13 +132,8 @@ void CPixelgrafikDlg::OnSysCommand(UINT nID, LPARAM lParam)
 void CPixelgrafikDlg::OnPaint()
 {
 	CPaintDC dc(this); // Geraetekontext zum Zeichnen
-	CRect rect;
-	GetClientRect(&rect);
-	m_dib.Draw(&dc, 0, 0, rect.Width(), rect.Height());
-	if (histogram) {
-		drawHistogramm();
-	}
-
+	
+	// Ist Fenster aktiv oder minimiert?
 	if (IsIconic())
 	{
 		CPaintDC dc(this); // Gerätekontext zum Zeichnen
@@ -159,6 +154,12 @@ void CPixelgrafikDlg::OnPaint()
 	else
 	{
 		CDialogEx::OnPaint();
+		CRect rect;
+		GetClientRect(&rect);
+		m_dib.Draw(&dc, 0, 0, rect.Width(), rect.Height());
+		if (histogram) {
+			drawHistogramm();
+		}
 	}
 }
 
