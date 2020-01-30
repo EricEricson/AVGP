@@ -326,6 +326,18 @@ BOOL CPixelgrafikDlg::OnCommand(WPARAM wParam, LPARAM lParam) {
 			}
 		}
 		break;
+	case 1023:
+		m_dib.Load((CString)"bild.bmp");
+		m_dib2.Load((CString)"bild.bmp");
+		m_dib3.Load((CString)"bild_vertikal.bmp");
+		RedrawWindow();
+
+		if (percentageDlg.DoModal() == IDOK) {
+			m_dib.blending(m_dib2, m_dib3, percentageDlg.quality);
+		}
+
+
+		break;
 	default: // Do nothing
 		break;
 	}
@@ -379,6 +391,7 @@ void CPixelgrafikDlg::create_popup_menu() {
 	menu.AppendMenu(MF_STRING, 1013, L"Unschaerfe");
 	menu.AppendMenu(MF_STRING, 1014, L"Emboss");
 	menu.AppendMenu(MF_STRING, 1015, L"Kantenerkennung");
+	menu.AppendMenu(MF_STRING, 1023, L"Blending");
 
 	// Seperatorline
 	menu.AppendMenu(MF_SEPARATOR, 0, L"");

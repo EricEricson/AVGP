@@ -26,6 +26,9 @@ protected:
 	HICON m_hIcon;
 
 	CDIB m_dib;
+	CDIB m_dib2;
+	CDIB m_dib3;
+
 	CMenu menu;
 	bool histogram;
 
